@@ -9,12 +9,36 @@
   <body style="height: 100%; margin: 0;">
     <div id="map" style="width: 100%; height: 100%; background: #888888 margin: 0;"></div>
     <script type="text/javascript">
-      var map = L.map('map').setView([0, 0], 2);
+      var mapSW = [0, 16384],
+          mapNE = [16384, 0];
 
-        L.tileLayer('maps/world/{z}/{x}/{y}.png', {
+      var map = L.map('map').setView([-11.346192, -83.034668], 6);
+
+        L.tileLayer('maps/world_2/{z}/{x}/{y}.png', {
           minZoom: 0,
           maxZoom: 6,
+          noWrap: true,
         }).addTo(map);
+
+        map.setMaxBounds(new L.LatLngBounds(
+          map.unproject(mapSW, map.getMaxZoom()),
+          map.unproject(mapNE, map.getMaxZoom())
+        ));
+
+      var marker_arcane = L.marker([-14.455958, -83.71582]).addTo(map);
+        marker_arcane.bindPopup('<img src="images/arcane_tower.jpg" width="300" height="200"><br><h1 style="color:purple;font-size:20px;">The Tower of the Arcane Arts</h1><p>The Tower of the Arcane Arts is a bastion for all those seeking to develop their magical abilities. Those who pass the Trial of the Four Pillars are allowed access to the wonders inside.<p>');
+
+      var marker_veritas = L.marker([-14.687857, -83.144531]).addTo(map);
+        marker_veritas.bindPopup('<img src="images/veritas.jpg" width="300" height="200"><br><h1 style="color:purple;font-size:20px;">Veritas</h1><p>Veritas is a port city that is located at the base of a large hill. Sitting within the shadow of the tower that holds the Council of the Arcane Arts, Veritas is a bustling town with a number of buildings and people living within. It has a main road which leads from the port up towards the northern gate. Because it is a port town there are numerous people of varying races residing within. It has a population of about 9,000 people and while there are varying races most are either human or halfling. Exiting out of the town the road curves up and around the hill towards the north then east to an intersection, where travelling south up the hill leads to the tower of the Arcane Arts while travelling north leads to Wingston.<p><br><a href="veritas.html">Town Map</a>');
+
+      var marker  = L.marker([0, 0], {
+        draggable: true,
+      }).addTo(map);
+        marker.bindPopup('');
+
+      marker.on('dragend', function(e) {
+        marker.getPopup().setContent('Clicked' + marker.getLatLng().toString()).openOn(map);
+      });
     </script>
 
   </body>
