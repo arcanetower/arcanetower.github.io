@@ -26,30 +26,49 @@
         ));
 
     //Icons
-    var myIcon = L.icon({
-      iconUrl: 'markers/town.png',
-      iconSize: [205, 155],
-      iconAnchor: [102.5, 155],
-      popupAnchor: [-3, -76],
-      shadowUrl: 'scripts/leaflet/images/marker-shadow.png',
-      shadowSize: [68, 95],
-      shadowAnchor: [22, 94]
+    var tower = L.icon({
+      iconUrl: 'images/markers/tower.png',
+      iconSize: [30, 41],
+      iconAnchor: [15, 41],
+      popupAnchor: [0, -76],
+      shadowUrl: 'images/markers/tower_shadow.png',
+      shadowSize: [23.6, 41],
+      shadowAnchor: [5, 38]
     });
 
-    // create a red polygon from an array of LatLng points
-    var shah_state_lines = [[-7.490506, -88.220215],[-11.436623, -88.220215],[-11.630498, -87.60498],[-11.759674, -87.363281],[-11.867274, -87.1875],[-11.953324, -87.143555],[-12.125341, -87.121582],[-12.297247, -87.165527],[-14.073873, -87.165527],[-14.308335, -87.077637],[-14.52127, -86.901855],[-14.606387, -86.682129],[-14.670204, -86.484375],[-14.670204, -86.19873],[-14.542553, -85.935059],[-14.28703, -85.825195],[-13.988554, -85.605469],[-13.924544, -85.407715],[-13.967219, -85.187988],[-14.11652, -84.858398],[-14.180476, -84.79248],[-14.734001, -83.452148],[-14.796165, -83.144531],[-14.753648, -82.814941],[-14.647318, -82.55127],[-14.264105, -82.023926],[-14.008266, -81.650391],[-13.816199, -81.188965],[-13.752142, -80.793457],[-13.709427, -80.244141],[-13.64534, -79.914551],[-13.495737, -79.475098],[-13.239057, -79.035645],[-13.024949, -78.771973],[-12.724888, -78.508301],[-12.574724, -78.376465],[-12.531804, -78.244629],[-12.123708, -78.244629],[-11.693459, -78.310547],[-11.370331, -78.442383],[-11.111564, -78.618164],[-10.96051, -78.442383],[-10.766185, -78.288574],[-10.442032, -78.200684],[-10.095896, -78.178711],[-9.662703, -78.068848],[-9.380827, -77.827148],[-9.250653, -77.497559],[-9.294049, -77.409668],[-8.859843, -76.992188],[-6.98721, -79.650879],[-6.17911, -81.23291]];
+    var port_town = L.icon({
+      iconUrl: 'images/markers/port_town.png',
+      iconSize: [25, 22.9],
+      iconAnchor: [8, 14],
+      popupAnchor: [0, -76],
+      shadowUrl: 'images/markers/port_town_shadow.png',
+      shadowSize: [25, 22.9],
+      shadowAnchor: [6, 14]
+    });
 
-    var bertol_state_lines = [[-12.575689, -77.893066],[-12.125193, -77.958984],[-11.759946, -77.958984],[-11.501831, -78.046875],[-11.265018, -78.156738],[-10.984897, -78.112793],[-10.121344, -78.046875],[-9.926716, -78.00293],[-9.710328, -77.871094],[-9.40715, -77.387695],[-9.294049, -77.409668],[-8.859843, -76.992188],[-8.017933, -75.498047],[-8.257066, -74.289551],[-9.602082, -73.54248],[-10.79081, -73.87207],[-10.575011, -74.465332],[-10.553423, -74.772949],[-10.661349, -75.036621]]
+    // State Polygons
+    var shah_state_lines = [[-12.060847, -89.736328],[-16.322681, -86.879883],[-16.301581, -82.683105],[-15.264914, -78.837891],[-14.009886, -77.937012],[-12.576354, -78.09082],[-11.802719, -78.134766],[-11.177916, -78.354492],[-10.638206, -78.134766],[-9.7727, -77.980957],[-9.295697, -77.453613],[-8.883215, -77.036133],[-8.426775, -76.662598],[-6.814257, -79.628906],[-6.115192, -81.166992],[-6.857915, -85.166016],[-7.57769, -88.242187],[-11.458171, -88.242187]];
+
+    var bertol_state_lines = [[-7.991567, -75.52002],[-8.078647, -74.729004],[-9.620999, -73.586426],[-12.962308, -74.025879],[-14.073873, -75.432129],[-14.009886, -77.937012],[-12.576354, -78.09082],[-11.802719, -78.134766],[-11.177916, -78.354492],[-10.638206, -78.134766],[-9.7727, -77.980957],[-9.295697, -77.453613],[-8.883215, -77.036133],[-8.426775, -76.662598]];
+
+    var marbeck_state_lines = [[-11.458789, -88.220215],[-12.704259, -91.582031],[-12.125193, -95.976563],[-11.458789, -99.470215],[-10.272639, -101.645508],[-9.277135, -102.98584],[-7.561019, -103.557129],[-6.863848, -102.106934],[-6.580325, -100.612793],[-6.383944, -98.591309],[-6.252982, -96.37207],[-5.794359, -95.339355],[-4.788494, -93.867188],[-4.788494, -93.317871],[-5.575834, -90.98877],[-7.539249, -88.242187]]
 
     var shah_state = L.polygon(shah_state_lines, {color: 'red'});
 
     var bertol_state = L.polygon(bertol_state_lines, {color: 'orange'});
 
+    var marbeck_state = L.polygon(marbeck_state_lines, {color: 'yellow'});
+
+    //State Names as image layers
+    var shah_image = 'images/names/shah.png',
+      shah_bounds = [[-8.425855, -87.1], [-11.619267, -78.684082]];
+    var shah_name = L.imageOverlay(shah_image, shah_bounds)
+
     // Markers Shah Provence
-      var marker_arcane = L.marker([-14.455958, -83.71582])
+      var marker_arcane = L.marker([-14.455958, -83.71582], {icon: tower})
         marker_arcane.bindPopup('<img src="images/arcane_tower.jpg" width="300" height="200"><br><h1 style="color:red;font-size:20px;">The Tower of the Arcane Arts</h1><p>The Tower of the Arcane Arts is a bastion for all those seeking to develop their magical abilities. Those who pass the Trial of the Four Pillars are allowed access to the wonders inside.<p>');
 
-      var marker_veritas = L.marker([-14.687857, -83.144531])
+      var marker_veritas = L.marker([-14.687857, -83.144531], {icon: port_town})
         marker_veritas.bindPopup('<img src="images/veritas.jpg" width="300" height="200"><br><h1 style="color:red;font-size:20px;">Veritas</h1><p>Veritas is a port city that is located at the base of a large hill. Sitting within the shadow of the tower that holds the Council of the Arcane Arts, Veritas is a bustling town with a number of buildings and people living within. It has a main road which leads from the port up towards the northern gate. Because it is a port town there are numerous people of varying races residing within. It has a population of about 9,000 people and while there are varying races most are either human or halfling. Exiting out of the town the road curves up and around the hill towards the north then east to an intersection, where travelling south up the hill leads to the tower of the Arcane Arts while travelling north leads to Wingston.<p><br><a href="veritas.html">Town Map</a>');
 
       var marker_wingston = L.marker([-13.304877, -83.847656])
@@ -87,7 +106,7 @@
     //Layer Groups
       var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton]);
 
-      var lg_states = L.layerGroup([shah_state,bertol_state])
+      var lg_states = L.layerGroup([shah_state,shah_name,bertol_state,marbeck_state])
 
       var overlays = {
         "Town Markers": lg_towns,
