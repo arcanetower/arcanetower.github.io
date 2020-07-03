@@ -30,7 +30,7 @@
       iconUrl: 'images/markers/tower.png',
       iconSize: [30, 41],
       iconAnchor: [15, 41],
-      popupAnchor: [0, -76],
+      popupAnchor: [0, -30],
       shadowUrl: 'images/markers/tower_shadow.png',
       shadowSize: [23.6, 41],
       shadowAnchor: [5, 38]
@@ -40,18 +40,52 @@
       iconUrl: 'images/markers/port_town.png',
       iconSize: [25, 22.9],
       iconAnchor: [8, 14],
-      popupAnchor: [0, -76],
+      popupAnchor: [5 , -5],
       shadowUrl: 'images/markers/port_town_shadow.png',
       shadowSize: [25, 22.9],
       shadowAnchor: [6, 14]
     });
 
+    var town = L.icon({
+      iconUrl: 'images/markers/town.png',
+      iconSize: [25, 22.9],
+      iconAnchor: [8, 14],
+      popupAnchor: [5, -5],
+      shadowUrl: 'images/markers/town_shadow.png',
+      shadowSize: [25, 22.9],
+      shadowAnchor: [6, 14]
+    });
+
+    var port_city = L.icon({
+      iconUrl: 'images/markers/port_city.png',
+      iconSize: [25, 22.9],
+      iconAnchor: [8, 14],
+      popupAnchor: [5, -5],
+      shadowUrl: 'images/markers/port_city_shadow.png',
+      shadowSize: [25, 22.9],
+      shadowAnchor: [6, 14]
+    });
+
+    var city = L.icon({
+      iconUrl: 'images/markers/city.png',
+      iconSize: [25, 22.9],
+      iconAnchor: [8, 14],
+      popupAnchor: [5, -5],
+      shadowUrl: 'images/markers/city_shadow.png',
+      shadowSize: [25, 22.9],
+      shadowAnchor: [6, 14]
+    });
+    //Nation Polygons
+    var prusha_nation_lines = [[-7.561019, -103.557129],[-9.277135, -102.98584],[-10.272639, -101.645508],[-11.458789, -99.470215],[-12.125193, -95.976563],[-12.704259, -91.582031],[-12.06079, -89.758301],[-16.322681, -86.879883],[-16.301581, -82.683105],[-15.264914, -78.837891],[-14.009886, -77.937012],[-14.073873, -75.432129],[-12.962308, -74.025879],[-9.620999, -73.586426],[-8.078647, -74.729004],[-7.991567, -75.52002],[-8.426775, -76.662598],[-6.115192, -81.166992],[-6.857915, -85.166016],[-7.539249, -88.242187],[-5.575834, -90.98877],[-5.575834, -90.98877],[-4.788494, -93.867188],[-5.794359, -95.339355],[-6.252982, -96.37207],[-6.383944, -98.591309],[-6.580325, -100.612793],[-6.863848, -102.106934]]
+
     // State Polygons
-    var shah_state_lines = [[-12.060847, -89.736328],[-16.322681, -86.879883],[-16.301581, -82.683105],[-15.264914, -78.837891],[-14.009886, -77.937012],[-12.576354, -78.09082],[-11.802719, -78.134766],[-11.177916, -78.354492],[-10.638206, -78.134766],[-9.7727, -77.980957],[-9.295697, -77.453613],[-8.883215, -77.036133],[-8.426775, -76.662598],[-6.814257, -79.628906],[-6.115192, -81.166992],[-6.857915, -85.166016],[-7.57769, -88.242187],[-11.458171, -88.242187]];
+    var shah_state_lines = [[-12.06079, -89.758301],[-16.322681, -86.879883],[-16.301581, -82.683105],[-15.264914, -78.837891],[-14.009886, -77.937012],[-12.576354, -78.09082],[-11.802719, -78.134766],[-11.177916, -78.354492],[-10.638206, -78.134766],[-9.7727, -77.980957],[-9.295697, -77.453613],[-8.883215, -77.036133],[-8.426775, -76.662598],[-6.814257, -79.628906],[-6.115192, -81.166992],[-6.857915, -85.166016],[-7.539249, -88.242187],[-11.458789, -88.220215]];
 
     var bertol_state_lines = [[-7.991567, -75.52002],[-8.078647, -74.729004],[-9.620999, -73.586426],[-12.962308, -74.025879],[-14.073873, -75.432129],[-14.009886, -77.937012],[-12.576354, -78.09082],[-11.802719, -78.134766],[-11.177916, -78.354492],[-10.638206, -78.134766],[-9.7727, -77.980957],[-9.295697, -77.453613],[-8.883215, -77.036133],[-8.426775, -76.662598]];
 
-    var marbeck_state_lines = [[-11.458789, -88.220215],[-12.704259, -91.582031],[-12.125193, -95.976563],[-11.458789, -99.470215],[-10.272639, -101.645508],[-9.277135, -102.98584],[-7.561019, -103.557129],[-6.863848, -102.106934],[-6.580325, -100.612793],[-6.383944, -98.591309],[-6.252982, -96.37207],[-5.794359, -95.339355],[-4.788494, -93.867188],[-4.788494, -93.317871],[-5.575834, -90.98877],[-7.539249, -88.242187]]
+    var marbeck_state_lines = [[-11.458789, -88.220215],[-12.06079, -89.758301],[-12.704259, -91.582031],[-12.125193, -95.976563],[-11.458789, -99.470215],[-10.272639, -101.645508],[-9.277135, -102.98584],[-7.561019, -103.557129],[-6.863848, -102.106934],[-6.580325, -100.612793],[-6.383944, -98.591309],[-6.252982, -96.37207],[-5.794359, -95.339355],[-4.788494, -93.867188],[-5.575834, -90.98877],[-5.575834, -90.98877],[-7.539249, -88.242187]]
+
+    var iron_state_lines = [[-9.620999, -73.586426],[-12.962308, -74.025879],[-14.008696, -72.930122],[-13.774066, -71.590139],[-13.068777, -70.030487],[-12.168226, -68.558703],[-11.113727, -67.701993],[-10.509417, -67.240687],[-8.885072, -68.339034],[-7.100893, -71.062933]]
 
     var shah_state = L.polygon(shah_state_lines, {color: 'red'});
 
@@ -59,10 +93,26 @@
 
     var marbeck_state = L.polygon(marbeck_state_lines, {color: 'yellow'});
 
+    var iron_state = L.polygon(iron_state_lines, {color: 'grey'});
+
+    var prusha_nation = L.polygon(prusha_nation_lines, {color: 'red'});
+
     //State Names as image layers
     var shah_image = 'images/names/shah.png',
-      shah_bounds = [[-8.425855, -87.1], [-11.619267, -78.684082]];
-    var shah_name = L.imageOverlay(shah_image, shah_bounds)
+      shah_bounds = [[-9.4715, -86.220113], [-11.027765, -80.289043]];
+    var shah_name = L.imageOverlay(shah_image, shah_bounds);
+
+    var bertol_image = 'images/names/bertol.png',
+      bertol_bounds = [[-9.298124, -77.191706],[-10.164115, -73.984534]]
+    var bertol_name = L.imageOverlay(bertol_image, bertol_bounds);
+
+    var marbeck_image = 'images/names/Marbeck.png',
+      marbeck_bounds = [[-11.070883, -94.809182],[-12.06079, -90.525631]]
+    var marbeck_name = L.imageOverlay(marbeck_image, marbeck_bounds);
+
+    var iron_state_image = 'images/names/iron_state.png',
+      iron_state_bounds = [[-12.661778, -73.633063],[-13.218556, -70.909164]]
+    var iron_state_name = L.imageOverlay(iron_state_image, iron_state_bounds);
 
     // Markers Shah Provence
       var marker_arcane = L.marker([-14.455958, -83.71582], {icon: tower})
@@ -71,29 +121,44 @@
       var marker_veritas = L.marker([-14.687857, -83.144531], {icon: port_town})
         marker_veritas.bindPopup('<img src="images/veritas.jpg" width="300" height="200"><br><h1 style="color:red;font-size:20px;">Veritas</h1><p>Veritas is a port city that is located at the base of a large hill. Sitting within the shadow of the tower that holds the Council of the Arcane Arts, Veritas is a bustling town with a number of buildings and people living within. It has a main road which leads from the port up towards the northern gate. Because it is a port town there are numerous people of varying races residing within. It has a population of about 9,000 people and while there are varying races most are either human or halfling. Exiting out of the town the road curves up and around the hill towards the north then east to an intersection, where travelling south up the hill leads to the tower of the Arcane Arts while travelling north leads to Wingston.<p><br><a href="veritas.html">Town Map</a>');
 
-      var marker_wingston = L.marker([-13.304877, -83.847656])
+      var marker_wingston = L.marker([-13.304877, -83.847656], {icon: town})
         marker_wingston.bindPopup('<img src="images/wingston.jpg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Wingston</h1><p>Wingston is a typical farming village with its sprawled out design and farmsteads Each building is only of a single storey in height save for The Barn located in the centre of the town. Several hours from the town is an apple orchard which is home to about 40 people who help maintain it.<p><br><a href="wingston.html">Town Map</a>')
 
-      var marker_lancaster = L.marker([-12.275444, -85.583496])
+      var marker_lancaster = L.marker([-12.275444, -85.583496], {icon: town})
           marker_lancaster.bindPopup('<img src="images/lancaster.jpg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Lancaster</h1><p>Lancaster was once known for its flowers growing and selling many of their wares to the surrounding towns. The flowers were mostly sold for decorations to nobles but also for medical purposes as well as dyes. This, however, came to an end when the town was attacked by bandits and many of its residents were killed save for a handful. This handful was rescued by the tower all being women and children, all who currently reside in Polperro. However reconstruction has started on the town.<p><br><a href="lancaster.html">Town Map</a>')
 
-      var marker_polperro = L.marker([-11.285739, -86.748047])
+      var marker_polperro = L.marker([-11.285739, -86.748047], {icon: town})
           marker_polperro.bindPopup('<img src="images/polperro.jpg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Polperro</h1><p>Polperro has a reputation among the countryside and is known for having tough warriors, the best warriors for the Prusha Empire come from here. It is governed by a group of guild masters rather than a mayor. However, the general of the armies of Polperro has more weight in discussions and while not officially the mayor acts like one. The thick palisade walls stretch up 40-50 feet into the sky, the sharp-pointed wooden spikes have soldiers constantly patrolling.<p><br><a href="polperro.html">Town Map</a>')
 
-      var marker_berxley = L.marker([-11.931814, -81.650391])
-          marker_berxley.bindPopup('<img src="images/berxley.jpg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Polperro</h1><p>Polperro has a reputation among the countryside and is known for having tough warriors, the best warriors for the Prusha Empire come from here. It is governed by a group of guild masters rather than a mayor. However, the general of the armies of Polperro has more weight in discussions and while not officially the mayor acts like one. The thick palisade walls stretch up 40-50 feet into the sky, the sharp-pointed wooden spikes have soldiers constantly patrolling.<p><br><a href="berxley.html">Town Map</a>')
+      var marker_berxley = L.marker([-11.931814, -81.650391], {icon: town})
+          marker_berxley.bindPopup('<img src="images/berxley.jpg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Berxley</h1><p>Polperro has a reputation among the countryside and is known for having tough warriors, the best warriors for the Prusha Empire come from here. It is governed by a group of guild masters rather than a mayor. However, the general of the armies of Polperro has more weight in discussions and while not officially the mayor acts like one. The thick palisade walls stretch up 40-50 feet into the sky, the sharp-pointed wooden spikes have soldiers constantly patrolling.<p><br><a href="berxley.html">Town Map</a>')
 
-      var marker_bereston = L.marker([-10.270654, -88.022461])
+      var marker_bereston = L.marker([-10.270654, -88.022461], {icon: town})
           marker_bereston.bindPopup('<img src="images/bereston.jpeg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Bereston</h1><p>Bereston is a small village build on stilts in the Bereston marsh. There are four small clusters of houses connected by scaffoldings. Tied to the poles of the scaffolding are little boats they use for fishing close to the city.<p><br><a href="bereston.html">Town Map</a>')
 
-      var marker_hammerton = L.marker([-8.535501, -85.605469])
+      var marker_hammerton = L.marker([-8.535501, -85.649414], {icon: city})
           marker_hammerton.bindPopup('<img src="images/hammerton.jpg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Hammerton</h1><p>Hammerton is built into a small valley in the mountains that runs North-South. It is narrow so Hammerton is sometimes called the One Street Town. There is farmland build into the mountainside, but for the most part, it is a rest station for those travelling through the mountains to pass to the north side. Hammerton serves two functions. One an export of ore from the nearby mountain mines. Two it is a gateway rest to the mountain range for those wishing to travel over the mountains to the northern desert.<p><br><a href="hammerton.html">Town Map</a>')
 
-      var marker_watford = L.marker([-14.223104, -85.957031])
+      var marker_watford = L.marker([-14.223104, -85.957031], {icon: port_city})
           marker_watford.bindPopup('<img src="images/watford.jpeg" width="300" height="200" style="vertical-align:middle"><br><h1 style="color:red; font-size:20px;">Watford</h1><p>The city of Watford was built along the banks of a labyrinth of rivers and is truly an ancient metropolis. Its elegance is matched by the backdrop of lush forests which have helped shape the city to what it is today. The climate these forests brought was of great importance, but they were also influential when it came to architectural designs as the vast majority of buildings have been built with many natural elements to keep in line with the forests. The skyline is packed with soaring skyscrapers and their history seemed to shine more now than ever. Trade is at an all-time high in Watford and it has attracted a lot of attention. Many new cultures have left their mark not just on trade and relations, but also upon the citys identity. What historically was a city of predictability has grown into a fusion of everything and it is this that unites the people to this day. It is this multicultural identity that has truly left its mark. Hundreds of Diners, Taverns, Tea Shops, and Inns offer a plethora of culinary choices for those who feel hungry. There is something for everyone to enjoy nature, libraries, or one of the many recreational venues.<p><br><a href="watford.html">Town Map</a>', {
         maxWidth: 450
       })
 
+      //Markers bertol
+      var marker_vex = L.marker([-10.162469, -77.651367], {icon: town})
+          marker_vex.bindPopup('<img src="images/vex.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Vex</h1><p>Vex is a farming town with a military outpost near by. Being on the boarder of Shah and Bertrol states it manages much of the trade and boarder control. Vexs main production is oranges. They have many orchards growing around the outside and export a lot of what they grow.<p><br><a href="vex.html">Town Map</a>')
+
+        var marker_gladmouth = L.marker([-10.530148, -75.915527], {icon: town})
+            marker_gladmouth.bindPopup('<img src="images/gladmouth.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Gladmouth</h1><p>Gladmouth is known for its fashion and the nobility that live there. It is the place to be if you are wealthy and well off. Many nobles who choose to live here do so because of the abundance of land around the area and its local to the capital Gora. There are two sides to every coin though and there are rougher parts of the town which the nobility steer clear of calling it The Dark Half.<p><br><a href="vex.html">Town Map</a>')
+
+        var marker_gora = L.marker([-12.511971, -75.366211], {icon: city})
+            marker_gora.bindPopup('<img src="images/gora.png" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Gora</h1><p>Gora is the Capital of the Prushan Empire, the city itself is massive and the largest in Prusha. It is known for having immaculatily clean streets and a variety of stores and places to entertain oneself. The town tends to be home to much nobility wanting to be close to the King and his family. the city is built on a hill with the central castle being the main object of display. All roads lead towards the castle and the buildings surrounding the inner walls. A lot of time and effort has been spent of keeping the city looking as beautiful as possible.<p><br><a href="gora.html">Town Map</a>')
+
+      //The Iron State markers
+      var marker_birch = L.marker([-10.681419, -72.290039], {icon: city})
+          marker_birch.bindPopup('<img src="images/birch.jpg" width="300" height="200"><br><h1 style="color:grey; font-size:20px;">Birch</h1><p>Birch is hillside town that has a well defendable location on the top of a hill. It is known for having anotable smithing academy and its residents enjoy wearing fashonable clothing. Much of which they import from Gladmouth. Due to being in the Iron State the city is well prepared for war if the need would arise. With all its guards having iron armor and weapons as well as balista and other weapons on the walls of the city. The town is mostly dwarves with a few other races being found inside of the walls. <p><br><a href="birch.html">Town Map</a>')
+
+      //Moveable MArker
       var marker  = L.marker([-11.994986, -83.95752], {
         draggable: true,
       })
@@ -104,15 +169,27 @@
       });
 
     //Layer Groups
-      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton]);
+      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton,marker_vex,marker_gladmouth,marker_gora,marker_birch]).addTo(map);
 
-      var lg_states = L.layerGroup([shah_state,shah_name,bertol_state,marbeck_state])
+      var lg_states = L.layerGroup([shah_state,shah_name,bertol_state,bertol_name,marbeck_state,marbeck_name,iron_state,iron_state_name]);
+
+      var lg_nations =
+      L.layerGroup([prusha_nation])
 
       var overlays = {
-        "Town Markers": lg_towns,
         "States": lg_states,
-      }
-
+        "Nations": lg_nations,
+      };
+      map.on('zoomend', function(e) {
+        var geo = map.getCenter();
+        console.log(map.getZoom());
+        if (map.getZoom()>=5)
+        {
+          lg_towns.addTo(map);
+        }else {
+          lg_towns.remove();
+        }
+      });
     // Add Layer Control
       L.control.layers(null, overlays).addTo(map);
     </script>
