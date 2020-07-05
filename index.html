@@ -3,13 +3,59 @@
   <head>
     <title>Eliv Map</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="scripts/leaflet/leaflet.css">
     <script src="scripts/leaflet/leaflet.js"></script>
     <script type="text/javascript" src="scripts/leaflet-hash-master/leaflet-hash.js"></script>
     <script src="scripts/leaflet.measure-master/leaflet.measure.js"></script>
+    <link rel="stylesheet" href="scripts/sidebar-v2-master/css/leaflet-sidebar.css">
   </head>
   <body style="height: 100%; margin: 0;">
-    <div id="map" style="width: 100%; height: 100%; background: #888888 margin: 0;"></div>
+    <div id="sidebar" class="sidebar collapsed">
+        <!-- Nav tabs -->
+        <div class="sidebar-tabs">
+            <ul role="tablist">
+                <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
+                <li><a href="#travel" role="tab"><i class="fa fa-map-marker"></i></a></li>
+            </ul>
+        </div>
+
+        <!-- Tab panes -->
+        <div class="sidebar-content">
+            <div class="sidebar-pane" id="home">
+                <h1 class="sidebar-header">
+                    World Map
+                    <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+                <p>Welcome to the world of <u>Eliv</u> an ever expanding and wonderous world full of creatures and places worth exploring.</p>
+
+                <p>The world is currently centered on the main location of the campaign. The Tower of the Arcane Arts. This is home to many a magic user where they spend their time helping those in the surrounding area as well as expanding their current arcane understanding.</p>
+
+                <p>In order to navigate the map there are a couple of things that you need to be aware of. Firstly you can pan around using the mouse or your finger (if on a mobile device) to view different parts of the map. Secondly you can also zoom in or out by using the scroll wheel, buttons in the top right of the map, or pinching with your fingers (if on a mobile device). If you select one of the icons on display it will show you more information about the town or location that you have chosen. To close the marker simply click outside of the marker and it will dissapear. The icons will dissapear if you zoom out to far and will reappear once you zoom in close enough. Next to the zoom controls are two other buttons. The first is the measure button, and the seoncd being the layer button.</p>
+
+                <p><b>Layer Controls</b></p>
+                <p> The layer controls button allows you to turn off or on various overlays. The top three options allow you to see the boundries between the states as well as the nations, selecting either one will show the area of land that each nation owns. By selecting 'None' it will remove all selections. If you need to remove the icons displayed on the screen for any reason you can do so by selecting the check box next to 'icons' in the Layer Controls box
+
+                <p><b>Measuring</b></p>
+                <p>The measure button allows you to see the distance between points that you place on the map. This is helpful for calculating the travel time between locations. It is important that you turn off the icons before measuring as otherwise you won't be able to click directly on the city. Once the icons are turned of simply click on the start of your journey and continue clicking in different locations, it will show you in miles how far between the two points, as you add more points it will continue to show you the distance to the individual points from the origin. You can also activate the measure tool by pressin 'm' on your keyboard. To exit the measrurement that you had completed just press escape on your keyboard or press the measure button again. To bring back the icons simply zoom in or out to an appropriate level or turn them on in the layer controls.</p>
+            </div>
+
+            <div class="sidebar-pane" id="travel">
+              <h1 class="sidebar-header">Travel times<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+              <p>Wondering how long it will take you to get from one location to the next, simple use the measure tool (or press 'm' on your keyboard) to find out the total amount of miles. The tooltip will then show you the distance and how long it will take to get there depending on the speed that you are travelling. You are only able to go as fast as the slowest member of your party.</p>
+              <p><b>Fast:</b></p>
+              <p>While travelling at a fast pace you have a -5 penalty to passive Wisdom (Perception) scores. You are able to travel 4 miles an hour or 30 miles a day (assuming 8 hours of travel time a day).</p>
+              <p><b>Normal:</b></p>
+              <p> While travelling at a normal pace you are able to travel 3 miles an hour or 24 miles a day (assuming 8 hours of travel time a day).</p>
+              <p><b>Slow:</b></<p>
+              <p> While travelling at a slow pace you are able to use Stealth. You are able to travel 2 miles an hour or 18 miles a day (assuming 8 hours of travel time a day).</p>
+              <p><b>Forced March:</b></<p>
+              <p>The Travel Pace table assumes that characters Travel for 8 hours in day. They can push on beyond that limit, at the risk of Exhaustion. For each additional hour of Travel beyond 8 hours, the characters cover the distance shown in the Hour column for their pace, and each character must make a Constitution saving throw at the end of the hour. The DC is 10 + 1 for each hour past 8 hours. On a failed saving throw, a character suffers one level of Exhaustion.</p>
+            </div>
+        </div>
+    </div>
+    <div id="map" style="width: 100%; height: 100%; background: #888888; margin: 0; class="sidebar-map""></div>
+    <script type ="text/javascript" src="scripts/sidebar-v2-master/js/leaflet-sidebar.js"></script>
     <script type="text/javascript">
       var mapSW = [0, 16384],
           mapNE = [16384, 0];
@@ -20,6 +66,11 @@
           minZoom: 0,
           maxZoom: 6,
           noWrap: true,
+          zoomControl: false,
+        }).addTo(map);
+
+        L.control.zoom({
+          position:'topright',
         }).addTo(map);
 
         map.setMaxBounds(new L.LatLngBounds(
@@ -37,12 +88,15 @@
       lineDashArray: '6, 6',
       lineOpacity: 1,
       formatDistance: function (val) {
-        return Math.ceil(Math.round(1000 * val / 1609.344) / 6500) + ' miles';
+        return Math.ceil(Math.round(1000 * val / 1609.344) / 6500) + 'mi ' + 'F:' + Math.round((Math.round(1000 * val / 1609.344) / 6500)/30*10)/10 + 'days ' +'N:' + Math.round((Math.round(1000 * val / 1609.344) / 6500)/24*10)/10 + 'days ' + 'S:' + Math.round((Math.round(1000 * val / 1609.344) / 6500)/18*10)/10 + 'days ';
       },
+      position: 'topright',
     }).addTo(map);
 
     //Load the script to allow the map view to be controlled via url
     var hash = new L.Hash(map);
+
+    var sidebar = L.control.sidebar('sidebar').addTo(map);
 
     //Icons
     var tower = L.icon({
