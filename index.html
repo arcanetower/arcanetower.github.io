@@ -236,6 +236,10 @@
         var marker_gora = L.marker([-12.532818, -75.410156], {icon: city})
             marker_gora.bindPopup('<img src="images/gora.png" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Gora</h1><p>Gora is the Capital of the Prushan Empire, the city itself is massive and the largest in Prusha. It is known for having immaculatily clean streets and a variety of stores and places to entertain oneself. The town tends to be home to much nobility wanting to be close to the King and his family. the city is built on a hill with the central castle being the main object of display. All roads lead towards the castle and the buildings surrounding the inner walls. A lot of time and effort has been spent of keeping the city looking as beautiful as possible.<p><br><a href="gora.html">Town Map</a>')
 
+      //Merback Markers
+      var marker_bearcall = L.marker([-9.837694, -91.274414], {icon: port_city})
+          marker_bearcall.bindPopup('<img src="images/bearcall.jpeg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Bearcall</h1><p>Bearcall is a settlement that formed around The Pillars of the Stor. It lies close to the coast in the state of Merback. The city itself is home to many races with each person who grew up within its bounds being broader and stockier than others. People who grow up here are easily able to lift heavy barrels and move them about without the use of a cart. there are many soldiers about who do not wear uniforms. It houses a population of well over 100,000 individuals.<p><br><a href="bearcall.html">Town Map</a>')
+
       //The Iron State markers
       var marker_birch = L.marker([-10.681419, -72.290039], {icon: city})
           marker_birch.bindPopup('<img src="images/birch.jpg" width="300" height="200"><br><h1 style="color:grey; font-size:20px;">Birch</h1><p>Birch is hillside town that has a well defendable location on the top of a hill. It is known for having anotable smithing academy and its residents enjoy wearing fashonable clothing. Much of which they import from Gladmouth. Due to being in the Iron State the city is well prepared for war if the need would arise. With all its guards having iron armor and weapons as well as balista and other weapons on the walls of the city. The town is mostly dwarves with a few other races being found inside of the walls. <p><br><a href="birch.html">Town Map</a>')
@@ -251,7 +255,7 @@
       });
 
     //Layer Groups
-      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton,marker_vex,marker_gladmouth,marker_gora,marker_birch]);
+      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton,marker_vex,marker_gladmouth,marker_gora,marker_birch,marker_bearcall]);
 
       var lg_states = L.layerGroup([shah_state,shah_name,bertol_state,bertol_name,merback_state,merback_name,iron_state,iron_state_name]);
 
