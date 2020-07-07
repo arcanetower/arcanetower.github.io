@@ -149,14 +149,6 @@
       shadowSize: [25, 22.9],
       shadowAnchor: [6, 14]
     });
-    //Fog of warn
-    var fog_line = [
-      [[85,-180],[85,180],[-85,180],[-85,-180]],
-      [[-13.710035, -89.866623],[-16.488765, -89.185648],[-16.301581, -82.683105],[-15.264914, -78.837891],[-14.009886, -77.937012],[-12.576354, -78.09082],[-11.802719, -78.134766],[-11.177916, -78.354492],[-10.638206, -78.134766],[-9.7727, -77.980957],[-9.295697, -77.453613],[-8.883215, -77.036133],[-8.426775, -76.662598],[-6.814257, -79.628906],[-6.115192, -81.166992],[-6.857915, -85.166016],[-6.83917, -88.109269],[-10.552622, -90.327929]]
-    ];
-
-    var fog = L.polygon(fog_line, {color: '#505050',fillColor: '#686868', fillOpacity: 1}).addTo(map);
-
     //Nation Polygons
     var prusha_nation_lines = [[-16.301581, -82.683105],[-15.264914, -78.837891],[-14.009886, -77.937012],[-14.073873, -75.432129],[-12.962308, -74.025879],[-9.620999, -73.586426],[-8.078647, -74.729004],[-7.991567, -75.52002],[-8.426775, -76.662598],[-6.115192, -81.166992],[-6.857915, -85.166016],[-6.83917, -88.109269],[-5.575834, -90.98877],[-4.19303, -93.095762],[-3.688855, -95.731793],[-3.491489, -98.371485],[-5.441022, -101.161284],[-9.18887, -103.595953],[-12.254128, -103.881523],[-15.178181, -103.029172],[-19.911384, -99.338728],[-19.78738, -95.911888],[-17.20377, -92.110005],[-16.488765, -89.185648]];
 
@@ -324,9 +316,7 @@
       });
 
     //Layer Groups
-      var lg_undiscovered = L.layerGroup([marker_bereston, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin]);
-
-      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_hammerton]);
+      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton,marker_vex,marker_gladmouth,marker_gora,marker_birch,marker_bearcall,marker_dawnshear,marker_coldford,marker_ilelion,marker_oakenshell,marker_yedif,marker_bastion,marker_lochhaven,marker_lowood,marker_wandermere,marker_wolfspine,marker_wakefield,marker_alnwick,marker_baulders_deep,marker_black_hollows,marker_moonbright,marker_PF_monestary,marker_northin]);
 
       var lg_states = L.layerGroup([shah_state,shah_name,bertol_state,bertol_name,merback_state,merback_name,iron_state,iron_state_name]);
 
