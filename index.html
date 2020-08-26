@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html style="height: 100%; margin: 0;">
   <head>
-    <title>Eliv Map</title>
+    <title>Malendyr Map</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="scripts/leaflet/leaflet.css">
@@ -245,6 +245,8 @@
       var marker_dartle = L.marker([-12.404163, -83.869629], {icon: town})
         marker_dartle.bindPopup('<img src="images/dartle.jpg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Dartle</h1><p>Dartle is a small farming village located near a deep forest.<p><br><a href="dartle.html">Town Map</a>')
 
+      var marker_seer_shack = L.marker([-13.281641, -82.331543])
+        marker_seer_shack.bindPopup('<img src="images/seer_shack.jpg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">The Seers Shack</h1><p>Half a day east of wingston, lies a small shack inside a swampy area of the forest. In it lives a nameless hag referred to as "The Seer". Her appearance is that of a cross between tiefling and hag, her long lanky arms can extend all the way to the door of her home as she sits never moving from her chair.<p><br>')
 
       //Markers Bertol
       var marker_vex = L.marker([-10.162469, -77.651367], {icon: town})
@@ -277,6 +279,9 @@
 
       var marker_bastion = L.marker([-4.780153, -99.360352], {icon: town})
           marker_bastion.bindPopup('<img src="images/bastion.jpg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Bastion</h1><p>This town is not so much a town but a temple to Bahamut, the Platinum Dragon, and a town has produced itself around the temple. The temple is carved into the mountain and the town now resides on the hillside. The town is managed by the temple and thus functions more as a theocracy than anything else. The climb from the base of the town to the temple at the top covers some 1500 vertical feet, and the base elevation of the town is around 2000 ft. Often the journey up takes as much as a day due to switchbacks and elevation change, and why the town has an inn at the base and an inn at the top of the mountain. There are lifts that are used for supplies and for people that are not making the religious trek. Those that walk The Dragons Spine are considered to be faithful and devout, and worthy of acceptance into the Temples service.<p><br><a href="bastion.html">Town Map</a>')
+
+      var marker_red_mountain = L.marker([-8.561207, -112.412109])
+          marker_red_mountain.bindPopup('<img src="images/red_mountain.jpeg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">The Red Mountain</h1><p>Residing in the mountain range west of Ilelion is the red mountain, sticking out from the rest due to a certain mineral giving it a red hue. Legend states an ancient being lives among the wildlife here giving a voice to the animals.<p><br>')
 
       //The Iron State markers
       var marker_birch = L.marker([-10.681419, -72.290039], {icon: city})
@@ -319,6 +324,11 @@
 
       var marker_northin = L.marker([-33.596319, -38.891647], {icon: town})
         marker_northin.bindPopup('<img src="images/northin.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Northin</h1><p>Northin is a town just north of the Petrified Forest and makes much of their business out of chopping down the trees and transporting them to other locations. The wood crafters here are particularily skilled at carving and using the wood.<p><br><a href="northin.html">Town Map</a>')
+
+      // Desert Area
+      var marker_sun_temple = L.marker([-0.028652, -57.348633], {icon: town})
+        marker_sun_temple.bindPopup('<img src="images/sun_temple.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Sun Temple</h1><p>The sun temple is a temple dedicated to the god of the sun.<p><br><a href="sun_temple.html">Town Map</a>')
+
       //Moveable Marker
       var marker  = L.marker([-11.994986, -83.95752], {
         draggable: true,
@@ -330,8 +340,8 @@
       });
 
     //Layer Groups
-      var lg_towns_undiscovered = L.layerGroup([marker_bereston, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin,marker_candlekeep]);
-      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_hammerton, marker_dartle]);
+      var lg_towns_undiscovered = L.layerGroup([marker_bereston, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin,marker_candlekeep,marker_red_mountain,marker_seer_shack,marker_sun_temple]);
+      var lg_towns = L.layerGroup([marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_hammerton, marker_dartle]);
 
       var lg_states_undiscovered = L.layerGroup([bertol_state,bertol_name,merback_state,merback_name,iron_state,iron_state_name]);
       var lg_states = L.layerGroup([shah_state,shah_name]);

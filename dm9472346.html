@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html style="height: 100%; margin: 0;">
   <head>
-    <title>Eliv Map</title>
+    <title>Malendyr Map</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="scripts/leaflet/leaflet.css">
@@ -237,6 +237,9 @@
       var marker_dartle = L.marker([-12.404163, -83.869629], {icon: town})
         marker_dartle.bindPopup('<img src="images/dartle.jpg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Dartle</h1><p>Dartle is a small farming village that resides next to a dense forest.<p><br><a href="dartle.html">Town Map</a>')
 
+      var marker_seer_shack = L.marker([-13.260836, -82.55127])
+        marker_seer_shack.bindPopup('<img src="images/seer_shack.jpg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">The Seers Shack</h1><p>Half a day east of wingston, lies a small shack inside a swampy area of the forest. In it lives a nameless hag referred to as "The Seer". Her appearance is that of a cross between tiefling and hag, her long lanky arms can extend all the way to the door of her home as she sits never moving from her chair.<p><br>')
+
       //Markers Bertol
       var marker_vex = L.marker([-10.162469, -77.651367], {icon: town})
         marker_vex.bindPopup('<img src="images/vex.jpg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Vex</h1><p>Vex is a farming town with a military outpost near by. Being on the boarder of Shah and Bertrol states it manages much of the trade and boarder control. Vexs main production is oranges. They have many orchards growing around the outside and export a lot of what they grow.<p><br><a href="vex.html">Town Map</a>')
@@ -269,6 +272,9 @@
       var marker_bastion = L.marker([-4.780153, -99.360352], {icon: town})
           marker_bastion.bindPopup('<img src="images/bastion.jpg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Bastion</h1><p>This town is not so much a town but a temple to Bahamut, the Platinum Dragon, and a town has produced itself around the temple. The temple is carved into the mountain and the town now resides on the hillside. The town is managed by the temple and thus functions more as a theocracy than anything else. The climb from the base of the town to the temple at the top covers some 1500 vertical feet, and the base elevation of the town is around 2000 ft. Often the journey up takes as much as a day due to switchbacks and elevation change, and why the town has an inn at the base and an inn at the top of the mountain. There are lifts that are used for supplies and for people that are not making the religious trek. Those that walk The Dragons Spine are considered to be faithful and devout, and worthy of acceptance into the Temples service.<p><br><a href="bastion.html">Town Map</a>')
 
+      var marker_red_mountain = L.marker([-8.561207, -112.412109])
+          marker_red_mountain.bindPopup('<img src="images/red_mountain.jpeg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">The Red Mountain</h1><p>Residing in the mountain range west of Ilelion is the red mountain, sticking out from the rest due to a certain mineral giving it a red hue. Legend states an ancient being lives among the wildlife here giving a voice to the animals.<p><br>')
+
       //The Iron State markers
       var marker_birch = L.marker([-10.681419, -72.290039], {icon: city})
           marker_birch.bindPopup('<img src="images/birch.jpg" width="300" height="200"><br><h1 style="color:grey; font-size:20px;">Birch</h1><p>Birch is hillside town that has a well defendable location on the top of a hill. It is known for having anotable smithing academy and its residents enjoy wearing fashonable clothing. Much of which they import from Gladmouth. Due to being in the Iron State the city is well prepared for war if the need would arise. With all its guards having iron armor and weapons as well as balista and other weapons on the walls of the city. The town is mostly dwarves with a few other races being found inside of the walls. <p><br><a href="birch.html">Town Map</a>')
@@ -296,20 +302,24 @@
       var marker_alnwick = L.marker([-61.74193, -5.736078], {icon: town})
         marker_alnwick.bindPopup('<img src="images/alnwick.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Alnwick</h1><p>Alnwick houses a population of just over 5,000 individuals with most of them being halfling and elves, there are very few humans within this settlement. The town itself is mostly rundown with the ruler not taking care of the buildings or streets instead caring more for their own needs instead. The guards are heavy handed being more cruel then gracious.<p><br><a href="alnwick.html">Town Map</a>')
 
-        var marker_baulders_deep = L.marker([-60.03193, 8.542425], {icon: town})
-          marker_baulders_deep.bindPopup('<img src="images/baulders_deep.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Baulders Deep</h1><p>Baulders Deep has a population of about 1,500 people. They are known for their strong drink and are known for their stone working academy. People come from all around to come and train underneath the masters of stonework. Baulders Deep is carved out of a large boulder in the side of a mountain with an attached port which is also carved out of the large bauldering stonework.<p><br><a href="baulders_deep.html">Town Map</a>')
+      var marker_baulders_deep = L.marker([-60.03193, 8.542425], {icon: town})
+        marker_baulders_deep.bindPopup('<img src="images/baulders_deep.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Baulders Deep</h1><p>Baulders Deep has a population of about 1,500 people. They are known for their strong drink and are known for their stone working academy. People come from all around to come and train underneath the masters of stonework. Baulders Deep is carved out of a large boulder in the side of a mountain with an attached port which is also carved out of the large bauldering stonework.<p><br><a href="baulders_deep.html">Town Map</a>')
 
-        var marker_black_hollows = L.marker([-39.993956, -21.068993], {icon: town})
-          marker_black_hollows.bindPopup('<img src="images/black_hollows.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Black Hollows</h1><p>Black Hallows sits in the shadow of a large ruined castle, and is known for having hordes of beggars. The ruler is a feared tyrant who rules over the town with a firm hand. There is some tension between the races but this is mainly due to the stress of living in such a town under a ruler such as they have. The people worship an ancient bird known as the Phoenix and are continuing to pray to it to remove the Tyrant. <p><br><a href="black_hollows.html">Town Map</a>')
+      var marker_black_hollows = L.marker([-39.993956, -21.068993], {icon: town})
+        marker_black_hollows.bindPopup('<img src="images/black_hollows.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Black Hollows</h1><p>Black Hallows sits in the shadow of a large ruined castle, and is known for having hordes of beggars. The ruler is a feared tyrant who rules over the town with a firm hand. There is some tension between the races but this is mainly due to the stress of living in such a town under a ruler such as they have. The people worship an ancient bird known as the Phoenix and are continuing to pray to it to remove the Tyrant. <p><br><a href="black_hollows.html">Town Map</a>')
 
-        var marker_moonbright = L.marker([-45.813486, -36.555678], {icon: town})
-          marker_moonbright.bindPopup('<img src="images/moonbright.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Moonbright</h1><p>Moonright is a small town that is an average sized town with strong battlements. It has a nearby forest where creatures of strange origin appear and attackthe village periodically. The creatures are low in number and easily killed. The town has made a sport of it and holds contents to see how many of such creatures can be killed within a certain time. The forest which they come from is seen as sacred and nobody enters in to inspect for fear of the creatres stopping and their culture no longer being as it is.<p><br><a href="moonbright.html">Town Map</a>')
+      var marker_moonbright = L.marker([-45.813486, -36.555678], {icon: town})
+        marker_moonbright.bindPopup('<img src="images/moonbright.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Moonbright</h1><p>Moonright is a small town that is an average sized town with strong battlements. It has a nearby forest where creatures of strange origin appear and attackthe village periodically. The creatures are low in number and easily killed. The town has made a sport of it and holds contents to see how many of such creatures can be killed within a certain time. The forest which they come from is seen as sacred and nobody enters in to inspect for fear of the creatres stopping and their culture no longer being as it is.<p><br><a href="moonbright.html">Town Map</a>')
 
-        var marker_PF_monestary = L.marker([-35.119909, -36.006504], {icon: town})
-          marker_PF_monestary.bindPopup('<img src="images/PF_monestary.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">The Petrified Forest Monestary</h1><p>The Petrified Forest Monestary is built into a the mountain that is at the edge of the Petrified Forest. The trees in the forest not actually being made of stone but because of the mineral deposits around create a very hard wood. Which is favoured by wood workers around the nation. The Monestar houses people looking to develop their martial arts prowess, training underneath the masters and developing the damage of the strikes by hitting the trees.<p><br><a href="PF_monestary.html">Town Map</a>')
+      var marker_PF_monestary = L.marker([-35.119909, -36.006504], {icon: town})
+        marker_PF_monestary.bindPopup('<img src="images/PF_monestary.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">The Petrified Forest Monestary</h1><p>The Petrified Forest Monestary is built into a the mountain that is at the edge of the Petrified Forest. The trees in the forest not actually being made of stone but because of the mineral deposits around create a very hard wood. Which is favoured by wood workers around the nation. The Monestar houses people looking to develop their martial arts prowess, training underneath the masters and developing the damage of the strikes by hitting the trees.<p><br><a href="PF_monestary.html">Town Map</a>')
 
-        var marker_northin = L.marker([-33.596319, -38.891647], {icon: town})
-          marker_northin.bindPopup('<img src="images/northin.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Northin</h1><p>Northin is a town just north of the Petrified Forest and makes much of their business out of chopping down the trees and transporting them to other locations. The wood crafters here are particularily skilled at carving and using the wood.<p><br><a href="northin.html">Town Map</a>')
+      var marker_northin = L.marker([-33.596319, -38.891647], {icon: town})
+        marker_northin.bindPopup('<img src="images/northin.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Northin</h1><p>Northin is a town just north of the Petrified Forest and makes much of their business out of chopping down the trees and transporting them to other locations. The wood crafters here are particularily skilled at carving and using the wood.<p><br><a href="northin.html">Town Map</a>')
+
+      // Desert Area
+      var marker_sun_temple = L.marker([-0.028652, -57.348633], {icon: town})
+        marker_sun_temple.bindPopup('<img src="images/sun_temple.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Sun Temple</h1><p>The sun temple is a temple dedicated to the god of the sun.<p><br><a href="sun_temple.html">Town Map</a>')
       //Moveable Marker
       var marker  = L.marker([-11.994986, -83.95752], {
         draggable: true,
@@ -321,7 +331,7 @@
       });
 
     //Layer Groups
-      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin, marker_candlekeep, marker_dartle]);
+      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin, marker_candlekeep, marker_dartle,marker_red_mountain,marker_seer_shack,maker_sun_temple]);
 
       var lg_states = L.layerGroup([shah_state,shah_name,bertol_state,bertol_name,merback_state,merback_name,iron_state,iron_state_name]);
 
