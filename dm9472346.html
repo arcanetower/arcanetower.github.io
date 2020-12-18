@@ -336,6 +336,9 @@
       var marker_galo = L.marker([-8.841651, -59.765565], {icon: town})
         marker_galo.bindPopup('<img src="images/galo.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Galo</h1><p>Galo is a trading post set in the desert containing supplies many would need for the trek into the harsh sand dunes.<p><br><a href="galo.html">Town Map</a>')
 
+      var marker_vrecia = L.marker([0.432514, -4.130859], {icon: port_city})
+        marker_vrecia.bindPopup('<img src="images/vrecia.png" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Vrecia</h1><p>The Vrecian Dynasty is ruled by Queen Vrecia the 12th, both beautiful and dangerous she rules with absolute authority. Renown around the world for their silks, and markets the walled city of Vrecia is famous for its trade. Any merchant vessel hoping to make good coin knows to add Vrecia to their route. Here, you will find that favors offer just as much value as coin.<p><br><a href="vrecia.html">Town Map</a>')
+
       //Moveable Marker
       var marker  = L.marker([-11.994986, -83.95752], {
         draggable: true,
@@ -350,7 +353,7 @@
     var roads = L.polyline(birch_galo, {color: '#9b7653', weight: 2}).addTo(map);
 
     //Layer Groups
-      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin, marker_candlekeep, marker_dartle, marker_red_mountain, marker_seer_shack, marker_sun_temple, marker_galo]);
+      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin, marker_candlekeep, marker_dartle, marker_red_mountain, marker_seer_shack, marker_sun_temple, marker_galo, marker_vrecia]);
 
       var lg_states = L.layerGroup([shah_state,shah_name,bertol_state,bertol_name,merback_state,merback_name,iron_state,iron_state_name]);
 
