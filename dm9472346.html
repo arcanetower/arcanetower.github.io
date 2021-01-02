@@ -217,6 +217,7 @@
 
     //Road Line Polylines
     var birch_galo = [[-10.681419, -72.290039],[-10.01213, -71.279297],[-10.01213, -68.422852],[-11.566144, -64.995117],[-13.154376, -62.402344],[-11.738302, -59.897461],[-10.574222, -58.842773],[-8.841651, -59.765565]];
+    var candlekeep_tarcia = [[-23.235331, -90.395508],[-24.120158, -93.164063],[-24.440526, -95.800781]];
 
     // Markers Shah Provence
       var marker_arcane = L.marker([-14.455958, -83.71582], {icon: tower})
@@ -264,7 +265,7 @@
 
       //Merback Markers
       var marker_bearcall = L.marker([-18.017242, -96.833496], {icon: port_city})
-          marker_bearcall.bindPopup('<img src="images/bearcall.jpeg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Bearcall</h1><p>Bearcall is a settlement that formed around The Pillars of the Stor. It lies close to the coast in the state of Merback. The city itself is home to many races with each person who grew up within its bounds being broader and stockier than others. People who grow up here are easily able to lift heavy barrels and move them about without the use of a cart. there are many soldiers about who do not wear uniforms. It houses a population of well over 100,000 individuals.<p><br><a href="bearcall.html">Town Map</a>')
+          marker_bearcall.bindPopup('<img src="images/bearcall.jpeg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Bearcall</h1><p>Bearcall is a settlement that formed around The Pillars of the Storm. It lies close to the coast in the state of Merback. The city itself is home to many races with each person who grew up within its bounds being broader and stockier than others. People who grow up here are easily able to lift heavy barrels and move them about without the use of a cart. there are many soldiers about who do not wear uniforms. It houses a population of well over 100,000 individuals.<p><br><a href="bearcall.html">Town Map</a>')
 
       var marker_dawnshear = L.marker([-6.711202, -96.855469], {icon: city})
           marker_dawnshear.bindPopup('<img src="images/dawnshear.jpg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Dawnshear</h1><p>The city of Dawnshear looms up from behind some trees. The city is made of mainly wooden buildings and for wherever you stand within the city you can seethe tree that lives in the center of the city. Walking around the streets you see goats and chickens walking around as well as a variety of flowers, trees and bushes. The city has a great respect for nature and the animals and feels inviting to those who hold the same views.<p><br><a href="dawnshear.html">Town Map</a>')
@@ -293,7 +294,9 @@
 
       //New State with no name
       var marker_candlekeep = L.marker([-23.235331, -90.395508], {icon: city})
-          marker_candlekeep.bindPopup('<img src="images/candlekeep.jpg" width="300" height="200"><br><h1 style="color:grey; font-size:20px;">Candlekeep</h1><p>Candlekeep is a medium sized town that takes up a small amount of space. It has buildings which are built up to at least 3 storeys and are all compactly put together. It is known for its large library and commonly hosts scholars from around the area to learn from the books that are kept within.<p><br><a href="candlekeep.html">Town Map</a>');
+          marker_candlekeep.bindPopup('<img src="images/candlekeep.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Candlekeep</h1><p>Candlekeep is a medium sized town that takes up a small amount of space. It has buildings which are built up to at least 3 storeys and are all compactly put together. It is known for its large library and commonly hosts scholars from around the area to learn from the books that are kept within.<p><br><a href="candlekeep.html">Town Map</a>');
+      var marker_tarcia = L.marker([-24.440526, -95.800781], {icon: town})
+          marker_tarcia.bindPopup('<img src="images/tarcia.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Tarkia</h1><p>Tarcia is a small forest town filled strictly with elves, population is rather small and the elves here generally keep to themselves not venturing out of their town. Happy to lead their lives away from other towns and races. The town is completly self sufficient using amixture of magic and fine craftsmanship to provide all of its necessities.<p><br><a href="tarcia.html">Town Map</a>');
 
       //Ducan Empire
       var marker_lochhaven = L.marker([-58.881942, -10.283232], {icon: port_town})
@@ -350,10 +353,13 @@
       });
 
     //Roads
-    var roads = L.polyline(birch_galo, {color: '#9b7653', weight: 2}).addTo(map);
+      var road_1 = L.polyline(birch_galo, {color: '#9b7653', weight: 2}).addTo(map);
+      var road_2 = L.polyline(candlekeep_tarcia, {color: '#9b7653', weight: 2}).addTo(map);
 
     //Layer Groups
-      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin, marker_candlekeep, marker_dartle, marker_red_mountain, marker_seer_shack, marker_sun_temple, marker_galo, marker_vrecia]);
+      var lg_roads = L.layerGroup([road_1,road_2]);
+
+      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin, marker_candlekeep, marker_tarcia, marker_dartle, marker_red_mountain, marker_seer_shack, marker_sun_temple, marker_galo, marker_vrecia]);
 
       var lg_states = L.layerGroup([shah_state,shah_name,bertol_state,bertol_name,merback_state,merback_name,iron_state,iron_state_name]);
 
@@ -369,6 +375,7 @@
 
       var overlays = {
         "Icons": lg_towns,
+        "Roads": lg_roads,
       };
 
       map.on('zoomend', function(e) {
