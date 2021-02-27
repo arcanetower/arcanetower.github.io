@@ -27,11 +27,11 @@
                     World Map
                     <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
                 </h1>
-                <p>Welcome to the world of <u>Eliv</u> an ever expanding and wonderous world full of creatures and places worth exploring.</p>
+                <p>Welcome to the world of <u>Malendyr</u> an ever expanding and wonderous world full of creatures and places worth exploring.</p>
 
                 <p>The world is currently centered on the main location of the campaign. The Tower of the Arcane Arts. This is home to many a magic user where they spend their time helping those in the surrounding area as well as expanding their current arcane understanding.</p>
 
-                <p>In order to navigate the map there are a couple of things that you need to be aware of. Firstly you can pan around using the mouse or your finger (if on a mobile device) to view different parts of the map. Secondly you can also zoom in or out by using the scroll wheel, buttons in the top right of the map, or pinching with your fingers (if on a mobile device). If you select one of the icons on display it will show you more information about the town or location that you have chosen. To close the marker simply click outside of the marker and it will dissapear. The icons will dissapear if you zoom out to far and will reappear once you zoom in close enough. Next to the zoom controls are two other buttons. The first is the measure button, and the seoncd being the layer button.</p>
+                <p>In order to navigate the map there are a couple of things that you need to be aware of. Firstly you can pan around using the mouse or your finger (if on a mobile device) to view different parts of the map. Secondly you can also zoom in or out by using the scroll wheel, buttons in the top right of the map, or pinching with your fingers (if on a mobile device). If you select one of the icons on display it will show you more information about the town or location that you have chosen. To close the marker simply click outside of the marker and it will dissapear. The icons will dissapear if you zoom out to far and will reappear once you zoom in close enough. Next to the zoom controls are two other buttons. The first is the measure button, and the second being the layer button.</p>
 
                 <p><b>Layer Controls</b></p>
                 <p> The layer controls button allows you to turn off or on various overlays. The top three options allow you to see the boundries between the states as well as the nations, selecting either one will show the area of land that each nation owns. By selecting 'None' it will remove all selections. If you need to remove the icons displayed on the screen for any reason you can do so by selecting the check box next to 'icons' in the Layer Controls box
@@ -297,6 +297,8 @@
           marker_candlekeep.bindPopup('<img src="images/candlekeep.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Candlekeep</h1><p>Candlekeep is a medium sized town that takes up a small amount of space. It has buildings which are built up to at least 3 storeys and are all compactly put together. It is known for its large library and commonly hosts scholars from around the area to learn from the books that are kept within.<p><br><a href="candlekeep.html">Town Map</a>');
       var marker_tarcia = L.marker([-24.440526, -95.800781], {icon: town})
           marker_tarcia.bindPopup('<img src="images/tarcia.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Tarkia</h1><p>Tarcia is a small forest town filled strictly with elves, population is rather small and the elves here generally keep to themselves not venturing out of their town. Happy to lead their lives away from other towns and races. The town is completly self sufficient using amixture of magic and fine craftsmanship to provide all of its necessities.<p><br><a href="tarcia.html">Town Map</a>');
+      var marker_leondra = L.marker([-40.198948, -102.788086], {icon: town})
+          marker_leondra.bindPopup('<img src="images/leondra.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Leondra</h1><p>Leondra is a brand new settlement currently in development, dozens of leonin who were displaced from their homes settled in this unclaimed territory and began making a new home for themselves.<p><br><a href="leondra.html">Town Map</a>');
 
       //Ducan Empire
       var marker_lochhaven = L.marker([-58.881942, -10.283232], {icon: port_town})
@@ -342,6 +344,16 @@
       var marker_vrecia = L.marker([0.432514, -4.130859], {icon: port_city})
         marker_vrecia.bindPopup('<img src="images/vrecia.png" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Vrecia</h1><p>The Vrecian Dynasty is ruled by Queen Vrecia the 12th, both beautiful and dangerous she rules with absolute authority. Renown around the world for their silks, and markets the walled city of Vrecia is famous for its trade. Any merchant vessel hoping to make good coin knows to add Vrecia to their route. Here, you will find that favors offer just as much value as coin.<p><br><a href="vrecia.html">Town Map</a>')
 
+// Possible Tower locations
+      var marker_arcane_1 = L.marker([20.77483, -74.487305], {icon: tower})
+        marker_arcane.bindPopup('<img src="images/arcane_tower.jpg" width="300" height="200"><br><h1 style="color:red;font-size:20px;">The Tower of the Arcane Arts</h1><p>The Tower of the Arcane Arts is a bastion for all those seeking to develop their magical abilities. Those who pass the Trial of the Four Pillars are allowed access to the wonders inside.<p>');
+
+      var marker_arcane_2 = L.marker([-28.098749, -108.28125], {icon: tower})
+        marker_arcane.bindPopup('<img src="images/arcane_tower.jpg" width="300" height="200"><br><h1 style="color:red;font-size:20px;">The Tower of the Arcane Arts</h1><p>The Tower of the Arcane Arts is a bastion for all those seeking to develop their magical abilities. Those who pass the Trial of the Four Pillars are allowed access to the wonders inside.<p>');
+
+      var marker_arcane_3 = L.marker([-34.488295, -53.569336], {icon: tower})
+        marker_arcane.bindPopup('<img src="images/arcane_tower.jpg" width="300" height="200"><br><h1 style="color:red;font-size:20px;">The Tower of the Arcane Arts</h1><p>The Tower of the Arcane Arts is a bastion for all those seeking to develop their magical abilities. Those who pass the Trial of the Four Pillars are allowed access to the wonders inside.<p>');
+
       //Moveable Marker
       var marker  = L.marker([-11.994986, -83.95752], {
         draggable: true,
@@ -359,7 +371,7 @@
     //Layer Groups
       var lg_roads = L.layerGroup([road_1,road_2]);
 
-      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin, marker_candlekeep, marker_tarcia, marker_dartle, marker_red_mountain, marker_seer_shack, marker_sun_temple, marker_galo, marker_vrecia]);
+      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin, marker_candlekeep, marker_tarcia, marker_dartle, marker_red_mountain, marker_seer_shack, marker_sun_temple, marker_galo, marker_vrecia, marker_leondra, marker_arcane_1, marker_arcane_2, marker_arcane_3]);
 
       var lg_states = L.layerGroup([shah_state,shah_name,bertol_state,bertol_name,merback_state,merback_name,iron_state,iron_state_name]);
 
