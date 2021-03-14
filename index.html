@@ -162,6 +162,8 @@
 
     var ducan_empire_lines = [[-59.691901, 10.063477],[-63.255173, 13.666053],[-66.374324, 17.136827],[-68.753733, 21.881684],[-70.260774, 22.40889],[-71.581768, 17.6201],[-72.436716, 6.241231],[-71.484329, -1.051789],[-69.241966, -11.156576],[-65.93015, -14.012276],[-63.509375, -19.20275],[-62.975198, -29.439338],[-57.20771, -39.412323],[-56.022948, -50.358475],[-53.383328, -60.902601],[-46.225453, -62.308484],[-42.875964, -55.76234],[-40.5472, -48.557187],[-34.813803, -46.184759],[-31.952162, -39.81435],[-32.472695, -35.860303],[-33.797409, -29.226291],[-36.668419, -27.468937],[-38.479395, -27.205333],[-39.67337, -25.22831],[-39.943436, -23.251286],[-39.402244, -21.625734],[-39.266284, -20.527387],[-40.747257, -19.604776],[-42.358544, -19.165438],[-43.261206, -17.14448],[-47.457809, -12.838963],[-50.34546, -8.13804],[-51.6998, -4.359728],[-56.36525, 5.086051]]
 
+    var vrecia_dynasty_lines = [[3.904204, -57.349203],[-0.028652, -57.348633],[-5.485796, -55.943319],[-8.407301, -55.767584],[-16.549518, -46.320834],[-20.46462, -36.831121],[-30.442475, -24.881112],[-32.466017, -22.508684],[-41.631536, -1.596169],[-47.567095, 16.065241],[-48.565238, 20.72223],[-39.631355, 34.868931],[-33.79043, 39.086582],[-28.376046, 46.81894],[-20.793539, 56.660124],[-16.21233, 58.856817],[-12.639055, 53.321151],[-6.228601, 46.467469],[2.632412, 40.053126],[10.482113, 33.287313],[20.37745, 29.333266],[20.37745, 29.333266],[18.555037, 13.165607],[17.636351, 10.35384],[21.280774, 6.575528],[14.767982, -1.244698],[6.22348, -6.077422],[4.035817, -19.784785],[11.517093, -30.416778],[11.430986, -45.090686],[6.834534, -57.919372]]
+
     // State Polygons
     var shah_state_lines = [[-13.710035, -89.866623],[-16.488765, -89.185648],[-16.301581, -82.683105],[-15.264914, -78.837891],[-14.009886, -77.937012],[-12.576354, -78.09082],[-11.802719, -78.134766],[-11.177916, -78.354492],[-10.638206, -78.134766],[-9.7727, -77.980957],[-9.295697, -77.453613],[-8.883215, -77.036133],[-8.426775, -76.662598],[-6.814257, -79.628906],[-6.115192, -81.166992],[-6.857915, -85.166016],[-6.83917, -88.109269],[-10.552622, -90.327929]];
 
@@ -182,6 +184,8 @@
     var prusha_nation = L.polygon(prusha_nation_lines, {color: 'red'});
 
     var ducan_nation = L.polygon(ducan_empire_lines, {color: 'orange'});
+
+    var vrecia_dynasty = L.polygon(vrecia_dynasty_lines, {color: 'yellow'});
 
     //blank image
     var blank_image = 'images/none.png',
@@ -213,6 +217,11 @@
     var ducan_empire_name = 'images/names/ducan.png'
       ducan_empire_bounds = [[-51.764767, -45.791016],[-55.685101, -26.367188]]
     var ducan_name = L.imageOverlay(ducan_empire_name, ducan_empire_bounds);
+
+    //Vrecia Dynasty names
+    var vrecia_dynasty_image = 'images/names/vrecia_dynasty.png'
+      vrecia_dynasty_bounds = [[-6.753495, -15.135129],[-12.468603, 1.999075]]
+    var vrecia_dynasty_name = L.imageOverlay(vrecia_dynasty_image, vrecia_dynasty_bounds);
 
     // Markers Shah Provence
       var marker_arcane = L.marker([-14.455958, -83.71582], {icon: tower})
@@ -291,6 +300,12 @@
       var marker_candlekeep = L.marker([-23.235331, -90.395508], {icon: city})
           marker_candlekeep.bindPopup('<img src="images/candlekeep.jpg" width="300" height="200"><br><h1 style="color:grey; font-size:20px;">Candlekeep</h1><p>Candlekeep is a medium sized town that takes up a small amount of space. It has buildings which are built up to at least 3 storeys and are all compactly put together. It is known for its large library and commonly hosts scholars from around teh area to learn from the books that are kept within.<p><br><a href="candlekeep.html">Town Map</a>');
 
+      var marker_tarcia = L.marker([-24.440526, -95.800781], {icon: town})
+          marker_tarcia.bindPopup('<img src="images/tarcia.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Tarkia</h1><p>Tarcia is a small forest town filled strictly with elves, population is rather small and the elves here generally keep to themselves not venturing out of their town. Happy to lead their lives away from other towns and races. The town is completly self sufficient using amixture of magic and fine craftsmanship to provide all of its necessities.<p><br><a href="tarcia.html">Town Map</a>');
+
+      var marker_leondra = L.marker([-40.198948, -102.788086], {icon: town})
+          marker_leondra.bindPopup('<img src="images/leondra.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Leondra</h1><p>Leondra is a brand new settlement currently in development, dozens of leonin who were displaced from their homes settled in this unclaimed territory and began making a new home for themselves.<p><br><a href="leondra.html">Town Map</a>');
+
       //Ducan Empire
       var marker_lochhaven = L.marker([-58.881942, -10.283232], {icon: port_town})
           marker_lochhaven.bindPopup('<img src="images/lochhaven.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Lochhaven</h1><p>Lochhaven is a town populated by mostly humans however spattering a of other races have come to make their home in this fair town. It is a small town with only 5,000 residents living within its walls. The town is located on a river, houses rising on both sides with a great bridge dividing the East side and West side. Lochhavens main export is wood. It has a rich history of loggers who provide high quality wood to other towns in the area. Demographically richer residence live on the East side of the bridge while the west side tends to be more lower class.<p><br><a href="lochhaven.html">Town Map</a>')
@@ -329,6 +344,17 @@
       var marker_sun_temple = L.marker([-0.028652, -57.348633], {icon: town})
         marker_sun_temple.bindPopup('<img src="images/sun_temple.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Sun Temple</h1><p>The sun temple is a temple dedicated to the god of the sun.<p><br><a href="sun_temple.html">Town Map</a>')
 
+      var marker_galo = L.marker([-8.841651, -59.765565], {icon: town})
+        marker_galo.bindPopup('<img src="images/galo.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Galo</h1><p>Galo is a trading post set in the desert containing supplies many would need for the trek into the harsh sand dunes.<p><br><a href="galo.html">Town Map</a>')
+
+      var marker_vrecia = L.marker([0.432514, -4.130859], {icon: port_city})
+        marker_vrecia.bindPopup('<img src="images/vrecia.png" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Vrecia</h1><p>The Vrecian Dynasty is ruled by Queen Vrecia the 12th, both beautiful and dangerous she rules with absolute authority. Renown around the world for their silks, and markets the walled city of Vrecia is famous for its trade. Any merchant vessel hoping to make good coin knows to add Vrecia to their route. Here, you will find that favors offer just as much value as coin.<p><br><a href="vrecia.html">Town Map</a>')
+
+// Future Tower location
+
+      var marker_arcane_future = L.marker([-28.098749, -108.28125], {icon: tower})
+        marker_arcane.bindPopup('<img src="images/arcane_tower.jpg" width="300" height="200"><br><h1 style="color:red;font-size:20px;">The Tower of the Arcane Arts</h1><p>The Tower of the Arcane Arts is a bastion for all those seeking to develop their magical abilities. Those who pass the Trial of the Four Pillars are allowed access to the wonders inside.<p>');
+
       //Moveable Marker
       var marker  = L.marker([-11.994986, -83.95752], {
         draggable: true,
@@ -340,13 +366,13 @@
       });
 
     //Layer Groups
-      var lg_towns_undiscovered = L.layerGroup([marker_bereston, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin,marker_candlekeep,marker_red_mountain,marker_seer_shack,marker_sun_temple]);
+      var lg_towns_undiscovered = L.layerGroup([marker_bereston, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin,marker_candlekeep,marker_red_mountain,marker_seer_shack,marker_sun_temple, marker_tarcia, marker_galo, marker_vrecia, marker_leondra, marker_arcane_future]);
       var lg_towns = L.layerGroup([marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_hammerton, marker_dartle]);
 
       var lg_states_undiscovered = L.layerGroup([bertol_state,bertol_name,merback_state,merback_name,iron_state,iron_state_name]);
       var lg_states = L.layerGroup([shah_state,shah_name]);
 
-      var lg_nations_undiscovered = L.layerGroup([iron_state,iron_state_name,ducan_nation,ducan_name]);
+      var lg_nations_undiscovered = L.layerGroup([iron_state,iron_state_name,ducan_nation,ducan_name,vrecia_dynasty,vrecia_dynasty_name]);
       var lg_nations = L.layerGroup([prusha_nation,prusha_name]);
 
       var lg_none = L.layerGroup([blank_icon]);
