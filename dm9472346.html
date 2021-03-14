@@ -299,6 +299,8 @@
           marker_tarcia.bindPopup('<img src="images/tarcia.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Tarkia</h1><p>Tarcia is a small forest town filled strictly with elves, population is rather small and the elves here generally keep to themselves not venturing out of their town. Happy to lead their lives away from other towns and races. The town is completly self sufficient using amixture of magic and fine craftsmanship to provide all of its necessities.<p><br><a href="tarcia.html">Town Map</a>');
       var marker_leondra = L.marker([-40.198948, -102.788086], {icon: town})
           marker_leondra.bindPopup('<img src="images/leondra.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Leondra</h1><p>Leondra is a brand new settlement currently in development, dozens of leonin who were displaced from their homes settled in this unclaimed territory and began making a new home for themselves.<p><br><a href="leondra.html">Town Map</a>');
+      var marker_treetop_burgh = L.marker([-18.812718, -118.388672], {icon: city})
+          marker_treetop_burgh.bindPopup('<img src="images/treetop_burgh.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Treetop Burgh</h1><p>Treetop Burgh is a name given to the city by explorers and far travelers. The city is primarly inhabited by Firbolgs, though elves and humans call this place home as well. Homes are built into the roots of massive ancient trees, while other stone structures are built against them. The city is truly symbiotic in nature, as the trees protect its people from the awful shadow creatures that bleed through from the shadowfell while the people protect the trees from outsiders and those who would seek the rare wood they are made of.<p><br><a href="treetop_burgh.html">Town Map</a>');
 
       //Ducan Empire
       var marker_lochhaven = L.marker([-58.881942, -10.283232], {icon: port_town})
@@ -334,7 +336,7 @@
       var marker_northin = L.marker([-33.596319, -38.891647], {icon: town})
         marker_northin.bindPopup('<img src="images/northin.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Northin</h1><p>Northin is a town just north of the Petrified Forest and makes much of their business out of chopping down the trees and transporting them to other locations. The wood crafters here are particularily skilled at carving and using the wood.<p><br><a href="northin.html">Town Map</a>')
 
-      // Desert Area
+      // Vrecia Dynasty
       var marker_sun_temple = L.marker([-0.028652, -57.348633], {icon: town})
         marker_sun_temple.bindPopup('<img src="images/sun_temple.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Sun Temple</h1><p>The Sun temple is a temple that is dedicated to the worship of the sun.<p><br><a href="sun_temple.html">Town Map</a>')
 
@@ -344,7 +346,7 @@
       var marker_vrecia = L.marker([0.432514, -4.130859], {icon: port_city})
         marker_vrecia.bindPopup('<img src="images/vrecia.png" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Vrecia</h1><p>The Vrecian Dynasty is ruled by Queen Vrecia the 12th, both beautiful and dangerous she rules with absolute authority. Renown around the world for their silks, and markets the walled city of Vrecia is famous for its trade. Any merchant vessel hoping to make good coin knows to add Vrecia to their route. Here, you will find that favors offer just as much value as coin.<p><br><a href="vrecia.html">Town Map</a>')
 
-// Future Tower Location
+      // Future Tower Location
 
       var marker_arcane_future = L.marker([-28.098749, -108.28125], {icon: tower})
         marker_arcane.bindPopup('<img src="images/arcane_tower.jpg" width="300" height="200"><br><h1 style="color:red;font-size:20px;">The Tower of the Arcane Arts</h1><p>The Tower of the Arcane Arts is a bastion for all those seeking to develop their magical abilities. Those who pass the Trial of the Four Pillars are allowed access to the wonders inside.<p>');
@@ -366,7 +368,7 @@
     //Layer Groups
       var lg_roads = L.layerGroup([road_1,road_2]);
 
-      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin, marker_candlekeep, marker_tarcia, marker_dartle, marker_red_mountain, marker_seer_shack, marker_sun_temple, marker_galo, marker_vrecia, marker_leondra, marker_arcane_future]);
+      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin, marker_candlekeep, marker_tarcia, marker_dartle, marker_red_mountain, marker_seer_shack, marker_sun_temple, marker_galo, marker_vrecia, marker_leondra, marker_arcane_future, marker_treetop_burgh]);
 
       var lg_states = L.layerGroup([shah_state,shah_name,bertol_state,bertol_name,merback_state,merback_name,iron_state,iron_state_name]);
 

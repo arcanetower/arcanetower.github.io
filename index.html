@@ -307,6 +307,9 @@
       var marker_leondra = L.marker([-40.198948, -102.788086], {icon: town})
           marker_leondra.bindPopup('<img src="images/leondra.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Leondra</h1><p>Leondra is a brand new settlement currently in development, dozens of leonin who were displaced from their homes settled in this unclaimed territory and began making a new home for themselves.<p><br><a href="leondra.html">Town Map</a>');
 
+      var marker_treetop_burgh = L.marker([-18.812718, -118.388672], {icon: city})
+          marker_treetop_burgh.bindPopup('<img src="images/treetop_burgh.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Treetop Burgh</h1><p>Treetop Burgh is a name given to the city by explorers and far travelers. The city is primarily inhabited by Firbolgs, though elves and humans call this place home as well. Homes are built into the roots of massive ancient trees, while other stone structures are built against them. The city is truly symbiotic in nature, as the trees protect its people from the awful shadow creatures that bleed through from the shadowfell while the people protect the trees from outsiders and those who would seek the rare wood they are made of.<p><br><a href="treetop_burgh.html">Town Map</a>');
+
       //Ducan Empire
       var marker_lochhaven = L.marker([-58.881942, -10.283232], {icon: port_town})
           marker_lochhaven.bindPopup('<img src="images/lochhaven.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Lochhaven</h1><p>Lochhaven is a town populated by mostly humans however spattering a of other races have come to make their home in this fair town. It is a small town with only 5,000 residents living within its walls. The town is located on a river, houses rising on both sides with a great bridge dividing the East side and West side. Lochhavens main export is wood. It has a rich history of loggers who provide high quality wood to other towns in the area. Demographically richer residence live on the East side of the bridge while the west side tends to be more lower class.<p><br><a href="lochhaven.html">Town Map</a>')
@@ -368,7 +371,7 @@
 
     //Layer Groups
       var lg_towns_undiscovered = L.layerGroup([marker_bereston, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin,marker_candlekeep,marker_red_mountain,marker_seer_shack,marker_sun_temple, marker_tarcia, marker_galo, marker_vrecia, marker_leondra, marker_arcane_future]);
-      var lg_towns = L.layerGroup([marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_hammerton, marker_dartle]);
+      var lg_towns = L.layerGroup([marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_hammerton, marker_dartle, marker_treetop_burgh]);
 
       var lg_states_undiscovered = L.layerGroup([bertol_state,bertol_name,merback_state,merback_name,iron_state,iron_state_name]);
       var lg_states = L.layerGroup([shah_state,shah_name]);
