@@ -175,6 +175,8 @@
 
     var vrecia_dynasty_lines = [[3.904204, -57.349203],[-0.028652, -57.348633],[-5.485796, -55.943319],[-8.407301, -55.767584],[-16.549518, -46.320834],[-20.46462, -36.831121],[-30.442475, -24.881112],[-32.466017, -22.508684],[-41.631536, -1.596169],[-47.567095, 16.065241],[-48.565238, 20.72223],[-39.631355, 34.868931],[-33.79043, 39.086582],[-28.376046, 46.81894],[-20.793539, 56.660124],[-16.21233, 58.856817],[-12.639055, 53.321151],[-6.228601, 46.467469],[2.632412, 40.053126],[10.482113, 33.287313],[20.37745, 29.333266],[20.37745, 29.333266],[18.555037, 13.165607],[17.636351, 10.35384],[21.280774, 6.575528],[14.767982, -1.244698],[6.22348, -6.077422],[4.035817, -19.784785],[11.517093, -30.416778],[11.430986, -45.090686],[6.834534, -57.919372]]
 
+    var krurian_kingdom_lines = [[-19.911384, -99.338728],[-19.78738, -95.911888],[-17.20377, -92.110005],[-16.488765, -89.185648],[-19.787293, -80.529785],[-27.102532, -80.024414],[-38.144547, -86.923828],[-43.656388, -83.979492],[-45.088103, -104.633789],[-45.274886, -115.048828],[-47.190053, -130.957031],[-47.547424, -149.326172],[-47.219927, -157.807617],[-43.130903, -158.554688],[-38.579698, -160.048828],[-33.057462, -157.939453],[-22.539417, -154.423828],[-11.587878, -148.886719],[-8.905373, -139.350586],[-7.251088, -129.243164],[-6.421573, -118.696289],[-6.771017, -108.94043],[-9.18887, -103.595953],[-12.254128, -103.881523],[-15.178181, -103.029172]]
+
     // State Polygons
     var shah_state_lines = [[-13.710035, -89.866623],[-16.488765, -89.185648],[-16.301581, -82.683105],[-15.264914, -78.837891],[-14.009886, -77.937012],[-12.576354, -78.09082],[-11.802719, -78.134766],[-11.177916, -78.354492],[-10.638206, -78.134766],[-9.7727, -77.980957],[-9.295697, -77.453613],[-8.883215, -77.036133],[-8.426775, -76.662598],[-6.814257, -79.628906],[-6.115192, -81.166992],[-6.857915, -85.166016],[-6.83917, -88.109269],[-10.552622, -90.327929]];
 
@@ -197,6 +199,8 @@
     var ducan_nation = L.polygon(ducan_empire_lines, {color: 'orange'});
 
     var vrecia_dynasty = L.polygon(vrecia_dynasty_lines, {color: 'yellow'});
+
+    var krurian_kingdom = L.polygon(krurian_kingdom_lines, {color: 'green'});
 
     //blank image
     var blank_image = 'images/none.png',
@@ -307,7 +311,7 @@
       var marker_birch = L.marker([-10.681419, -72.290039], {icon: city})
           marker_birch.bindPopup('<img src="images/birch.jpg" width="300" height="200"><br><h1 style="color:grey; font-size:20px;">Birch</h1><p>Birch is hillside town that has a well defendable location on the top of a hill. It is known for having anotable smithing academy and its residents enjoy wearing fashonable clothing. Much of which they import from Gladmouth. Due to being in the Iron State the city is well prepared for war if the need would arise. With all its guards having iron armor and weapons as well as balista and other weapons on the walls of the city. The town is mostly dwarves with a few other races being found inside of the walls. <p><br><a href="birch.html">Town Map</a>')
 
-      //New State with no name
+      //Krurian Kingdom
       var marker_candlekeep = L.marker([-23.235331, -90.395508], {icon: city})
           marker_candlekeep.bindPopup('<img src="images/candlekeep.jpg" width="300" height="200"><br><h1 style="color:grey; font-size:20px;">Candlekeep</h1><p>Candlekeep is a medium sized town that takes up a small amount of space. It has buildings which are built up to at least 3 storeys and are all compactly put together. It is known for its large library and commonly hosts scholars from around teh area to learn from the books that are kept within.<p><br><a href="candlekeep.html">Town Map</a>');
 
@@ -398,7 +402,7 @@
       var lg_states_undiscovered = L.layerGroup([bertol_state,bertol_name,merback_state,merback_name,iron_state,iron_state_name]);
       var lg_states = L.layerGroup([shah_state,shah_name]);
 
-      var lg_nations_undiscovered = L.layerGroup([iron_state,iron_state_name,ducan_nation,ducan_name,vrecia_dynasty,vrecia_dynasty_name]);
+      var lg_nations_undiscovered = L.layerGroup([iron_state,iron_state_name,ducan_nation,ducan_name,vrecia_dynasty,vrecia_dynasty_name,krurian_kingdom]);
       var lg_nations = L.layerGroup([prusha_nation,prusha_name]);
 
       var lg_none = L.layerGroup([blank_icon]);
