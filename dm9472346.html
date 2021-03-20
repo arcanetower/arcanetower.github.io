@@ -60,14 +60,11 @@
       var mapSW = [0, 16384],
           mapNE = [16384, 0];
 
-      var map = L.map('map').setView([-11.346192, -83.034668], 6);
+      var underdark = L.tileLayer('maps/underdark/{z}/{x}/{y}.jpg', {minZoom: 0, maxZoom: 6, noWrap: true, zoomControl: false});
 
-        L.tileLayer('maps/world_6/{z}/{x}/{y}.png', {
-          minZoom: 0,
-          maxZoom: 6,
-          noWrap: true,
-          zoomControl: false,
-        }).addTo(map);
+      var overworld = L.tileLayer('maps/world_6/{z}/{x}/{y}.png', {minZoom: 0, maxZoom: 6, noWrap: true, zoomControl: false});
+
+      var map = L.map('map', {layers: [underdark, overworld]}).setView([-11.346192, -83.034668], 6);
 
         L.control.zoom({
           position:'topright',
@@ -229,6 +226,11 @@
       vrecia_dynasty_bounds = [[-6.753495, -15.135129],[-12.468603, 1.999075]]
     var vrecia_dynasty_name = L.imageOverlay(vrecia_dynasty_image, vrecia_dynasty_bounds);
 
+    //Krurian Kingdom names
+    var krurian_kingdom_image = 'images/names/krurian_kingdom.png'
+      krurian_kingdom_bounds = [[-32.462286, -132.407227],[-34.874492, -118.212891]]
+    var krurian_kingdom_name = L.imageOverlay(krurian_kingdom_image, krurian_kingdom_bounds);
+
     //Road Line Polylines
     var birch_galo = [[-10.681419, -72.290039],[-10.01213, -71.279297],[-10.01213, -68.422852],[-11.566144, -64.995117],[-13.154376, -62.402344],[-11.738302, -59.897461],[-10.574222, -58.842773],[-8.841651, -59.765565]];
     var candlekeep_tarcia = [[-23.235331, -90.395508],[-24.120158, -93.164063],[-24.440526, -95.800781]];
@@ -324,6 +326,9 @@
       var marker_frost_pass = L.marker([-45.274886, -115.048828], {icon: town})
           marker_frost_pass.bindPopup('<img src="images/frost_pass.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Frost Pass</h1><p>This nomadic camp crosses the tundra between the temperate zone to the north, and the frozen south. Many races congregate here.  The political structure is fluid, the leader is selected whenever a problem arises which requires one. <p><br><a href="frost_pass.html">Town Map</a>');
 
+      var marker_ashford = L.marker([-25.403585, -128.781738], {icon: port_city})
+        marker_ashford.bindPopup('<img src="images/ashford.png" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Ashford</h1><p>Ashford is a busy port city on the northern end of the ?? sea.<p><br><a href="ashford.html">Town Map</a>');
+
       //Ducan Empire
       var marker_lochhaven = L.marker([-58.881942, -10.283232], {icon: port_town})
           marker_lochhaven.bindPopup('<img src="images/lochhaven.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Lochhaven</h1><p>Lochhaven is a town populated by mostly humans however spattering a of other races have come to make their home in this fair town. It is a small town with only 5,000 residents living within its walls. The town is located on a river, houses rising on both sides with a great bridge dividing the East side and West side. Lochhavens main export is wood. It has a rich history of loggers who provide high quality wood to other towns in the area. Demographically richer residence live on the East side of the bridge while the west side tends to be more lower class.<p><br><a href="lochhaven.html">Town Map</a>')
@@ -368,10 +373,14 @@
       var marker_vrecia = L.marker([0.432514, -4.130859], {icon: port_city})
         marker_vrecia.bindPopup('<img src="images/vrecia.png" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Vrecia</h1><p>The Vrecian Dynasty is ruled by Queen Vrecia the 12th, both beautiful and dangerous she rules with absolute authority. Renown around the world for their silks, and markets the walled city of Vrecia is famous for its trade. Any merchant vessel hoping to make good coin knows to add Vrecia to their route. Here, you will find that favors offer just as much value as coin.<p><br><a href="vrecia.html">Town Map</a>')
 
+      // Underdark locations
+      var marker_abterra_the_purple_city = L.marker([-12.082296, -135.021973], {icon: town})
+        marker_abterra_the_purple_city.bindPopup('<img src="images/abterra_the_purple_city.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Abterra - The Purple City</h1><p>Abterra- independent city, formed 300 years ago by an adventuring party. As they settled they founded a council to maintain order and peace in the city. Ruled by a retired adventuring party, the city has flourished during its peaceful time.<p><br><a href="abterra_the_purple_city.html">Town Map</a>');
+
       // Future Tower Location
 
       var marker_arcane_future = L.marker([-28.098749, -108.28125], {icon: tower})
-        marker_arcane.bindPopup('<img src="images/arcane_tower.jpg" width="300" height="200"><br><h1 style="color:red;font-size:20px;">The Tower of the Arcane Arts</h1><p>The Tower of the Arcane Arts is a bastion for all those seeking to develop their magical abilities. Those who pass the Trial of the Four Pillars are allowed access to the wonders inside.<p>');
+        marker_arcane_future.bindPopup('<img src="images/arcane_tower.jpg" width="300" height="200"><br><h1 style="color:red;font-size:20px;">The Tower of the Arcane Arts</h1><p>The Tower of the Arcane Arts is a bastion for all those seeking to develop their magical abilities. Those who pass the Trial of the Four Pillars are allowed access to the wonders inside.<p>');
 
       //Moveable Marker
       var marker  = L.marker([-11.994986, -83.95752], {
@@ -390,23 +399,26 @@
     //Layer Groups
       var lg_roads = L.layerGroup([road_1,road_2]);
 
-      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin, marker_candlekeep, marker_tarcia, marker_dartle, marker_red_mountain, marker_seer_shack, marker_sun_temple, marker_galo, marker_vrecia, marker_leondra, marker_arcane_future, marker_treetop_burgh, marker_the_y_stop, marker_bar_anor, marker_bar_ithil, marker_frost_pass]);
+      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin, marker_candlekeep, marker_tarcia, marker_dartle, marker_red_mountain, marker_seer_shack, marker_sun_temple, marker_galo, marker_vrecia, marker_leondra, marker_arcane_future, marker_treetop_burgh, marker_the_y_stop, marker_bar_anor, marker_bar_ithil, marker_frost_pass,marker_ashford]);
 
       var lg_states = L.layerGroup([shah_state,shah_name,bertol_state,bertol_name,merback_state,merback_name,iron_state,iron_state_name]);
 
-      var lg_nations = L.layerGroup([prusha_nation,prusha_name,iron_state,iron_state_name,ducan_nation,ducan_empire_name,vrecia_dynasty,vrecia_dynasty_name, krurian_kingdom]);
+      var lg_nations = L.layerGroup([prusha_nation,prusha_name,iron_state,iron_state_name,ducan_nation,ducan_empire_name,vrecia_dynasty,vrecia_dynasty_name, krurian_kingdom, krurian_kingdom_name]);
 
-      var lg_none = L.layerGroup([blank_icon]);
+      var lg_UdTowns =
+        L.layerGroup([marker_abterra_the_purple_city])
 
       var baselays = {
-        "None": lg_none,
-        "States": lg_states,
-        "Nations": lg_nations,
+        "Underdark": underdark,
+        "Overworld": overworld
       };
 
       var overlays = {
-        "Icons": lg_towns,
+        "Overworld Locations": lg_towns,
+        "Underdark Locations": lg_UdTowns,
         "Roads": lg_roads,
+        "States": lg_states,
+        "Nations": lg_nations,
       };
 
       map.on('zoomend', function(e) {
@@ -419,8 +431,20 @@
           lg_towns.remove();
         }
       });
+
+    map.on('baselayerchange', function (e) {
+      console.log(e.layer);
+      if (e.layer=='underdark')
+      {
+        L.control.layers(baselays, overlays).removeLayer(overlays);
+      }else {
+        L.control.layer(baselays, overlays).addOverlay(overlays);
+      }
+      });
     // Add Layer Control
       L.control.layers(baselays, overlays).addTo(map);
+
+
     </script>
 
   </body>

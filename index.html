@@ -336,6 +336,9 @@
       var marker_frost_pass = L.marker([-45.274886, -115.048828], {icon: town})
           marker_frost_pass.bindPopup('<img src="images/frost_pass.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Frost Pass</h1><p>This nomadic camp crosses the tundra between the temperate zone to the north, and the frozen south. Many races congregate here.  The political structure is fluid, the leader is selected whenever a problem arises which requires one. <p><br><a href="frost_pass.html">Town Map</a>');
 
+      var marker_ashford = L.marker([-25.403585, -128.781738], {icon: port_city})
+          marker_ashford.bindPopup('<img src="images/ashford.png" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Ashford</h1><p>Ashford is a busy port city on the northern end of the ?? sea.<p><br><a href="ashford.html">Town Map</a>');
+
       //Ducan Empire
       var marker_lochhaven = L.marker([-58.881942, -10.283232], {icon: port_town})
           marker_lochhaven.bindPopup('<img src="images/lochhaven.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Lochhaven</h1><p>Lochhaven is a town populated by mostly humans however spattering a of other races have come to make their home in this fair town. It is a small town with only 5,000 residents living within its walls. The town is located on a river, houses rising on both sides with a great bridge dividing the East side and West side. Lochhavens main export is wood. It has a rich history of loggers who provide high quality wood to other towns in the area. Demographically richer residence live on the East side of the bridge while the west side tends to be more lower class.<p><br><a href="lochhaven.html">Town Map</a>')
@@ -370,7 +373,7 @@
       var marker_northin = L.marker([-33.596319, -38.891647], {icon: town})
         marker_northin.bindPopup('<img src="images/northin.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Northin</h1><p>Northin is a town just north of the Petrified Forest and makes much of their business out of chopping down the trees and transporting them to other locations. The wood crafters here are particularily skilled at carving and using the wood.<p><br><a href="northin.html">Town Map</a>')
 
-      // Desert Area
+      // Vrecia Dynasty
       var marker_sun_temple = L.marker([-0.028652, -57.348633], {icon: town})
         marker_sun_temple.bindPopup('<img src="images/sun_temple.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Sun Temple</h1><p>The sun temple is a temple dedicated to the god of the sun.<p><br><a href="sun_temple.html">Town Map</a>')
 
@@ -379,6 +382,10 @@
 
       var marker_vrecia = L.marker([0.432514, -4.130859], {icon: port_city})
         marker_vrecia.bindPopup('<img src="images/vrecia.png" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Vrecia</h1><p>The Vrecian Dynasty is ruled by Queen Vrecia the 12th, both beautiful and dangerous she rules with absolute authority. Renown around the world for their silks, and markets the walled city of Vrecia is famous for its trade. Any merchant vessel hoping to make good coin knows to add Vrecia to their route. Here, you will find that favors offer just as much value as coin.<p><br><a href="vrecia.html">Town Map</a>')
+
+      // Underdark locations
+      var marker_abterra_the_purple_city = L.marker([-12.082296, -135.021973], {icon: town})
+        marker_abterra_the_purple_city.bindPopup('<img src="images/abterra_the_purple_city.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Abterra - The Purple City</h1><p>Abterra- independent city, formed 300 years ago by an adventuring party. As they settled they founded a council to maintain order and peace in the city. Ruled by a retired adventuring party, the city has flourished during its peaceful time.<p><br><a href="abterra_the_purple_city.html">Town Map</a>');
 
 // Future Tower location
 
@@ -396,7 +403,7 @@
       });
 
     //Layer Groups
-      var lg_towns_undiscovered = L.layerGroup([marker_bereston, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin,marker_candlekeep,marker_red_mountain,marker_seer_shack,marker_sun_temple, marker_tarcia, marker_galo, marker_vrecia, marker_leondra, marker_arcane_future, marker_the_y_stop, marker_treetop_burgh, marker_bar_anor, marker_bar_ithil, marker_frost_pass]);
+      var lg_towns_undiscovered = L.layerGroup([marker_bereston, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin, marker_candlekeep, marker_red_mountain, marker_seer_shack, marker_sun_temple, marker_tarcia, marker_galo, marker_vrecia, marker_leondra, marker_arcane_future, marker_the_y_stop, marker_treetop_burgh, marker_bar_anor, marker_bar_ithil, marker_frost_pass, marker_ashford, marker_abterra_the_purple_city]);
       var lg_towns = L.layerGroup([marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_hammerton, marker_dartle]);
 
       var lg_states_undiscovered = L.layerGroup([bertol_state,bertol_name,merback_state,merback_name,iron_state,iron_state_name]);
