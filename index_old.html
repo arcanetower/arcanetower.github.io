@@ -15,6 +15,7 @@
         <!-- Nav tabs -->
         <div class="sidebar-tabs">
             <ul role="tablist">
+                <li><a href="#homepage" role="tab"><i class="fa fa-home"></i></a></li>
                 <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
                 <li><a href="#travel" role="tab"><i class="fa fa-map-marker"></i></a></li>
             </ul>
@@ -31,7 +32,7 @@
 
                 <p>The world is currently centered on the main location of the campaign. The Tower of the Arcane Arts. This is home to many a magic user where they spend their time helping those in the surrounding area as well as expanding their current arcane understanding.</p>
 
-                <p>In order to navigate the map there are a couple of things that you need to be aware of. Firstly you can pan around using the mouse or your finger (if on a mobile device) to view different parts of the map. Secondly you can also zoom in or out by using the scroll wheel, buttons in the top right of the map, or pinching with your fingers (if on a mobile device). If you select one of the icons on display it will show you more information about the town or location that you have chosen. To close the marker simply click outside of the marker and it will dissapear. The icons will dissapear if you zoom out to far and will reappear once you zoom in close enough. Next to the zoom controls are two other buttons. The first is the measure button, and the second being the layer button.</p>
+                <p>In order to navigate the map there are a couple of things that you need to be aware of. Firstly you can pan around using the mouse or your finger (if on a mobile device) to view different parts of the map. Secondly you can also zoom in or out by using the scroll wheel, buttons in the top right of the map, or pinching with your fingers (if on a mobile device). If you select one of the icons on display it will show you more information about the town or location that you have chosen. To close the marker simply click outside of the marker and it will dissapear. The icons will dissapear if you zoom out to far and will reappear once you zoom in close enough. Next to the zoom controls are two other buttons. The first is the measure button, and the seoncd being the layer button.</p>
 
                 <p><b>Layer Controls</b></p>
                 <p> The layer controls button allows you to turn off or on various overlays. The top three options allow you to see the boundries between the states as well as the nations, selecting either one will show the area of land that each nation owns. By selecting 'None' it will remove all selections. If you need to remove the icons displayed on the screen for any reason you can do so by selecting the check box next to 'icons' in the Layer Controls box
@@ -60,9 +61,14 @@
       var mapSW = [0, 16384],
           mapNE = [16384, 0];
 
-      var overworld = L.tileLayer('maps/world_6/{z}/{x}/{y}.png', {minZoom: 0, maxZoom: 6, noWrap: true, zoomControl: false});
+      var map = L.map('map').setView([-28.098749, -108.28125], 6);
 
-      var map = L.map('map', {layers: [overworld]}).setView([-28.098749, -108.28125], 6);
+        L.tileLayer('maps/world_6/{z}/{x}/{y}.png', {
+          minZoom: 0,
+          maxZoom: 6,
+          noWrap: true,
+          zoomControl: false,
+        }).addTo(map);
 
         L.control.zoom({
           position:'topright',
@@ -154,6 +160,14 @@
       shadowSize: [25, 25],
       shadowAnchor: [12, 41]
     });
+    //Fog of war
+    var fog_line = [
+      [[85,-180],[85,180],[-85,180],[-85,-180]],
+      [[-9.18887, -103.595953],[-5.441022, -101.161284],[-3.491489, -98.371485],[-3.688855, -95.731793],[-4.19303, -93.095762],[-5.575834, -90.98877],[-6.83917, -88.109269],[-6.857915, -85.166016],[-6.115192, -81.166992],[-8.426775, -76.662598],[-7.991567, -75.52002],[-8.078647, -74.729004],[-9.620999, -73.586426],[-7.100893, -71.062933],[-8.885072, -68.339034],[-10.509417, -67.240687],[-11.113727, -67.701993],[-12.168226, -68.558703],[-13.068777, -70.030487],[-13.774066, -71.590139],[-14.008696, -72.930122],[-12.962308, -74.025879],[-12.962308, -74.025879],[-14.073873, -75.432129],[-14.009886, -77.937012],[-15.264914, -78.837891],[-16.301581, -82.683105],[-16.488765, -89.185648],[-19.787293, -80.529785],[-27.102532, -80.024414],[-38.144547, -86.923828],[-43.656388, -83.979492],[-45.088103, -104.633789],[-45.274886, -115.048828],[-47.190053, -130.957031],[-47.547424, -149.326172],[-47.219927, -157.807617],[-43.130903, -158.554688],[-38.579698, -160.048828],[-33.057462, -157.939453],[-22.539417, -154.423828],[-11.587878, -148.886719],[-8.905373, -139.350586],[-7.251088, -129.243164],[-6.421573, -118.696289],[-6.771017, -108.94043]]
+    ];
+
+    var fog = L.polygon(fog_line, {color: '#505050',fillColor: '#686868', fillOpacity: 1}).addTo(map);
+
     //Nation Polygons
     var prusha_nation_lines = [[-16.301581, -82.683105],[-15.264914, -78.837891],[-14.009886, -77.937012],[-14.073873, -75.432129],[-12.962308, -74.025879],[-9.620999, -73.586426],[-8.078647, -74.729004],[-7.991567, -75.52002],[-8.426775, -76.662598],[-6.115192, -81.166992],[-6.857915, -85.166016],[-6.83917, -88.109269],[-5.575834, -90.98877],[-4.19303, -93.095762],[-3.688855, -95.731793],[-3.491489, -98.371485],[-5.441022, -101.161284],[-9.18887, -103.595953],[-12.254128, -103.881523],[-15.178181, -103.029172],[-19.911384, -99.338728],[-19.78738, -95.911888],[-17.20377, -92.110005],[-16.488765, -89.185648]];
 
@@ -214,25 +228,19 @@
       iron_state_bounds = [[-12.661778, -73.633063],[-13.218556, -70.909164]]
     var iron_state_name = L.imageOverlay(iron_state_image, iron_state_bounds);
 
+    //Road Line Polylines
+    var birch_galo = [[-10.681419, -72.290039],[-10.01213, -71.279297],[-10.01213, -68.422852],[-11.566144, -64.995117],[-13.154376, -62.402344],[-11.738302, -59.897461],[-10.574222, -58.842773],[-8.841651, -59.765565]];
+    var candlekeep_tarcia = [[-23.235331, -90.395508],[-24.120158, -93.164063],[-24.440526, -95.800781]];
+
     //Ducan Empire names
-    var ducan_empire_image = 'images/names/ducan.png'
+    var ducan_empire_name = 'images/names/ducan.png'
       ducan_empire_bounds = [[-51.764767, -45.791016],[-55.685101, -26.367188]]
-    var ducan_empire_name = L.imageOverlay(ducan_empire_image, ducan_empire_bounds);
+    var ducan_name = L.imageOverlay(ducan_empire_name, ducan_empire_bounds);
 
     //Vrecia Dynasty names
     var vrecia_dynasty_image = 'images/names/vrecia_dynasty.png'
       vrecia_dynasty_bounds = [[-6.753495, -15.135129],[-12.468603, 1.999075]]
     var vrecia_dynasty_name = L.imageOverlay(vrecia_dynasty_image, vrecia_dynasty_bounds);
-
-    //Krurian Kingdom names
-    var krurian_kingdom_image = 'images/names/krurian_kingdom.png'
-      krurian_kingdom_bounds = [[-32.462286, -132.407227],[-34.874492, -118.212891]]
-    var krurian_kingdom_name = L.imageOverlay(krurian_kingdom_image, krurian_kingdom_bounds);
-
-    //Road Line Polylines
-    var birch_galo = [[-10.681419, -72.290039],[-10.01213, -71.279297],[-10.01213, -68.422852],[-11.566144, -64.995117],[-13.154376, -62.402344],[-11.738302, -59.897461],[-10.574222, -58.842773],[-8.841651, -59.765565]];
-    var candlekeep_tarkia = [[-23.235331, -90.395508],[-24.120158, -93.164063],[-24.440526, -95.800781]];
-    var tarkia_tower = [[-24.440526, -95.800781],[-26.831874, -100.283203],[-28.098749, -108.28125]]
 
     // Markers Shah Provence
       var marker_arcane = L.marker([-28.098749, -108.28125], {icon: tower})
@@ -263,24 +271,24 @@
         marker_watford.bindPopup('<img src="images/watford.jpeg" width="300" height="200" style="vertical-align:middle"><br><h1 style="color:red; font-size:20px;">Watford</h1><p>The city of Watford was built along the banks of a labyrinth of rivers and is truly an ancient metropolis. Its elegance is matched by the backdrop of lush forests which have helped shape the city to what it is today. The climate these forests brought was of great importance, but they were also influential when it came to architectural designs as the vast majority of buildings have been built with many natural elements to keep in line with the forests. The skyline is packed with soaring skyscrapers and their history seemed to shine more now than ever. Trade is at an all-time high in Watford and it has attracted a lot of attention. Many new cultures have left their mark not just on trade and relations, but also upon the citys identity. What historically was a city of predictability has grown into a fusion of everything and it is this that unites the people to this day. It is this multicultural identity that has truly left its mark. Hundreds of Diners, Taverns, Tea Shops, and Inns offer a plethora of culinary choices for those who feel hungry. There is something for everyone to enjoy nature, libraries, or one of the many recreational venues.<p><br><a href="watford.html">Town Map</a>', {maxWidth: 450})
 
       var marker_dartle = L.marker([-12.404163, -83.869629], {icon: town})
-        marker_dartle.bindPopup('<img src="images/dartle.jpg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Dartle</h1><p>Dartle is a small farming village that resides next to a dense forest.<p><br><a href="dartle.html">Town Map</a>')
+        marker_dartle.bindPopup('<img src="images/dartle.jpg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Dartle</h1><p>Dartle is a small farming village located near a deep forest.<p><br><a href="dartle.html">Town Map</a>')
 
-      var marker_seer_shack = L.marker([-13.260836, -82.55127])
+      var marker_seer_shack = L.marker([-13.281641, -82.331543])
         marker_seer_shack.bindPopup('<img src="images/seer_shack.jpg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">The Seers Shack</h1><p>Half a day east of wingston, lies a small shack inside a swampy area of the forest. In it lives a nameless hag referred to as "The Seer". Her appearance is that of a cross between tiefling and hag, her long lanky arms can extend all the way to the door of her home as she sits never moving from her chair.<p><br>')
 
       //Markers Bertol
       var marker_vex = L.marker([-10.162469, -77.651367], {icon: town})
         marker_vex.bindPopup('<img src="images/vex.jpg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Vex</h1><p>Vex is a farming town with a military outpost near by. Being on the boarder of Shah and Bertrol states it manages much of the trade and boarder control. Vexs main production is oranges. They have many orchards growing around the outside and export a lot of what they grow.<p><br><a href="vex.html">Town Map</a>')
 
-        var marker_gladmouth = L.marker([-10.530148, -75.915527], {icon: town})
-          marker_gladmouth.bindPopup('<img src="images/gladmouth.jpg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Gladmouth</h1><p>Gladmouth is known for its fashion and the nobility that live there. It is the place to be if you are wealthy and well off. Many nobles who choose to live here do so because of the abundance of land around the area and its local to the capital Gora. There are two sides to every coin though and there are rougher parts of the town which the nobility steer clear of calling it The Dark Half.<p><br><a href="vex.html">Town Map</a>')
+      var marker_gladmouth = L.marker([-10.530148, -75.915527], {icon: town})
+        marker_gladmouth.bindPopup('<img src="images/gladmouth.jpg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Gladmouth</h1><p>Gladmouth is known for its fashion and the nobility that live there. It is the place to be if you are wealthy and well off. Many nobles who choose to live here do so because of the abundance of land around the area and its local to the capital Gora. There are two sides to every coin though and there are rougher parts of the town which the nobility steer clear of calling it The Dark Half.<p><br><a href="vex.html">Town Map</a>')
 
-        var marker_gora = L.marker([-12.532818, -75.410156], {icon: city})
-          marker_gora.bindPopup('<img src="images/gora.png" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Gora</h1><p>Gora is the Capital of the Prushan Empire, the city itself is massive and the largest in Prusha. It is known for having immaculatily clean streets and a variety of stores and places to entertain oneself. The town tends to be home to much nobility wanting to be close to the King and his family. the city is built on a hill with the central castle being the main object of display. All roads lead towards the castle and the buildings surrounding the inner walls. A lot of time and effort has been spent of keeping the city looking as beautiful as possible.<p><br><a href="gora.html">Town Map</a>')
+      var marker_gora = L.marker([-12.532818, -75.410156], {icon: city})
+        marker_gora.bindPopup('<img src="images/gora.png" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Gora</h1><p>Gora is the Capital of the Prushan Empire, the city itself is massive and the largest in Prusha. It is known for having immaculatily clean streets and a variety of stores and places to entertain oneself. The town tends to be home to much nobility wanting to be close to the King and his family. the city is built on a hill with the central castle being the main object of display. All roads lead towards the castle and the buildings surrounding the inner walls. A lot of time and effort has been spent of keeping the city looking as beautiful as possible.<p><br><a href="gora.html">Town Map</a>')
 
       //Merback Markers
       var marker_bearcall = L.marker([-18.017242, -96.833496], {icon: port_city})
-          marker_bearcall.bindPopup('<img src="images/bearcall.jpeg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Bearcall</h1><p>Bearcall is a settlement that formed around The Pillars of the Storm. It lies close to the coast in the state of Merback. The city itself is home to many races with each person who grew up within its bounds being broader and stockier than others. People who grow up here are easily able to lift heavy barrels and move them about without the use of a cart. there are many soldiers about who do not wear uniforms. It houses a population of well over 100,000 individuals.<p><br><a href="bearcall.html">Town Map</a>')
+          marker_bearcall.bindPopup('<img src="images/bearcall.jpeg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Bearcall</h1><p>Bearcall is a settlement that formed around The Pillars of the Stor. It lies close to the coast in the state of Merback. The city itself is home to many races with each person who grew up within its bounds being broader and stockier than others. People who grow up here are easily able to lift heavy barrels and move them about without the use of a cart. there are many soldiers about who do not wear uniforms. It houses a population of well over 100,000 individuals.<p><br><a href="bearcall.html">Town Map</a>')
 
       var marker_dawnshear = L.marker([-6.711202, -96.855469], {icon: city})
           marker_dawnshear.bindPopup('<img src="images/dawnshear.jpg" width="300" height="200"><br><h1 style="color:red; font-size:20px;">Dawnshear</h1><p>The city of Dawnshear looms up from behind some trees. The city is made of mainly wooden buildings and for wherever you stand within the city you can seethe tree that lives in the center of the city. Walking around the streets you see goats and chickens walking around as well as a variety of flowers, trees and bushes. The city has a great respect for nature and the animals and feels inviting to those who hold the same views.<p><br><a href="dawnshear.html">Town Map</a>')
@@ -309,24 +317,31 @@
 
       //Krurian Kingdom
       var marker_candlekeep = L.marker([-23.235331, -90.395508], {icon: city})
-          marker_candlekeep.bindPopup('<img src="images/candlekeep.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Candlekeep</h1><p>Candlekeep is a medium sized town that takes up a small amount of space. It has buildings which are built up to at least 3 storeys and are all compactly put together. It is known for its large library and commonly hosts scholars from around the area to learn from the books that are kept within.<p><br><a href="candlekeep.html">Town Map</a>');
-      var marker_tarkia = L.marker([-24.440526, -95.800781], {icon: town})
-          marker_tarkia.bindPopup('<img src="images/tarkia.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Tarkia</h1><p>Tarkia is a small forest town filled strictly with elves, population is rather small and the elves here generally keep to themselves not venturing out of their town. Happy to lead their lives away from other towns and races. The town is completly self sufficient using amixture of magic and fine craftsmanship to provide all of its necessities.<p><br><a href="tarkia.html">Town Map</a>');
+          marker_candlekeep.bindPopup('<img src="images/candlekeep.jpg" width="300" height="200"><br><h1 style="color:grey; font-size:20px;">Candlekeep</h1><p>Candlekeep is a medium sized town that takes up a small amount of space. It has buildings which are built up to at least 3 storeys and are all compactly put together. It is known for its large library and commonly hosts scholars from around teh area to learn from the books that are kept within.<p><br><a href="candlekeep.html">Town Map</a>');
+
+      var marker_tarcia = L.marker([-24.440526, -95.800781], {icon: town})
+          marker_tarcia.bindPopup('<img src="images/tarcia.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Tarkia</h1><p>Tarcia is a small forest town filled strictly with elves, population is rather small and the elves here generally keep to themselves not venturing out of their town. Happy to lead their lives away from other towns and races. The town is completly self sufficient using amixture of magic and fine craftsmanship to provide all of its necessities.<p><br><a href="tarcia.html">Town Map</a>');
+
       var marker_leondra = L.marker([-40.198948, -102.788086], {icon: town})
           marker_leondra.bindPopup('<img src="images/leondra.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Leondra</h1><p>Leondra is a brand new settlement currently in development, dozens of leonin who were displaced from their homes settled in this unclaimed territory and began making a new home for themselves.<p><br><a href="leondra.html">Town Map</a>');
+
       var marker_treetop_burgh = L.marker([-18.812718, -118.388672], {icon: city})
-          marker_treetop_burgh.bindPopup('<img src="images/treetop_burgh.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Treetop Burgh</h1><p>Treetop Burgh is a name given to the city by explorers and far travelers. The city is primarly inhabited by Firbolgs, though elves and humans call this place home as well. Homes are built into the roots of massive ancient trees, while other stone structures are built against them. The city is truly symbiotic in nature, as the trees protect its people from the awful shadow creatures that bleed through from the shadowfell while the people protect the trees from outsiders and those who would seek the rare wood they are made of.<p><br><a href="treetop_burgh.html">Town Map</a>');
+          marker_treetop_burgh.bindPopup('<img src="images/treetop_burgh.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Treetop Burgh</h1><p>Treetop Burgh is a name given to the city by explorers and far travelers. The city is primarily inhabited by Firbolgs, though elves and humans call this place home as well. Homes are built into the roots of massive ancient trees, while other stone structures are built against them. The city is truly symbiotic in nature, as the trees protect its people from the awful shadow creatures that bleed through from the shadowfell while the people protect the trees from outsiders and those who would seek the rare wood they are made of.<p><br><a href="treetop_burgh.html">Town Map</a>');
+
       var marker_the_y_stop = L.marker([-14.755098, -119.047852], {icon: tree})
           marker_the_y_stop.bindPopup('<img src="images/the_y_stop.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">The Y Stop</h1><p>Built within the boughs of trees, the "Y" stop is a place of rest for travelers wishing to explore the mountain range or the various ruins nearby. Its name is in reference to the convergence of two small rivers, which the "Y" stop is structured over. Residents are few, as the majority of the population only stays long enough to recuperate before moving on to their intended destination.<p><br><a href="the_y_stop.html">Town Map</a>');
+
       var marker_bar_anor = L.marker([-34.452218, -112.631836], {icon: port_city})
           marker_bar_anor.bindPopup('<img src="images/bar-anor.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Bar-Anor</h1><p>Bar-Anor is the city of the Sun Elves. This high walled city has two official entrances, the road into Guard Home, and the road known locally as Beggars Street.  The city is majority tan skinned copper haired elves, though other races are not lacking in the census. In the South near the fruit orchard eave, lies the tall castle home to the ruling line of Sun elves. <p><br><a href="bar-anor.html">Town Map</a>');
+
       var marker_bar_ithil = L.marker([-42.956423, -131.572266], {icon: city})
           marker_bar_ithil.bindPopup('<img src="images/bar-ithil.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Bar-Ithil</h1><p>Bar-Ithil is the home of the Moon Elves.  These fair skinned fair haired elves in this city have no port and instead try to produce their own goods in their city.  Other races are present in the city, however due to the narrow streets, large carts and orders cannot be brought past the Southern Gate, where many have built shops to protect carts of travelers. <p><br><a href="bar-ithil.html">Town Map</a>');
+
       var marker_frost_pass = L.marker([-45.274886, -115.048828], {icon: town})
           marker_frost_pass.bindPopup('<img src="images/frost_pass.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Frost Pass</h1><p>This nomadic camp crosses the tundra between the temperate zone to the north, and the frozen south. Many races congregate here.  The political structure is fluid, the leader is selected whenever a problem arises which requires one. <p><br><a href="frost_pass.html">Town Map</a>');
 
       var marker_ashford = L.marker([-25.403585, -128.781738], {icon: port_city})
-        marker_ashford.bindPopup('<img src="images/ashford.png" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Ashford</h1><p>Ashford is a busy port city on the northern end of the ?? sea.<p><br><a href="ashford.html">Town Map</a>');
+          marker_ashford.bindPopup('<img src="images/ashford.png" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Ashford</h1><p>Ashford is a busy port city on the northern end of the ?? sea.<p><br><a href="ashford.html">Town Map</a>');
 
       var marker_langadalr = L.marker([-47.317932, -130.693359], {icon: port_town})
         marker_langadalr.bindPopup('<img src="images/langadalr.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Langadalr</h1><p>Langadalr is a village that is perpetually in the cold and those who settled here have become accustomed to the lower temperatures. Humans, dwarves, and halflings are the predominate races with many of the men being hairy with thick beards and equally thick locks of hair. Tall Cyprus trees grow in this snow-capped region and provide the building blocks for what are strictly wooden buildings, fences, and structures. Food is primarily hunted and the coats of those animals are used for warmth by many individuals.<p><br><a href="langadalr.html">Town Map</a>');
@@ -367,7 +382,7 @@
 
       // Vrecia Dynasty
       var marker_sun_temple = L.marker([-0.028652, -57.348633], {icon: town})
-        marker_sun_temple.bindPopup('<img src="images/sun_temple.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Sun Temple</h1><p>The Sun temple is a temple that is dedicated to the worship of the sun.<p><br><a href="sun_temple.html">Town Map</a>')
+        marker_sun_temple.bindPopup('<img src="images/sun_temple.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Sun Temple</h1><p>The sun temple is a temple dedicated to the god of the sun.<p><br><a href="sun_temple.html">Town Map</a>')
 
       var marker_galo = L.marker([-8.841651, -59.765565], {icon: town})
         marker_galo.bindPopup('<img src="images/galo.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Galo</h1><p>Galo is a trading post set in the desert containing supplies many would need for the trek into the harsh sand dunes.<p><br><a href="galo.html">Town Map</a>')
@@ -375,31 +390,49 @@
       var marker_vrecia = L.marker([0.432514, -4.130859], {icon: port_city})
         marker_vrecia.bindPopup('<img src="images/vrecia.png" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Vrecia</h1><p>The Vrecian Dynasty is ruled by Queen Vrecia the 12th, both beautiful and dangerous she rules with absolute authority. Renown around the world for their silks, and markets the walled city of Vrecia is famous for its trade. Any merchant vessel hoping to make good coin knows to add Vrecia to their route. Here, you will find that favors offer just as much value as coin.<p><br><a href="vrecia.html">Town Map</a>')
 
-      // Future Tower Location
+      // Underdark locations
+      var marker_abterra_the_purple_city = L.marker([-12.082296, -135.021973], {icon: town})
+        marker_abterra_the_purple_city.bindPopup('<img src="images/abterra_the_purple_city.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Abterra - The Purple City</h1><p>Abterra- independent city, formed 300 years ago by an adventuring party. As they settled they founded a council to maintain order and peace in the city. Ruled by a retired adventuring party, the city has flourished during its peaceful time.<p><br><a href="abterra_the_purple_city.html">Town Map</a>');
+
+    // Future Tower location
 
       var marker_arcane_future = L.marker([-28.098749, -108.28125], {icon: tower})
-        marker_arcane_future.bindPopup('<img src="images/arcane_tower.jpg" width="300" height="200"><br><h1 style="color:red;font-size:20px;">The Tower of the Arcane Arts</h1><p>The Tower of the Arcane Arts is a bastion for all those seeking to develop their magical abilities. Those who pass the Trial of the Four Pillars are allowed access to the wonders inside.<p>');
+        marker_arcane.bindPopup('<img src="images/arcane_tower.jpg" width="300" height="200"><br><h1 style="color:red;font-size:20px;">The Tower of the Arcane Arts</h1><p>The Tower of the Arcane Arts is a bastion for all those seeking to develop their magical abilities. Those who pass the Trial of the Four Pillars are allowed access to the wonders inside.<p>');
+
+      //Moveable Marker
+      var marker  = L.marker([-11.994986, -83.95752], {
+        draggable: true,
+      })
+        marker.bindPopup('');
+
+      marker.on('dragend', function(e) {
+        marker.getPopup().setContent('Clicked' + marker.getLatLng().toString()).openOn(map);
+      });
 
     //Roads
       var road_1 = L.polyline(birch_galo, {color: '#9b7653', weight: 2}).addTo(map);
-      var road_2 = L.polyline(candlekeep_tarkia, {color: '#9b7653', weight: 2}).addTo(map);
-      var road_3 = L.polyline(tarkia_tower, {color: '#9b7653', weight: 2}).addTo(map);
+      var road_2 = L.polyline(candlekeep_tarcia, {color: '#9b7653', weight: 2}).addTo(map);
 
     //Layer Groups
-      var lg_roads = L.layerGroup([road_1,road_2,road_3]);
+      var lg_roads = L.layerGroup([road_1,road_2]);
 
-      var lg_towns = L.layerGroup([marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_candlekeep, marker_tarkia, marker_dartle, marker_red_mountain, marker_seer_shack, marker_sun_temple, marker_galo, marker_vrecia]);
+      var lg_towns_undiscovered = L.layerGroup([marker_bereston, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin, marker_candlekeep, marker_red_mountain, marker_seer_shack, marker_sun_temple, marker_tarcia, marker_galo, marker_vrecia, marker_leondra, marker_arcane_future, marker_the_y_stop, marker_treetop_burgh, marker_bar_anor, marker_bar_ithil, marker_frost_pass, marker_ashford, marker_abterra_the_purple_city, marker_langadalr]);
+      var lg_towns = L.layerGroup([marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_hammerton, marker_dartle]);
 
-      var lg_states = L.layerGroup([shah_state,shah_name,bertol_state,bertol_name,merback_state,merback_name,iron_state,iron_state_name]);
+      var lg_states_undiscovered = L.layerGroup([bertol_state,bertol_name,merback_state,merback_name,iron_state,iron_state_name]);
+      var lg_states = L.layerGroup([shah_state,shah_name]);
 
-      var lg_nations = L.layerGroup([prusha_nation,prusha_name,iron_state,iron_state_name,ducan_nation,ducan_empire_name,vrecia_dynasty,vrecia_dynasty_name, krurian_kingdom, krurian_kingdom_name]);
+      var lg_nations_undiscovered = L.layerGroup([iron_state,iron_state_name,ducan_nation,ducan_name,vrecia_dynasty,vrecia_dynasty_name,krurian_kingdom]);
+      var lg_nations = L.layerGroup([prusha_nation,prusha_name]);
+
+      var lg_none = L.layerGroup([blank_icon]);
 
       var baselays = {
-        "Overworld": overworld
+        "None": lg_none,
       };
 
       var overlays = {
-        "Overworld Locations": lg_towns,
+        "Locations": lg_towns,
         "Roads": lg_roads,
         "States": lg_states,
         "Nations": lg_nations,
@@ -408,28 +441,15 @@
       map.on('zoomend', function(e) {
         var geo = map.getCenter();
         console.log(map.getZoom());
-        if (map.getZoom()>=4)
+        if (map.getZoom()>=5)
         {
           lg_towns.addTo(map);
         }else {
           lg_towns.remove();
         }
       });
-
-      map.on('zoomend', function(e) {
-        var geo = map.getCenter();
-        console.log(map.getZoom());
-        if (map.getZoom()>=4)
-        {
-          lg_roads.addTo(map);
-        }else {
-          lg_roads.remove();
-        }
-      });
     // Add Layer Control
       L.control.layers(baselays, overlays).addTo(map);
-
-
     </script>
 
   </body>

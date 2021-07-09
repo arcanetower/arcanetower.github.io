@@ -236,7 +236,7 @@
     var candlekeep_tarcia = [[-23.235331, -90.395508],[-24.120158, -93.164063],[-24.440526, -95.800781]];
 
     // Markers Shah Provence
-      var marker_arcane = L.marker([-14.455958, -83.71582], {icon: tower})
+      var marker_arcane = L.marker([-28.098749, -108.28125], {icon: tower})
         marker_arcane.bindPopup('<img src="images/arcane_tower.jpg" width="300" height="200"><br><h1 style="color:red;font-size:20px;">The Tower of the Arcane Arts</h1><p>The Tower of the Arcane Arts is a bastion for all those seeking to develop their magical abilities. Those who pass the Trial of the Four Pillars are allowed access to the wonders inside.<p>');
 
       var marker_veritas = L.marker([-14.645909, -83.452148], {icon: port_town})
@@ -329,6 +329,9 @@
       var marker_ashford = L.marker([-25.403585, -128.781738], {icon: port_city})
         marker_ashford.bindPopup('<img src="images/ashford.png" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Ashford</h1><p>Ashford is a busy port city on the northern end of the ?? sea.<p><br><a href="ashford.html">Town Map</a>');
 
+      var marker_langadalr = L.marker([-47.317932, -130.693359], {icon: port_town})
+        marker_langadalr.bindPopup('<img src="images/langadalr.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Langadalr</h1><p>Langadalr is a village that is perpetually in the cold and those who settled here have become accustomed to the lower temperatures. Humans, dwarves, and halflings are the predominate races with many of the men being hairy with thick beards and equally thick locks of hair. Tall Cyprus trees grow in this snow-capped region and provide the building blocks for what are strictly wooden buildings, fences, and structures. Food is primarily hunted and the coats of those animals are used for warmth by many individuals.<p><br><a href="langadalr.html">Town Map</a>');
+
       //Ducan Empire
       var marker_lochhaven = L.marker([-58.881942, -10.283232], {icon: port_town})
           marker_lochhaven.bindPopup('<img src="images/lochhaven.jpg" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Lochhaven</h1><p>Lochhaven is a town populated by mostly humans however spattering a of other races have come to make their home in this fair town. It is a small town with only 5,000 residents living within its walls. The town is located on a river, houses rising on both sides with a great bridge dividing the East side and West side. Lochhavens main export is wood. It has a rich history of loggers who provide high quality wood to other towns in the area. Demographically richer residence live on the East side of the bridge while the west side tends to be more lower class.<p><br><a href="lochhaven.html">Town Map</a>')
@@ -399,7 +402,7 @@
     //Layer Groups
       var lg_roads = L.layerGroup([road_1,road_2]);
 
-      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin, marker_candlekeep, marker_tarcia, marker_dartle, marker_red_mountain, marker_seer_shack, marker_sun_temple, marker_galo, marker_vrecia, marker_leondra, marker_arcane_future, marker_treetop_burgh, marker_the_y_stop, marker_bar_anor, marker_bar_ithil, marker_frost_pass,marker_ashford]);
+      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin, marker_candlekeep, marker_tarcia, marker_dartle, marker_red_mountain, marker_seer_shack, marker_sun_temple, marker_galo, marker_vrecia, marker_leondra, marker_arcane_future, marker_treetop_burgh, marker_the_y_stop, marker_bar_anor, marker_bar_ithil,  marker_frost_pass, marker_ashford, marker_langadalr]);
 
       var lg_states = L.layerGroup([shah_state,shah_name,bertol_state,bertol_name,merback_state,merback_name,iron_state,iron_state_name]);
 
