@@ -154,6 +154,16 @@
       shadowSize: [25, 25],
       shadowAnchor: [12, 41]
     });
+
+    var swamp = L.icon({
+      iconUrl: 'images/markers/swamp.png',
+      iconSize: [25, 25],
+      iconAnchor: [15, 41],
+      popupAnchor: [0, -30],
+      shadowUrl: 'images/markers/swamp_shadow.png',
+      shadowSize: [25, 25],
+      shadowAnchor: [12, 41]
+    });
     //Nation Polygons
     var prusha_nation_lines = [[-16.301581, -82.683105],[-15.264914, -78.837891],[-14.009886, -77.937012],[-14.073873, -75.432129],[-12.962308, -74.025879],[-9.620999, -73.586426],[-8.078647, -74.729004],[-7.991567, -75.52002],[-8.426775, -76.662598],[-6.115192, -81.166992],[-6.857915, -85.166016],[-6.83917, -88.109269],[-5.575834, -90.98877],[-4.19303, -93.095762],[-3.688855, -95.731793],[-3.491489, -98.371485],[-5.441022, -101.161284],[-9.18887, -103.595953],[-12.254128, -103.881523],[-15.178181, -103.029172],[-19.911384, -99.338728],[-19.78738, -95.911888],[-17.20377, -92.110005],[-16.488765, -89.185648]];
 
@@ -324,6 +334,8 @@
           marker_bar_ithil.bindPopup('<img src="images/bar-ithil.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Bar-Ithil</h1><p>Bar-Ithil is the home of the Moon Elves.  These fair skinned fair haired elves in this city have no port and instead try to produce their own goods in their city.  Other races are present in the city, however due to the narrow streets, large carts and orders cannot be brought past the Southern Gate, where many have built shops to protect carts of travelers. <p><br><a href="bar-ithil.html">Town Map</a>');
       var marker_frost_pass = L.marker([-45.274886, -115.048828], {icon: town})
           marker_frost_pass.bindPopup('<img src="images/frost_pass.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Frost Pass</h1><p>This nomadic camp crosses the tundra between the temperate zone to the north, and the frozen south. Many races congregate here.  The political structure is fluid, the leader is selected whenever a problem arises which requires one. <p><br><a href="frost_pass.html">Town Map</a>');
+      var marker_menigwyne = L.marker([-21.493486, -109.995117], {icon: town})
+          marker_menigwyne.bindPopup('<img src="images/Menigwyne.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Menigwyne</h1><p>Menigwyne is a rather small village, though it is of more renown than its appearance would appear to suggest. While it is true that it has no walls nor a large population to speak of, Menigwyne is a destination that draws many a traveler. It manages to do so with its delicious variety of meads. The village is home to an avid beekeeper community and apiaries are to be seen throughout Menigwyne. With the honey from the bees and the water from the river that runs through it, the locals make the best meads that are served in the local inn “The Busy Bees”.<p><br><a href="menigwyne.html">Town Map</a>');
 
       var marker_ashford = L.marker([-25.403585, -128.781738], {icon: port_city})
         marker_ashford.bindPopup('<img src="images/ashford.png" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Ashford</h1><p>Ashford is a busy port city on the northern end of the ?? sea.<p><br><a href="ashford.html">Town Map</a>');
@@ -375,6 +387,12 @@
       var marker_vrecia = L.marker([0.432514, -4.130859], {icon: port_city})
         marker_vrecia.bindPopup('<img src="images/vrecia.png" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Vrecia</h1><p>The Vrecian Dynasty is ruled by Queen Vrecia the 12th, both beautiful and dangerous she rules with absolute authority. Renown around the world for their silks, and markets the walled city of Vrecia is famous for its trade. Any merchant vessel hoping to make good coin knows to add Vrecia to their route. Here, you will find that favors offer just as much value as coin.<p><br><a href="vrecia.html">Town Map</a>')
 
+      // Black Zone
+      var marker_vloystin = L.marker([18.713162, -90.571289], {icon: town})
+        marker_vloystin.bindPopup('<img src="images/Vloystin.jpeg" width="300" height="200"><br><h1 style="color:black; font-size:20px;">Vloystin</h1><p>Vloystin is an island City rich in minerals and arable land. Because of their economic power due to resources and difficulty to invade they have managed to stay politically neutral ruled by a Duke. The island is surrounded by sheer cliffs apart from a small port area on the southern side.<p><br><a href="vloystin.html">Town Map</a>')
+
+      var marker_drochroma = L.marker([-41.046217, 45], {icon: swamp})
+        marker_drochroma.bindPopup('<img src="images/drochroma.jpg" width="300" height="200"><br><h1 style="color:black; font-size:20px;">Drochroma</h1><p>An empty Island, swampish due to the side and low land height. <p><br><a href="drochroma.html">Town Map</a>');
       // Future Tower Location
 
       var marker_arcane_future = L.marker([-28.098749, -108.28125], {icon: tower})

@@ -156,6 +156,16 @@
       shadowSize: [25, 25],
       shadowAnchor: [12, 41]
     });
+
+    var swamp = L.icon({
+      iconUrl: 'images/markers/swamp.png',
+      iconSize: [25, 25],
+      iconAnchor: [15, 41],
+      popupAnchor: [0, -30],
+      shadowUrl: 'images/markers/swamp_shadow.png',
+      shadowSize: [25, 25],
+      shadowAnchor: [12, 41]
+    });
     //Nation Polygons
     var prusha_nation_lines = [[-16.301581, -82.683105],[-15.264914, -78.837891],[-14.009886, -77.937012],[-14.073873, -75.432129],[-12.962308, -74.025879],[-9.620999, -73.586426],[-8.078647, -74.729004],[-7.991567, -75.52002],[-8.426775, -76.662598],[-6.115192, -81.166992],[-6.857915, -85.166016],[-6.83917, -88.109269],[-5.575834, -90.98877],[-4.19303, -93.095762],[-3.688855, -95.731793],[-3.491489, -98.371485],[-5.441022, -101.161284],[-9.18887, -103.595953],[-12.254128, -103.881523],[-15.178181, -103.029172],[-19.911384, -99.338728],[-19.78738, -95.911888],[-17.20377, -92.110005],[-16.488765, -89.185648]];
 
@@ -311,18 +321,25 @@
       //Krurian Kingdom
       var marker_candlekeep = L.marker([-23.235331, -90.395508], {icon: city})
           marker_candlekeep.bindPopup('<img src="images/candlekeep.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Candlekeep</h1><p>Candlekeep is a medium sized town that takes up a small amount of space. It has buildings which are built up to at least 3 storeys and are all compactly put together. It is known for its large library and commonly hosts scholars from around the area to learn from the books that are kept within.<p><br><a href="candlekeep.html">Town Map</a>');
+
       var marker_tarcia = L.marker([-24.440526, -95.800781], {icon: town})
           marker_tarcia.bindPopup('<img src="images/tarcia.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Tarkia</h1><p>Tarcia is a small forest town filled strictly with elves, population is rather small and the elves here generally keep to themselves not venturing out of their town. Happy to lead their lives away from other towns and races. The town is completly self sufficient using amixture of magic and fine craftsmanship to provide all of its necessities.<p><br><a href="tarcia.html">Town Map</a>');
+
       var marker_leondra = L.marker([-40.198948, -102.788086], {icon: town})
           marker_leondra.bindPopup('<img src="images/leondra.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Leondra</h1><p>Leondra is a brand new settlement currently in development, dozens of leonin who were displaced from their homes settled in this unclaimed territory and began making a new home for themselves.<p><br><a href="leondra.html">Town Map</a>');
+
       var marker_treetop_burgh = L.marker([-18.812718, -118.388672], {icon: city})
           marker_treetop_burgh.bindPopup('<img src="images/treetop_burgh.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Treetop Burgh</h1><p>Treetop Burgh is a name given to the city by explorers and far travelers. The city is primarly inhabited by Firbolgs, though elves and humans call this place home as well. Homes are built into the roots of massive ancient trees, while other stone structures are built against them. The city is truly symbiotic in nature, as the trees protect its people from the awful shadow creatures that bleed through from the shadowfell while the people protect the trees from outsiders and those who would seek the rare wood they are made of.<p><br><a href="treetop_burgh.html">Town Map</a>');
+
       var marker_the_y_stop = L.marker([-14.755098, -119.047852], {icon: tree})
           marker_the_y_stop.bindPopup('<img src="images/the_y_stop.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">The Y Stop</h1><p>Built within the boughs of trees, the "Y" stop is a place of rest for travelers wishing to explore the mountain range or the various ruins nearby. Its name is in reference to the convergence of two small rivers, which the "Y" stop is structured over. Residents are few, as the majority of the population only stays long enough to recuperate before moving on to their intended destination.<p><br><a href="the_y_stop.html">Town Map</a>');
+
       var marker_bar_anor = L.marker([-34.452218, -112.631836], {icon: port_city})
           marker_bar_anor.bindPopup('<img src="images/bar-anor.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Bar-Anor</h1><p>Bar-Anor is the city of the Sun Elves. This high walled city has two official entrances, the road into Guard Home, and the road known locally as Beggars Street.  The city is majority tan skinned copper haired elves, though other races are not lacking in the census. In the South near the fruit orchard eave, lies the tall castle home to the ruling line of Sun elves. <p><br><a href="bar-anor.html">Town Map</a>');
+
       var marker_bar_ithil = L.marker([-42.956423, -131.572266], {icon: city})
           marker_bar_ithil.bindPopup('<img src="images/bar-ithil.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Bar-Ithil</h1><p>Bar-Ithil is the home of the Moon Elves.  These fair skinned fair haired elves in this city have no port and instead try to produce their own goods in their city.  Other races are present in the city, however due to the narrow streets, large carts and orders cannot be brought past the Southern Gate, where many have built shops to protect carts of travelers. <p><br><a href="bar-ithil.html">Town Map</a>');
+
       var marker_frost_pass = L.marker([-45.274886, -115.048828], {icon: town})
           marker_frost_pass.bindPopup('<img src="images/frost_pass.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Frost Pass</h1><p>This nomadic camp crosses the tundra between the temperate zone to the north, and the frozen south. Many races congregate here.  The political structure is fluid, the leader is selected whenever a problem arises which requires one. <p><br><a href="frost_pass.html">Town Map</a>');
 
@@ -331,6 +348,12 @@
 
       var marker_langadalr = L.marker([-47.317932, -130.693359], {icon: port_town})
         marker_langadalr.bindPopup('<img src="images/langadalr.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Langadalr</h1><p>Langadalr is a village that is perpetually in the cold and those who settled here have become accustomed to the lower temperatures. Humans, dwarves, and halflings are the predominate races with many of the men being hairy with thick beards and equally thick locks of hair. Tall Cyprus trees grow in this snow-capped region and provide the building blocks for what are strictly wooden buildings, fences, and structures. Food is primarily hunted and the coats of those animals are used for warmth by many individuals.<p><br><a href="langadalr.html">Town Map</a>');
+
+      var marker_menigwyne = L.marker([-21.493486, -109.995117], {icon: town})
+        marker_menigwyne.bindPopup('<img src="images/Menigwyne.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Menigwyne</h1><p>Menigwyne is a rather small village, though it is of more renown than its appearance would appear to suggest. While it is true that it has no walls nor a large population to speak of, Menigwyne is a destination that draws many a traveler. It manages to do so with its delicious variety of meads. The village is home to an avid beekeeper community and apiaries are to be seen throughout Menigwyne. With the honey from the bees and the water from the river that runs through it, the locals make the best meads that are served in the local inn “The Busy Bees”.<p><br><a href="menigwyne.html">Town Map</a>');
+
+      var marker_monhegan = L.marker([-30.533603, -96.943359], {icon: town})
+        marker_monhegan.bindPopup('<img src="images/monhegan.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Monhegan</h1><p>This secluded community is the result of a tsunami that washed away over half of the original town. Those who choose to reside here live a minimalist lifestyle, forgoing physical property and instead seeking spiritual and culinary fulfillment. The town functions mostly without currency, operating through barter and service systems.<p><br><a href="monhegan.html">Town Map</a>');
 
       //Ducan Empire
       var marker_lochhaven = L.marker([-58.881942, -10.283232], {icon: port_town})
@@ -376,6 +399,13 @@
       var marker_vrecia = L.marker([0.432514, -4.130859], {icon: port_city})
         marker_vrecia.bindPopup('<img src="images/vrecia.png" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Vrecia</h1><p>The Vrecian Dynasty is ruled by Queen Vrecia the 12th, both beautiful and dangerous she rules with absolute authority. Renown around the world for their silks, and markets the walled city of Vrecia is famous for its trade. Any merchant vessel hoping to make good coin knows to add Vrecia to their route. Here, you will find that favors offer just as much value as coin.<p><br><a href="vrecia.html">Town Map</a>')
 
+      // Black Zone
+      var marker_vloystin = L.marker([18.713162, -90.571289], {icon: town})
+        marker_vloystin.bindPopup('<img src="images/Vloystin.jpeg" width="300" height="200"><br><h1 style="color:black; font-size:20px;">Vloystin</h1><p>Vloystin is an island City rich in minerals and arable land. Because of their economic power due to resources and difficulty to invade they have managed to stay politically neutral ruled by a Duke. The island is surrounded by sheer cliffs apart from a small port area on the southern side. <p><br><a href=""vloystin.html">Town Map</a>');
+
+      var marker_drochroma = L.marker([-41.046217, 45], {icon: swamp})
+        marker_drochroma.bindPopup('<img src="images/drochroma.jpg" width="300" height="200"><br><h1 style="color:black; font-size:20px;">Drochroma</h1><p>An empty Island, swampish due to the side and low land height. <p><br><a href="drochroma.html">Town Map</a>');
+
       // Underdark locations
       var marker_abterra_the_purple_city = L.marker([-12.082296, -135.021973], {icon: town})
         marker_abterra_the_purple_city.bindPopup('<img src="images/abterra_the_purple_city.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Abterra - The Purple City</h1><p>Abterra- independent city, formed 300 years ago by an adventuring party. As they settled they founded a council to maintain order and peace in the city. Ruled by a retired adventuring party, the city has flourished during its peaceful time.<p><br><a href="abterra_the_purple_city.html">Town Map</a>');
@@ -402,7 +432,7 @@
     //Layer Groups
       var lg_roads = L.layerGroup([road_1,road_2]);
 
-      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin, marker_candlekeep, marker_tarcia, marker_dartle, marker_red_mountain, marker_seer_shack, marker_sun_temple, marker_galo, marker_vrecia, marker_leondra, marker_arcane_future, marker_treetop_burgh, marker_the_y_stop, marker_bar_anor, marker_bar_ithil,  marker_frost_pass, marker_ashford, marker_langadalr]);
+      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin, marker_candlekeep, marker_tarcia, marker_dartle, marker_red_mountain, marker_seer_shack, marker_sun_temple, marker_galo, marker_vrecia, marker_leondra, marker_arcane_future, marker_treetop_burgh, marker_the_y_stop, marker_bar_anor, marker_bar_ithil,  marker_frost_pass, marker_ashford, marker_langadalr, marker_vloystin,marker_drochroma,marker_menigwyne,marker_monhegan]);
 
       var lg_states = L.layerGroup([shah_state,shah_name,bertol_state,bertol_name,merback_state,merback_name,iron_state,iron_state_name]);
 
