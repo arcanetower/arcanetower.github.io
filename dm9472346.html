@@ -399,6 +399,12 @@
       var marker_vrecia = L.marker([0.432514, -4.130859], {icon: port_city})
         marker_vrecia.bindPopup('<img src="images/vrecia.png" width="300" height="200"><br><h1 style="color:orange; font-size:20px;">Vrecia</h1><p>The Vrecian Dynasty is ruled by Queen Vrecia the 12th, both beautiful and dangerous she rules with absolute authority. Renown around the world for their silks, and markets the walled city of Vrecia is famous for its trade. Any merchant vessel hoping to make good coin knows to add Vrecia to their route. Here, you will find that favors offer just as much value as coin.<p><br><a href="vrecia.html">Town Map</a>')
 
+      var marker_fainsborough = L.marker([1.669686, -85.605469], {icon: port_city})
+        marker_fainsborough.bindPopup('<img src="images/fainsborough.jpg" width="300" height="200"><br><h1 style="color:purple; font-size:20px;">Fainsborough</h1><p>Large Port City in the river delta north of the mountain range, perfect for trade to the northern seas. <p><br><a href="fainsborough.html">Town Map</a>');
+
+      var marker_vreji_village = L.marker([-45.58329, -1.933594], {icon: town})
+        marker_vreji_village.bindPopup('<img src="images/vreji_village.jpg" width="300" height="200"><br><h1 style="color:purple; font-size:20px;">Vreji Village</h1><p>Vreji Village is home base to the Vreji Clan, a group of tabaxi merchants that traverse the desert bringing supplies and wares to and from the locations in the Vrecian Dynasty and the Ducan Empire. The clan leader is Kaja, a dark furred tabaxi ranger.<p><br><a href="vreji_village.html">Town Map</a>');
+
       // Black Zone
       var marker_vloystin = L.marker([18.713162, -90.571289], {icon: town})
         marker_vloystin.bindPopup('<img src="images/Vloystin.jpeg" width="300" height="200"><br><h1 style="color:black; font-size:20px;">Vloystin</h1><p>Vloystin is an island City rich in minerals and arable land. Because of their economic power due to resources and difficulty to invade they have managed to stay politically neutral ruled by a Duke. The island is surrounded by sheer cliffs apart from a small port area on the southern side. <p><br><a href=""vloystin.html">Town Map</a>');
@@ -410,7 +416,7 @@
       var marker_abterra_the_purple_city = L.marker([-12.082296, -135.021973], {icon: town})
         marker_abterra_the_purple_city.bindPopup('<img src="images/abterra_the_purple_city.jpg" width="300" height="200"><br><h1 style="color:green; font-size:20px;">Abterra - The Purple City</h1><p>Abterra- independent city, formed 300 years ago by an adventuring party. As they settled they founded a council to maintain order and peace in the city. Ruled by a retired adventuring party, the city has flourished during its peaceful time.<p><br><a href="abterra_the_purple_city.html">Town Map</a>');
 
-      // Future Tower Location
+      // Tower Location
 
       var marker_arcane_future = L.marker([-28.098749, -108.28125], {icon: tower})
         marker_arcane_future.bindPopup('<img src="images/arcane_tower.jpg" width="300" height="200"><br><h1 style="color:red;font-size:20px;">The Tower of the Arcane Arts</h1><p>The Tower of the Arcane Arts is a bastion for all those seeking to develop their magical abilities. Those who pass the Trial of the Four Pillars are allowed access to the wonders inside.<p>');
@@ -432,7 +438,7 @@
     //Layer Groups
       var lg_roads = L.layerGroup([road_1,road_2]);
 
-      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin, marker_candlekeep, marker_tarcia, marker_dartle, marker_red_mountain, marker_seer_shack, marker_sun_temple, marker_galo, marker_vrecia, marker_leondra, marker_arcane_future, marker_treetop_burgh, marker_the_y_stop, marker_bar_anor, marker_bar_ithil,  marker_frost_pass, marker_ashford, marker_langadalr, marker_vloystin,marker_drochroma,marker_menigwyne,marker_monhegan]);
+      var lg_towns = L.layerGroup([marker, marker_arcane, marker_veritas, marker_wingston, marker_watford, marker_lancaster, marker_polperro, marker_berxley, marker_bereston, marker_hammerton, marker_vex, marker_gladmouth, marker_gora, marker_birch, marker_bearcall, marker_dawnshear, marker_coldford, marker_ilelion, marker_oakenshell, marker_yedif, marker_bastion, marker_lochhaven, marker_lowood, marker_wandermere, marker_wolfspine, marker_wakefield, marker_alnwick, marker_baulders_deep, marker_black_hollows, marker_moonbright, marker_PF_monestary, marker_northin, marker_candlekeep, marker_tarcia, marker_dartle, marker_red_mountain, marker_seer_shack, marker_sun_temple, marker_galo, marker_vrecia, marker_leondra, marker_arcane_future, marker_treetop_burgh, marker_the_y_stop, marker_bar_anor, marker_bar_ithil,  marker_frost_pass, marker_ashford, marker_langadalr, marker_vloystin,marker_drochroma,marker_menigwyne,marker_monhegan,marker_fainsborough,marker_vreji_village]);
 
       var lg_states = L.layerGroup([shah_state,shah_name,bertol_state,bertol_name,merback_state,merback_name,iron_state,iron_state_name]);
 
