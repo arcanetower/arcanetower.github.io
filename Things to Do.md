@@ -8,3 +8,5 @@ Things to do:
     - Add ability to zoom to locations using sidebar when clicked on in a list
     - make the list searchable
     - Add a function to remove the spaces before cutting the polygons and lines into an array
+    - Add a way to draw on the map and output the coordinates to then copy and paste in the google sheet
+    - add a way for dms to login to see all the tools

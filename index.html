@@ -8,9 +8,9 @@
     <script src="scripts/leaflet/leaflet.js"></script>
     <script type="text/javascript" src="scripts/leaflet-hash-master/leaflet-hash.js"></script>
     <script src="scripts/leaflet.measure-master/leaflet.measure.js"></script>
+    <script src="scripts/leaflet-search/leaflet-search.js"></script>
     <link rel="stylesheet" href="scripts/sidebar-v2-master/css/leaflet-sidebar.css">
-    <link href="scripts/leaflet-search-bar/Leaflet.AnimatedSearchBox.css" rel="stylesheet">
-    <script src="scripts/leaflet-search-bar/Leaflet.AnimatedSearchBox.js"></script>
+    <link rel="stylesheet" href="scripts/leaflet-search/leaflet-search.css">
   </head>
   <body style="height: 100%; margin: 0;">
     <div id="sidebar" class="sidebar collapsed">
@@ -220,7 +220,7 @@
             const icon = iconMap[iconName];
 
             if (item.visible_to_players) {
-                const marker = L.marker([lat, lng], {icon: icon});
+                const marker = L.marker([lat, lng], {icon: icon, title: item.name});
 
                 // Add a popup to the marker with additional information
                 marker.bindPopup('<img src="' + item.url + '" width="300" height="200"><br><h1 style="color:' + item.color + ';font-size:20px;">' + item.name + '</h1><p>' + item.description + '<p>');
@@ -371,28 +371,15 @@
       // Add Layer Control bar to the side using the baselays and overlays determined above
       var layercontrols = L.control.layers(baselays, overlays, sortLayers=false, hideSingleBase=true).addTo(map);
 
-      // Search Bar
-      var searchbox = L.control.searchbox({
-        position: 'topright',
-        expand: 'left',
-        iconPath: 'images/search_icon.png'
-      }).addTo(map);
-
-      searchbox.onInput("keyup", function(e) {
-        if (e.keycode == 13) {
-          setTimeout(function() {
-            searchbox.hide();
-            searchbox.clear();
-          }, 600);
-        }
-      });
-
-      searchbox.onButton("click", function() {
-        setTimeout(function() {
-          searchbox.hide();
-          searchbox.clear();
-        }, 600);
-      });
+      // Search Function
+      var controlSearch = new L.Control.Search({
+        position:'topright',
+        layer: lg_towns,
+        initial: false,
+        zoom: 7,
+        marker: false
+      })
+      map.addControl(controlSearch);  
     </script>
   </body>
 </html>
