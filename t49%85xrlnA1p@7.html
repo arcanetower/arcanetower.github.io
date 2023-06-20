@@ -11,60 +11,62 @@
     <script src="scripts/leaflet-search/leaflet-search.js"></script>
     <link rel="stylesheet" href="scripts/sidebar-v2-master/css/leaflet-sidebar.css">
     <link rel="stylesheet" href="scripts/leaflet-search/leaflet-search.css">
+    <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css"/>
+    <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
   </head>
   <body style="height: 100%; margin: 0;">
     <div id="sidebar" class="sidebar collapsed">
-        <!-- Nav tabs -->
-        <div class="sidebar-tabs">
-            <ul role="tablist">
-                <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
-                <li><a href="#travel" role="tab"><i class="fa fa-info-circle"></i></a></li>
-            </ul>
+      <!-- Nav tabs -->
+      <div class="sidebar-tabs">
+          <ul role="tablist">
+              <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
+              <li><a href="#travel" role="tab"><i class="fa fa-info-circle"></i></a></li>
+          </ul>
+      </div>
+  
+      <!-- Tab panes -->
+      <div class="sidebar-content">
+        <div class="sidebar-pane" id="home">
+          <h1 class="sidebar-header">
+              World Map
+              <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+          </h1>
+          <p>Welcome to the world of <u>Malendyr</u> an ever expanding and wonderous world full of creatures and places worth exploring.</p>
+
+          <p>The world is currently centered on the main location of the campaign. The Tower of the Arcane Arts. This is home to many a magic user where they spend their time helping those in the surrounding area as well as expanding their current arcane understanding.</p>
+
+          <p>In order to navigate the map there are a couple of things that you need to be aware of. Firstly you can pan around using the mouse or your finger (if on a mobile device) to view different parts of the map. Secondly you can also zoom in or out by using the scroll wheel, buttons in the top right of the map, or pinching with your fingers (if on a mobile device). If you select one of the icons on display it will show you more information about the town or location that you have chosen. To close the marker simply click outside of the marker and it will dissapear. The icons will dissapear if you zoom out to far and will reappear once you zoom in close enough. Next to the zoom controls are two other buttons. The first is the measure button, and the second being the layer button.</p>
+
+          <p><b>Layer Controls</b></p>
+          <p> The layer controls button allows you to turn off or on various overlays. The top three options allow you to see the boundries between the states as well as the nations, selecting either one will show the area of land that each nation owns. By selecting 'None' it will remove all selections. If you need to remove the icons displayed on the screen for any reason you can do so by selecting the check box next to 'icons' in the Layer Controls box
+
+          <p><b>Measuring</b></p>
+          <p>The measure button allows you to see the distance between points that you place on the map. This is helpful for calculating the travel time between locations. It is important that you turn off the icons before measuring as otherwise you won't be able to click directly on the city. Once the icons are turned of simply click on the start of your journey and continue clicking in different locations, it will show you in miles how far between the two points, as you add more points it will continue to show you the distance to the individual points from the origin. You can also activate the measure tool by pressin 'm' on your keyboard. To exit the measrurement that you had completed just press escape on your keyboard or press the measure button again. To bring back the icons simply zoom in or out to an appropriate level or turn them on in the layer controls.</p>
+      </div>
+
+      <div class="sidebar-pane" id="travel">
+          <h1 class="sidebar-header">Travel times<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+          <p>Wondering how long it will take you to get from one location to the next, simple use the measure tool (or press 'm' on your keyboard) to find out the total amount of miles. The tooltip will then show you the distance and how long it will take to get there depending on the speed that you are travelling. You are only able to go as fast as the slowest member of your party.</p>
+          <p><b>Fast:</b></p>
+          <p>While travelling at a fast pace you have a -5 penalty to passive Wisdom (Perception) scores. You are able to travel 4 miles an hour or 30 miles a day (assuming 8 hours of travel time a day).</p>
+          <p><b>Normal:</b></p>
+          <p> While travelling at a normal pace you are able to travel 3 miles an hour or 24 miles a day (assuming 8 hours of travel time a day).</p>
+          <p><b>Slow:</b></<p>
+          <p> While travelling at a slow pace you are able to use Stealth. You are able to travel 2 miles an hour or 18 miles a day (assuming 8 hours of travel time a day).</p>
+          <p><b>Forced March:</b></<p>
+          <p>The Travel Pace table assumes that characters Travel for 8 hours in day. They can push on beyond that limit, at the risk of Exhaustion. For each additional hour of Travel beyond 8 hours, the characters cover the distance shown in the Hour column for their pace, and each character must make a Constitution saving throw at the end of the hour. The DC is 10 + 1 for each hour past 8 hours. On a failed saving throw, a character suffers one level of Exhaustion.</p>
         </div>
-
-        <!-- Tab panes -->
-        <div class="sidebar-content">
-            <div class="sidebar-pane" id="home">
-                <h1 class="sidebar-header">
-                    World Map
-                    <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
-                </h1>
-                <p>Welcome to the world of <u>Malendyr</u> an ever expanding and wonderous world full of creatures and places worth exploring.</p>
-
-                <p>The world is currently centered on the main location of the campaign. The Tower of the Arcane Arts. This is home to many a magic user where they spend their time helping those in the surrounding area as well as expanding their current arcane understanding.</p>
-
-                <p>In order to navigate the map there are a couple of things that you need to be aware of. Firstly you can pan around using the mouse or your finger (if on a mobile device) to view different parts of the map. Secondly you can also zoom in or out by using the scroll wheel, buttons in the top right of the map, or pinching with your fingers (if on a mobile device). If you select one of the icons on display it will show you more information about the town or location that you have chosen. To close the marker simply click outside of the marker and it will dissapear. The icons will dissapear if you zoom out to far and will reappear once you zoom in close enough. Next to the zoom controls are two other buttons. The first is the measure button, and the second being the layer button.</p>
-
-                <p><b>Layer Controls</b></p>
-                <p> The layer controls button allows you to turn off or on various overlays. The top three options allow you to see the boundries between the states as well as the nations, selecting either one will show the area of land that each nation owns. By selecting 'None' it will remove all selections. If you need to remove the icons displayed on the screen for any reason you can do so by selecting the check box next to 'icons' in the Layer Controls box
-
-                <p><b>Measuring</b></p>
-                <p>The measure button allows you to see the distance between points that you place on the map. This is helpful for calculating the travel time between locations. It is important that you turn off the icons before measuring as otherwise you won't be able to click directly on the city. Once the icons are turned of simply click on the start of your journey and continue clicking in different locations, it will show you in miles how far between the two points, as you add more points it will continue to show you the distance to the individual points from the origin. You can also activate the measure tool by pressin 'm' on your keyboard. To exit the measrurement that you had completed just press escape on your keyboard or press the measure button again. To bring back the icons simply zoom in or out to an appropriate level or turn them on in the layer controls.</p>
-            </div>
-
-            <div class="sidebar-pane" id="travel">
-              <h1 class="sidebar-header">Travel times<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-              <p>Wondering how long it will take you to get from one location to the next, simple use the measure tool (or press 'm' on your keyboard) to find out the total amount of miles. The tooltip will then show you the distance and how long it will take to get there depending on the speed that you are travelling. You are only able to go as fast as the slowest member of your party.</p>
-              <p><b>Fast:</b></p>
-              <p>While travelling at a fast pace you have a -5 penalty to passive Wisdom (Perception) scores. You are able to travel 4 miles an hour or 30 miles a day (assuming 8 hours of travel time a day).</p>
-              <p><b>Normal:</b></p>
-              <p> While travelling at a normal pace you are able to travel 3 miles an hour or 24 miles a day (assuming 8 hours of travel time a day).</p>
-              <p><b>Slow:</b></<p>
-              <p> While travelling at a slow pace you are able to use Stealth. You are able to travel 2 miles an hour or 18 miles a day (assuming 8 hours of travel time a day).</p>
-              <p><b>Forced March:</b></<p>
-              <p>The Travel Pace table assumes that characters Travel for 8 hours in day. They can push on beyond that limit, at the risk of Exhaustion. For each additional hour of Travel beyond 8 hours, the characters cover the distance shown in the Hour column for their pace, and each character must make a Constitution saving throw at the end of the hour. The DC is 10 + 1 for each hour past 8 hours. On a failed saving throw, a character suffers one level of Exhaustion.</p>
-            
-            </div>
-        </div>
+      </div>
     </div>
     <div id="map" style="width: 100%; height: 100%; background: #888888; margin: 0"></div>
+    </div>
     <script type ="text/javascript" src="scripts/sidebar-v2-master/js/leaflet-sidebar.js"></script>
     <script type="text/javascript">
       // Create the tile layer that contains the images. Define the zoom levels and other options.
       var overworld = L.tileLayer('map_v3/{z}-{x}-{y}.png', {minZoom: 0, maxZoom: 7, noWrap: true, zoomControl: false});
 
       // Create the map and set its different layers as well as its starting view location and zoom level
-      var map = L.map('map', {layers: [overworld]}).setView([-28.098749, -108.28125], 6);
+      var map = L.map('map', {layers: [overworld], drawControl: true, attributionControl: false}).setView([-28.098749, -108.28125], 6);
 
       // Set the zoom position
       L.control.zoom({position:'topright',}).addTo(map);
@@ -214,14 +216,12 @@
             const iconName = item.icon;
             const icon = iconMap[iconName];
 
-            if (item.visible_to_players) {
-                const marker = L.marker([lat, lng], {icon: icon, title: item.name});
+            const marker = L.marker([lat, lng], {icon: icon, title: item.name});
 
-                // Add a popup to the marker with additional information
-                marker.bindPopup('<img src="' + item.url + '" width="300" height="200"><br><h1 style="color:' + item.color + ';font-size:20px;">' + item.name + '</h1><p>' + item.description + '<p>');
-                
-                lg_towns.addLayer(marker)
-              }
+            // Add a popup to the marker with additional information
+            marker.bindPopup('<img src="' + item.url + '" width="300" height="200"><br><h1 style="color:' + item.color + ';font-size:20px;">' + item.name + '</h1><p>' + item.description + '<p>');
+            
+            lg_towns.addLayer(marker)
           }
         } catch (error) {
           console.log("Could not get town data")
@@ -280,7 +280,7 @@
             const latlon = item.coords
             // Split the input string by comma
             const values = latlon.split(',');
-            
+
             // Create an empty list to store pairs
             const pairs = [];
             
@@ -294,8 +294,9 @@
               const pair = [latitude, longitude];
               pairs.push(pair);
             }
-
+            
             const state_lines = L.polygon(pairs, {color: item.color})
+
             var state_name = L.imageOverlay(item.url,[[parseFloat(item.imageLocLat1),parseFloat(item.imageLocLon1)],[parseFloat(item.imageLocLat2),parseFloat(item.imageLocLon2)]])
 
             lg_states.addLayer(state_lines)
@@ -371,7 +372,44 @@
         zoom: 7,
         marker: false
       })
-      map.addControl(controlSearch);  
+      map.addControl(controlSearch);
+      
+      // Draw Toolbar
+      map.pm.addControls({  
+        position: 'topright',
+        drawMarker: false,  
+        drawCircleMarker: false,
+        drawRectangle: false,
+        drawCircle: false,
+        drawText: false,
+        rotateMode: false,
+      });
+
+      function makePopupContent(feature){
+        return `
+          ${feature.geometry.coordinates}   
+        `;
+      }
+
+      function setPupup(layer) {
+        var feature = layer.toGeoJSON();
+        var converted = L.geoJSON(feature, {
+          coordsToLatLng: function (coords) {
+            return l.latlng(coords[1], coords[0]);
+          }
+        });
+        print(converted)
+        var coords = makePopupContent(feature);
+        layer.bindPopup(coords);
+      }
+
+      map.on('pm:create', function(e) {
+        var layer = e.layer;
+        setPupup(layer);
+        layer.on('pm:update', function(e) {
+          setPupup(e.layer);
+        });
+      });
     </script>
   </body>
 </html>
