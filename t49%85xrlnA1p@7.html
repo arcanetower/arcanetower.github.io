@@ -385,31 +385,53 @@
         rotateMode: false,
       });
 
-      function makePopupContent(feature){
-        return `
-          ${feature.geometry.coordinates}   
-        `;
+      function makePopupContent(feature) {
+        var coordinates = feature.geometry.coordinates;
+        var wrappedCoordinates = '';
+
+        if (Array.isArray(coordinates)) {
+          for (var i = 0; i < coordinates.length; i++) {
+            var coordinate = coordinates[i];
+            var wrappedCoordinate = coordinate.join(', ');
+            wrappedCoordinates += wrappedCoordinate + ' ';
+          }
+        } else {
+          wrappedCoordinates = coordinates.join(', ');
+        }
+
+        return '<span>' + wrappedCoordinates + '</span>';
       }
 
-      function setPupup(layer) {
+      function setPopup(layer) {
+        // Get coordinates as GeoJSON
         var feature = layer.toGeoJSON();
-        var converted = L.geoJSON(feature, {
-          coordsToLatLng: function (coords) {
-            return l.latlng(coords[1], coords[0]);
-          }
-        });
-        print(converted)
-        var coords = makePopupContent(feature);
-        layer.bindPopup(coords);
+
+        // Flip coordinates from GeoJSON to latlng
+        if (feature.geometry.type === 'Polygon') {
+          var coords = feature.geometry.coordinates[0];
+        } else if (feature.geometry.type === 'LineString') {
+          var coords = feature.geometry.coordinates;
+        }
+        var flippedCoords = coords.map(([lat, lon]) => [lon, lat]);
+        if (feature.geometry.type === 'Polygon') {
+          feature.geometry.coordinates[0] = flippedCoords;
+        } else if (feature.geometry.type === 'LineString') {
+          feature.geometry.coordinates = flippedCoords;
+        }
+
+        // Create the popup
+        var popupContent = makePopupContent(feature);
+        layer.bindPopup(popupContent);
       }
 
       map.on('pm:create', function(e) {
         var layer = e.layer;
-        setPupup(layer);
+        setPopup(layer);
         layer.on('pm:update', function(e) {
-          setPupup(e.layer);
+          setPopup(e.layer);
         });
       });
+
     </script>
   </body>
 </html>
