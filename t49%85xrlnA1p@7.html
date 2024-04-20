@@ -63,7 +63,7 @@
     <script type ="text/javascript" src="scripts/sidebar-v2-master/js/leaflet-sidebar.js"></script>
     <script type="text/javascript">
       // Create the tile layer that contains the images. Define the zoom levels and other options.
-      var overworld = L.tileLayer('map_v3/{z}-{x}-{y}.png', {minZoom: 0, maxZoom: 7, noWrap: true, zoomControl: false});
+      var overworld = L.tileLayer('map_v4/{z}-{x}-{y}.png', {minZoom: 0, maxZoom: 8, noWrap: true, zoomControl: false});
 
       // Create the map and set its different layers as well as its starting view location and zoom level
       var map = L.map('map', {layers: [overworld], drawControl: true, attributionControl: false}).setView([-28.098749, -108.28125], 6);

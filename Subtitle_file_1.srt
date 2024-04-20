@@ -1,0 +1,807 @@
+1
+00:00:08,000 --> 00:00:10,000
+So you have completed your Fusion model
+
+2
+00:00:10,000 --> 00:00:14,000
+and you want to export some of the faces out as SVGs.
+
+3
+00:00:14,000 --> 00:00:17,000
+There is not an inbuilt way in Fusion to do this easily,
+
+4
+00:00:17,000 --> 00:00:19,000
+but thankfully, we're able to download various plug-ins
+
+5
+00:00:19,000 --> 00:00:23,000
+from the Autodesk App Store, which enable us to do various things.
+
+6
+00:00:23,000 --> 00:00:26,000
+One such thing is exporting faces as SVG files.
+
+7
+00:00:26,000 --> 00:00:29,000
+To do this, we're going to have to go up to Google Chrome.
+
+8
+00:00:29,000 --> 00:00:35,000
+And when we're on Chrome, we're going to type in Autodesk App Store.
+
+9
+00:00:35,000 --> 00:00:36,000
+And clicking on the first link will take
+
+10
+00:00:36,000 --> 00:00:39,000
+us to the App Store, where we can then search through an app.
+
+11
+00:00:39,000 --> 00:00:45,000
+The app we're looking for is called Shaper Utilities.
+
+12
+00:00:45,000 --> 00:00:47,000
+As you type it, it should auto-fill it out.
+
+13
+00:00:47,000 --> 00:00:50,000
+Then you can click on it and it will take you to the page.
+
+14
+00:00:50,000 --> 00:00:52,000
+Clicking on the plugin will then take you
+
+15
+00:00:52,000 --> 00:00:58,000
+to its homepage, where you can then go ahead and download the plugin yourself.
+
+16
+00:00:58,000 --> 00:01:01,000
+It's important to make sure you choose the correct operating system,
+
+17
+00:01:01,000 --> 00:01:07,000
+whether you're on a Mac or whether you're on a PC.
+
+18
+00:01:07,000 --> 00:01:08,000
+Once you've switched over to the correct
+
+19
+00:01:08,000 --> 00:01:12,000
+one, I'm on a Windows device, so I chose Windows, you'll press Download.
+
+20
+00:01:12,000 --> 00:01:15,000
+If you aren't already logged in, it will ask you to log in and you'll have
+
+21
+00:01:15,000 --> 00:01:20,000
+to press the Download button again, I'm already logged into my Fusion account.
+
+22
+00:01:20,000 --> 00:01:25,000
+I'll then click Download, and it will begin downloading
+
+23
+00:01:25,000 --> 00:01:27,000
+the installation file down here in the corner.
+
+24
+00:01:27,000 --> 00:01:30,000
+Once that's finished, we will open that file up,
+
+25
+00:01:30,000 --> 00:01:36,000
+install it, and then it should be available in Fusion after a quick restart.
+
+26
+00:01:36,000 --> 00:01:37,000
+Now that this is finished downloading,
+
+27
+00:01:37,000 --> 00:01:46,000
+we can click on it and it should begin the installation process.
+
+28
+00:01:46,000 --> 00:01:48,000
+If you get this Windows protecting your
+
+29
+00:01:48,000 --> 00:01:56,000
+PC, you can always press the More Info and press Run anyway.
+
+30
+00:01:56,000 --> 00:01:57,000
+Awesome.
+
+31
+00:01:57,000 --> 00:01:59,000
+Now we're going to need to restart our
+
+32
+00:01:59,000 --> 00:02:03,000
+Fusion in our application so that our plugin will appear.
+
+33
+00:02:03,000 --> 00:02:14,000
+I'm going to quickly close that down.
+
+34
+00:02:14,000 --> 00:02:17,000
+Now let's reopen up our design.
+
+35
+00:02:17,000 --> 00:02:20,000
+The picnic table,
+
+36
+00:02:20,000 --> 00:02:27,000
+which is what we made in the last tutorial.
+
+37
+00:02:27,000 --> 00:02:29,000
+Now looking at our fusion model, there are going to be three things
+
+38
+00:02:29,000 --> 00:02:32,000
+that we're going to want to export as SVG files.
+
+39
+00:02:32,000 --> 00:02:35,000
+We're going to want to do this base of our table-top.
+
+40
+00:02:35,000 --> 00:02:38,000
+We're also then going to do our U-leg over
+
+41
+00:02:38,000 --> 00:02:42,000
+here, and then our third single leg by itself.
+
+42
+00:02:42,000 --> 00:02:46,000
+In order to get to the plugin that we installed, we need to go up here
+
+43
+00:02:46,000 --> 00:02:49,000
+to utilities and you'll find over on the side here,
+
+44
+00:02:49,000 --> 00:02:55,000
+there will be a new section with a little shape called Export to Origin.
+
+45
+00:02:55,000 --> 00:02:57,000
+This is the plugin that we just installed.
+
+46
+00:02:57,000 --> 00:02:59,000
+You can see by the same logo.
+
+47
+00:02:59,000 --> 00:03:04,000
+We will click on this and then we're going to make a selection.
+
+48
+00:03:04,000 --> 00:03:07,000
+Now it says here, Select a single face to define the top of the model.
+
+49
+00:03:07,000 --> 00:03:09,000
+All details that can be cut from the top
+
+50
+00:03:09,000 --> 00:03:13,000
+will be exported as an appropriately coloured, coded, SVG file.
+
+51
+00:03:13,000 --> 00:03:19,000
+If you select Advanced, you can choose a body or choose just a face or an entire
+
+52
+00:03:19,000 --> 00:03:23,000
+sketch if you wanted to export the sketch instead.
+
+53
+00:03:23,000 --> 00:03:25,000
+However, most of the time you won't need to use the advanced.
+
+54
+00:03:25,000 --> 00:03:29,000
+Instead, we'll just need to define the top or the top face of your model.
+
+55
+00:03:29,000 --> 00:03:31,000
+Let's start with our picnic table.
+
+56
+00:03:31,000 --> 00:03:32,000
+I'm going to select that.
+
+57
+00:03:32,000 --> 00:03:34,000
+It will show here one selected and it will
+
+58
+00:03:34,000 --> 00:03:38,000
+be highlighted in blue, and then we'll press OK.
+
+59
+00:03:38,000 --> 00:03:42,000
+Next, it will ask you to save that SPG file to an appropriate location.
+
+60
+00:03:42,000 --> 00:03:45,000
+For now, I'm just going to save this to my downloads folder.
+
+61
+00:03:45,000 --> 00:03:52,000
+We will call this, picnic table top.
+
+62
+00:03:52,000 --> 00:03:53,000
+And Save.
+
+63
+00:03:53,000 --> 00:03:57,000
+And we repeat that process for each of the other faces that we need to export.
+
+64
+00:03:57,000 --> 00:03:59,000
+So again, click on the shape or origin,
+
+65
+00:03:59,000 --> 00:04:04,000
+choose the face, make sure it says selected, and press OK.
+
+66
+00:04:04,000 --> 00:04:08,000
+And then give it a name, U-Leg.
+
+67
+00:04:08,000 --> 00:04:14,000
+Click New Table U-Leg.
+
+68
+00:04:14,000 --> 00:04:16,000
+Save.
+
+69
+00:04:16,000 --> 00:04:22,000
+One more time, export origin, choose the face, select OK, and give it a name.
+
+70
+00:04:22,000 --> 00:04:27,000
+Picnic Table, Straight, Leg.
+
+71
+00:04:27,000 --> 00:04:32,000
+Now we've saved those three files to the SVG files.
+
+72
+00:04:32,000 --> 00:04:35,000
+Let's say that we wanted to laser cut out these three pieces.
+
+73
+00:04:35,000 --> 00:04:36,000
+In order to do that,
+
+74
+00:04:36,000 --> 00:04:39,000
+we would need to get the files set up in illustrator so we can have
+
+75
+00:04:39,000 --> 00:04:43,000
+the appropriate colors attached to each of the lines and the fill shapes.
+
+76
+00:04:43,000 --> 00:04:46,000
+For now, let's just close Fusion and
+
+77
+00:04:46,000 --> 00:04:52,000
+we will open up the illustrator and show you what the files look like as
+
+78
+00:04:52,000 --> 00:04:56,000
+they were exported from the Shaper Utilities and how we can correct
+
+79
+00:04:56,000 --> 00:04:59,000
+that in illustrator to be appropriate for your laser cover.
+
+80
+00:04:59,000 --> 00:05:09,000
+All right, with illustrator open,
+
+81
+00:05:09,000 --> 00:05:14,000
+I'm actually going to open up a template, which I've created to help me remind
+
+82
+00:05:14,000 --> 00:05:24,000
+myself of the different colors and the line thicknesses that I need.
+
+83
+00:05:24,000 --> 00:05:27,000
+This template will be available in the description because it's very
+
+84
+00:05:27,000 --> 00:05:31,000
+helpful to have all the information that you need available.
+
+85
+00:05:31,000 --> 00:05:36,000
+So when we are getting a file ready for the laser cutter,
+
+86
+00:05:36,000 --> 00:05:40,000
+we need to make sure each of the lines are set to the appropriate color,
+
+87
+00:05:40,000 --> 00:05:45,000
+and we need to make sure the line width is set to 0.001.
+
+88
+00:05:45,000 --> 00:05:50,000
+Raster means that it's going to be based on the shade of black that it's going
+
+89
+00:05:50,000 --> 00:05:54,000
+to be, will determine how much power the laser is going to have.
+
+90
+00:05:54,000 --> 00:06:01,000
+So it enables you to laser cut or etch into your wood an actual image because it
+
+91
+00:06:01,000 --> 00:06:04,000
+will do some darker parts darker and some lighter parts lighter.
+
+92
+00:06:04,000 --> 00:06:05,000
+If there's something that you need to have
+
+93
+00:06:05,000 --> 00:06:08,000
+that done, it needs to be in black and white.
+
+94
+00:06:08,000 --> 00:06:09,000
+If there's a line that we're going to be
+
+95
+00:06:09,000 --> 00:06:14,000
+the laser will be cutting around, we need to make sure that it's got full red.
+
+96
+00:06:14,000 --> 00:06:18,000
+So that means that in an RGB file, the red is going to be at 255,
+
+97
+00:06:18,000 --> 00:06:24,000
+and then the blue and the green are both going to be at zero and zero.
+
+98
+00:06:24,000 --> 00:06:25,000
+If we're etching,
+
+99
+00:06:25,000 --> 00:06:30,000
+meaning we're not cutting all the way through the piece of wood or the material
+
+100
+00:06:30,000 --> 00:06:33,000
+that we're using, then we're going to want to make sure it's completely blue.
+
+101
+00:06:33,000 --> 00:06:37,000
+That means that the red, the green and the blue,
+
+102
+00:06:37,000 --> 00:06:42,000
+the red and the green are going to be zero and the blue is going to be at 255.
+
+103
+00:06:42,000 --> 00:06:45,000
+Let's get one of our files that we just
+
+104
+00:06:45,000 --> 00:06:50,000
+exported into here and we'll just drag this picnic table top into illustrator.
+
+105
+00:06:50,000 --> 00:06:52,000
+Once in illustrator, we're going to want to change the lines
+
+106
+00:06:52,000 --> 00:06:56,000
+because currently we have a black fill with no outline.
+
+107
+00:06:56,000 --> 00:07:01,000
+The first thing we need to do is actually change our colour mode from CMYK to RGB.
+
+108
+00:07:01,000 --> 00:07:03,000
+Because remember
+
+109
+00:07:03,000 --> 00:07:05,000
+that in order for the laser cutter to interpret the colors correctly,
+
+110
+00:07:05,000 --> 00:07:09,000
+there needs to be an RGB mode and there needs to be a red if we're going to be
+
+111
+00:07:09,000 --> 00:07:12,000
+doing cutting, which is what we're going to be doing.
+
+112
+00:07:12,000 --> 00:07:14,000
+In our file to change the document type
+
+113
+00:07:14,000 --> 00:07:18,000
+to RGB, we're going to go to File, down to Document Colour mode.
+
+114
+00:07:18,000 --> 00:07:22,000
+I'm going to choose RGB colour.
+
+115
+00:07:22,000 --> 00:07:23,000
+Sometimes this may not always work and you
+
+116
+00:07:23,000 --> 00:07:28,000
+may actually have your colour palette not showing any colours.
+
+117
+00:07:28,000 --> 00:07:30,000
+But if you go into it and just sure you
+
+118
+00:07:30,000 --> 00:07:35,000
+select RGB again, it should make sure that it auto-corrects
+
+119
+00:07:35,000 --> 00:07:37,000
+so that you're able to get lots of different colors.
+
+120
+00:07:37,000 --> 00:07:39,000
+Once you've got your RGB mode set,
+
+121
+00:07:39,000 --> 00:07:43,000
+change from CMYK to RGB, we're then going to want to go up to here
+
+122
+00:07:43,000 --> 00:07:49,000
+to our stroke and change our stroke to the values that we talked about before.
+
+123
+00:07:49,000 --> 00:07:52,000
+So our red is going to be want to be 255,
+
+124
+00:07:52,000 --> 00:07:56,000
+with our green and our blue both being at zero.
+
+125
+00:07:56,000 --> 00:07:58,000
+Next, we want to change our stroke width.
+
+126
+00:07:58,000 --> 00:08:00,000
+Our stroke width and line width needs
+
+127
+00:08:00,000 --> 00:08:03,000
+to be at 0.001. So over here on the stroke,
+
+128
+00:08:03,000 --> 00:08:09,000
+we will just click in this box and change this to 0.001 and hit Enter.
+
+129
+00:08:09,000 --> 00:08:11,000
+Lastly, we need to remove the fill because
+
+130
+00:08:11,000 --> 00:08:15,000
+any black that is on our file, it will raster it.
+
+131
+00:08:15,000 --> 00:08:17,000
+It will do a back and forth like printing
+
+132
+00:08:17,000 --> 00:08:21,000
+from an inkjet printer and will be completely burnt out across the top.
+
+133
+00:08:21,000 --> 00:08:27,000
+We're going to click on the black and we're going to remove the fill.
+
+134
+00:08:27,000 --> 00:08:28,000
+So now it's gone completely.
+
+135
+00:08:28,000 --> 00:08:29,000
+And if I select out of here,
+
+136
+00:08:29,000 --> 00:08:34,000
+you should be able to see a faint red line where it's going to cut.
+
+137
+00:08:34,000 --> 00:08:35,000
+Secondly, I can see that there are two
+
+138
+00:08:35,000 --> 00:08:37,000
+other lines here which are currently black.
+
+139
+00:08:37,000 --> 00:08:39,000
+I don't want those to be rastered.
+
+140
+00:08:39,000 --> 00:08:41,000
+I want them to be cut out because they are handles.
+
+141
+00:08:41,000 --> 00:08:47,000
+I'm going to select that object, go to my Fill, remove the Fill,
+
+142
+00:08:47,000 --> 00:08:55,000
+change my stroke to red 255, green 0 and blue 0.
+
+143
+00:08:55,000 --> 00:08:59,000
+Then change my stroke width to 0.001, hit Enter.
+
+144
+00:08:59,000 --> 00:09:05,000
+I'm going to do this for each object that I want to cut out.
+
+145
+00:09:05,000 --> 00:09:15,000
+No fill, red all the way up to 255, stroke width 0.001, Enter.
+
+146
+00:09:15,000 --> 00:09:17,000
+This is what your file should look like
+
+147
+00:09:17,000 --> 00:09:20,000
+when you want to send it up to the laser cutter.
+
+148
+00:09:20,000 --> 00:09:27,000
+I'm going to do this for each individual piece that we have.
+
+149
+00:09:27,000 --> 00:09:29,000
+Once you've done this process to all parts
+
+150
+00:09:29,000 --> 00:09:32,000
+of the depicting table, you're going to want to copy and paste
+
+151
+00:09:32,000 --> 00:09:36,000
+each of the individual parts into the template provided.
+
+152
+00:09:36,000 --> 00:09:38,000
+There are a couple of reasons we want to do this.
+
+153
+00:09:38,000 --> 00:09:42,000
+One of the reasons is that the template is set to the size of the laser cutter.
+
+154
+00:09:42,000 --> 00:09:44,000
+The template I've got open here is set
+
+155
+00:09:44,000 --> 00:09:49,000
+to a bigger laser cutter, which is 810 by 450 millimetres.
+
+156
+00:09:49,000 --> 00:09:51,000
+And if you look in the description,
+
+157
+00:09:51,000 --> 00:09:55,000
+there is a template for the smaller one, which is 600 by 450.
+
+158
+00:09:55,000 --> 00:10:01,000
+The other reason that we want to put our individual pieces into this template is
+
+159
+00:10:01,000 --> 00:10:03,000
+because this template is set to millimetres.
+
+160
+00:10:03,000 --> 00:10:10,000
+If we looked in our picnic table top SVG file and tried to look at the size
+
+161
+00:10:10,000 --> 00:10:14,000
+of an object, we would see that it is set to point values.
+
+162
+00:10:14,000 --> 00:10:15,000
+And we actually want this to be set
+
+163
+00:10:15,000 --> 00:10:18,000
+to millimeter values before we send it to the laser cutter.
+
+164
+00:10:18,000 --> 00:10:24,000
+So on our template folder, it's actually already set up to be in millimeters.
+
+165
+00:10:24,000 --> 00:10:27,000
+So to copy something from one file to another, we're going to select
+
+166
+00:10:27,000 --> 00:10:32,000
+everything in the file by pressing File, pressing CTRL A or Command A if you're
+
+167
+00:10:32,000 --> 00:10:37,000
+on a Mac, then pressing CTRL C or Command C to copy.
+
+168
+00:10:37,000 --> 00:10:43,000
+Then moving over to our template file and pressing CTRL V or Command V to paste.
+
+169
+00:10:43,000 --> 00:10:47,000
+And this will paste in our file that we had taken from the other one.
+
+170
+00:10:47,000 --> 00:10:51,000
+Now I can see that my tabletop is currently rotated the wrong direction.
+
+171
+00:10:51,000 --> 00:10:54,000
+In order to rotate this around, I'm going to take my mouse over to one
+
+172
+00:10:54,000 --> 00:10:59,000
+of the corners until it goes into a little 90 degree angle with two arrows on it.
+
+173
+00:10:59,000 --> 00:11:06,000
+I can click and drag to then rotate this piece around 90 degrees.
+
+174
+00:11:06,000 --> 00:11:07,000
+When you're rotating,
+
+175
+00:11:07,000 --> 00:11:13,000
+if you hold down the Shift key, you'll be able to snap it in 45 degree increments.
+
+176
+00:11:13,000 --> 00:11:17,000
+Then just move it down to the white portion of the template and you can see
+
+177
+00:11:17,000 --> 00:11:20,000
+how much space your table is going to take up on the laser cutter.
+
+178
+00:11:20,000 --> 00:11:22,000
+Now that I have my picnic table top within
+
+179
+00:11:22,000 --> 00:11:26,000
+the template, I can see that I'm probably only going to want to have this as its own
+
+180
+00:11:26,000 --> 00:11:30,000
+laser cut file because it takes up so much of the space of the laser cutter.
+
+181
+00:11:30,000 --> 00:11:35,000
+I will probably do the U-leg and the straight leg on a separate file.
+
+182
+00:11:35,000 --> 00:11:38,000
+Before I save this file, I want to make sure that it's going to be
+
+183
+00:11:38,000 --> 00:11:42,000
+the right size to fit the piece of material that I'm going to have,
+
+184
+00:11:42,000 --> 00:11:47,000
+or make sure I cut the material that goes into the laser cutter to the right size.
+
+185
+00:11:47,000 --> 00:11:49,000
+To do this while selecting the biggest
+
+186
+00:11:49,000 --> 00:11:54,000
+object within your space, you can go up here to the transform tool and select it.
+
+187
+00:11:54,000 --> 00:11:58,000
+Over here under width and height, it will tell you in millimeters the width
+
+188
+00:11:58,000 --> 00:12:00,000
+of the object and the height of the object.
+
+189
+00:12:00,000 --> 00:12:04,000
+The reason it shows you the width and height in millimeters within this
+
+190
+00:12:04,000 --> 00:12:08,000
+template is because it's set that the unit of measurement is set as millimeters.
+
+191
+00:12:08,000 --> 00:12:10,000
+If you tried to do this within the other
+
+192
+00:12:10,000 --> 00:12:15,000
+individual files that Fusion made for us, you would see that it is set as point,
+
+193
+00:12:15,000 --> 00:12:17,000
+which is good when you're working on objects.
+
+194
+00:12:17,000 --> 00:12:19,000
+But before you send the object to a laser
+
+195
+00:12:19,000 --> 00:12:22,000
+cutter or another device that's going to be using millimeters as the unit
+
+196
+00:12:22,000 --> 00:12:26,000
+of measurement, it's always a good idea to check it to make sure
+
+197
+00:12:26,000 --> 00:12:29,000
+that the millimeter size is the correct size that you need.
+
+198
+00:12:29,000 --> 00:12:34,000
+So this file is ready for me to save and send to the laser cutter.
+
+199
+00:12:34,000 --> 00:12:36,000
+And that's it. That's how we export
+
+200
+00:12:36,000 --> 00:12:41,000
+some faces from our Fusion model using the Shaper Utility to then get them
+
+201
+00:12:41,000 --> 00:12:44,000
+into Illustrator, set up the colours correctly,
+
+202
+00:12:44,000 --> 00:15:00,000
+place them into a template and save them ready to send to the laser cutter.
