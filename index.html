@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="scripts/leaflet-search/leaflet-search.css">
     <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css"/>
     <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
+  <script src="scripts/leaflet.timeline.min.js"></script>
+  <!-- If you want the plugin stylesheet locally, download leaflet.timeline.min.css into scripts/ and update this link -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.timeline@1.2.1/dist/leaflet.timeline.min.css">
   </head>
   <body style="height: 100%; margin: 0;">
     <div id="sidebar" class="sidebar collapsed">
@@ -87,8 +90,69 @@
         textColor: 'white',
       }).addTo(map);
 
-      //Load the script to allow the map view to be controlled via url
-      var hash = new L.Hash(map);
+      // URL/hash handling: use a formal query-string style in the fragment, e.g. #?z=5&lat=-21.8&lng=-97.25&place=TownName
+      function parseHashParams() {
+        var raw = (location.hash || '').replace(/^#/, '');
+        // If it looks like a query string (has '=' or starts with '?'), parse directly
+        if (raw.indexOf('?') === 0 || raw.indexOf('=') !== -1) {
+          var q = raw.indexOf('?') === 0 ? raw.slice(1) : raw;
+          return new URLSearchParams(q);
+        }
+        // Legacy format: z/lat/lng (e.g. 5/-21.800/-97.251)
+        var m = raw.match(/^(\d+)\/(-?\d+(?:\.\d+)?)\/(-?\d+(?:\.\d+)?)/);
+        if (m) {
+          var s = new URLSearchParams();
+          s.set('z', m[1]);
+          s.set('lat', m[2]);
+          s.set('lng', m[3]);
+          return s;
+        }
+        return new URLSearchParams();
+      }
+
+      function updateHashFromMap() {
+        try {
+          var c = map.getCenter();
+          var z = map.getZoom();
+          var sp = new URLSearchParams();
+          sp.set('z', String(z));
+          sp.set('lat', c.lat.toFixed(6));
+          sp.set('lng', c.lng.toFixed(6));
+          if (placeActive && placeName) sp.set('place', placeName);
+          // include current timeline year if timelineCurrentTime is set
+          if (Number.isFinite(timelineCurrentTime)) {
+            try {
+              var yr = new Date(Number(timelineCurrentTime)).getUTCFullYear();
+              if (Number.isFinite(yr)) sp.set('year', String(yr));
+            } catch (e) {}
+          }
+          location.hash = '?' + sp.toString();
+        } catch (e) { console.log('updateHashFromMap error', e); }
+      }
+
+      // apply initial hash params on load
+      (function applyHashOnLoad(){
+        try {
+          var params = parseHashParams();
+          if (params.has('z') && params.has('lat') && params.has('lng')) {
+            var z = Number(params.get('z'));
+            var lat = Number(params.get('lat'));
+            var lng = Number(params.get('lng'));
+            if (Number.isFinite(z) && Number.isFinite(lat) && Number.isFinite(lng)) {
+              map.setView([lat, lng], z);
+            }
+          }
+          if (params.has('place')) {
+            placeName = params.get('place');
+            placeActive = true;
+          }
+          // optional year parameter (e.g. #?year=1200)
+          if (params.has('year')) {
+            var yv = Number(params.get('year'));
+            if (Number.isFinite(yv)) requestedYear = Math.floor(yv);
+          }
+        } catch(e){ console.log('applyHashOnLoad error', e); }
+      })();
 
       // Add the sidebar to the map
       var sidebar = L.control.sidebar('sidebar').addTo(map);
@@ -103,6 +167,248 @@
       var lg_nations = L.layerGroup();
       var lg_states = L.layerGroup();
       var lg_roads = L.layerGroup().addTo(map);
+  // Layer used as search index - contains invisible markers for all locations so search works
+  var searchLayer = L.layerGroup();
+      // Timeline layers (created after fetching data)
+      var timeline_towns = null;
+      var timeline_nations = null;
+      var timeline_states = null;
+      var timeline_roads = null;
+      // If the timeline plugin isn't available when we build features, store them here and create layers later
+      var pendingTimelineFeatures = {
+        towns: null,
+        nations: null,
+        states: null,
+        roads: null
+      };
+
+      // Ensure any timeline layers are created, added to the map, and initialized to the min year
+      function ensureTimelinesOnMap() {
+        if (!Number.isFinite(timelineMinYear) || !Number.isFinite(timelineMaxYear)) return;
+        try {
+          // If there are pending features and L.timeline is available, create them now
+            if (typeof L !== 'undefined' && typeof L.timeline === 'function') {
+              if (pendingTimelineFeatures.towns && !timeline_towns) {
+                timeline_towns = L.timeline({type:'FeatureCollection', features: pendingTimelineFeatures.towns}, {
+                  pointToLayer: function(feature, latlng){ const icon = iconMap[feature.properties.icon] || iconMap['town']; return L.marker(latlng, {icon: icon, title: feature.properties.name}); },
+                  onEachFeature: function(feature, layer){ try { var popupContent = makeEntityPopupHtml(feature.properties); layer.bindPopup(popupContent, {'minWidth':'260','maxWidth':'260','maxHeight':'320'}); } catch(e) { if (feature.properties) layer.bindPopup('<h3>' + (feature.properties.name||'') + '</h3>'); } },
+                  getInterval: function(feature){ const s = Number(feature.properties.startYear); const e = Number(feature.properties.endYear); const start = Number.isFinite(s)?yearToMillis(s):null; const end = Number.isFinite(e)?(yearToMillis(e) + (365*24*60*60*1000 - 1)):(start||null); return start&&end?[start,end]:null; }
+                });
+              }
+              if (pendingTimelineFeatures.nations && !timeline_nations) {
+                timeline_nations = L.timeline({type:'FeatureCollection', features: pendingTimelineFeatures.nations}, {
+                  style: function(feature){ return {color: feature.properties.color || '#3388ff', weight:2, opacity:0.6}; },
+                  onEachFeature: function(feature, layer){ try { var popupContent = makeEntityPopupHtml(feature.properties); layer.bindPopup(popupContent, popupOptions); } catch(e) { if (feature.properties && feature.properties.name) layer.bindPopup('<h3>' + (feature.properties.name||'') + '</h3>', popupOptions); } },
+                  getInterval: function(feature){ const s = Number(feature.properties.startYear); const e = Number(feature.properties.endYear); const start = Number.isFinite(s)?yearToMillis(s):null; const end = Number.isFinite(e)?(yearToMillis(e) + (365*24*60*60*1000 - 1)):(start||null); return start&&end?[start,end]:null; }
+                });
+              }
+              if (pendingTimelineFeatures.states && !timeline_states) {
+                timeline_states = L.timeline({type:'FeatureCollection', features: pendingTimelineFeatures.states}, {
+                  style: function(feature){ return {color: feature.properties.color || '#3388ff', weight:2, opacity:0.6}; },
+                  onEachFeature: function(feature, layer){ try { var popupContent = makeEntityPopupHtml(feature.properties); layer.bindPopup(popupContent, popupOptions); } catch(e) { if (feature.properties && feature.properties.name) layer.bindPopup('<h3>' + (feature.properties.name||'') + '</h3>', popupOptions); } },
+                  getInterval: function(feature){ const s = Number(feature.properties.startYear); const e = Number(feature.properties.endYear); const start = Number.isFinite(s)?yearToMillis(s):null; const end = Number.isFinite(e)?(yearToMillis(e) + (365*24*60*60*1000 - 1)):(start||null); return start&&end?[start,end]:null; }
+                });
+              }
+              if (pendingTimelineFeatures.roads && !timeline_roads) {
+                timeline_roads = L.timeline({type:'FeatureCollection', features: pendingTimelineFeatures.roads}, {
+                  style: function(feature){ return {color: feature.properties.color || '#3388ff', weight: Number(feature.properties.line_weight) || 2}; },
+                  onEachFeature: function(feature, layer){ try { var popupContent = makeEntityPopupHtml(feature.properties); layer.bindPopup(popupContent, popupOptions); } catch(e) { if (feature.properties && feature.properties.name) layer.bindPopup('<h3>' + (feature.properties.name||'') + '</h3>', popupOptions); } },
+                  getInterval: function(feature){ const s = Number(feature.properties.startYear); const e = Number(feature.properties.endYear); const start = Number.isFinite(s)?yearToMillis(s):null; const end = Number.isFinite(e)?(yearToMillis(e) + (365*24*60*60*1000 - 1)):(start||null); return start&&end?[start,end]:null; }
+                });
+              }
+          }
+
+          // Add any timeline layers to map and initialize time
+          if (timeline_towns && (!timeline_towns._addedToMap)) { try { timeline_towns.addTo(map); timeline_towns._addedToMap = true; } catch(e){} }
+          if (timeline_nations && (!timeline_nations._addedToMap)) { try { timeline_nations.addTo(map); timeline_nations._addedToMap = true; } catch(e){} }
+          if (timeline_states && (!timeline_states._addedToMap)) { try { timeline_states.addTo(map); timeline_states._addedToMap = true; } catch(e){} }
+          if (timeline_roads && (!timeline_roads._addedToMap)) { try { timeline_roads.addTo(map); timeline_roads._addedToMap = true; } catch(e){} }
+
+          // set initial time so features whose interval includes the min year are visible
+          if (Number.isFinite(timelineMinYear)) {
+            // if the user requested an explicit year via URL, prefer that
+            var initialYear = (Number.isFinite(requestedYear) ? Number(requestedYear) : Number(timelineMinYear));
+            var t = yearToMillis(Number(initialYear));
+            // remember current selection
+            timelineCurrentTime = t;
+            if (timeline_towns && timeline_towns.setTime) timeline_towns.setTime(t);
+            if (timeline_nations && timeline_nations.setTime) timeline_nations.setTime(t);
+            if (timeline_states && timeline_states.setTime) timeline_states.setTime(t);
+            if (timeline_roads && timeline_roads.setTime) timeline_roads.setTime(t);
+          }
+          // Diagnostic: verify which timeline feature layers are actually present on the map
+          try {
+            function inspectTimeline(tl, name) {
+              if (!tl || !tl._featureLayers) return console.log('inspectTimeline:', name, 'no timeline');
+              var sample = tl._featureLayers.slice(0,5);
+              console.log('inspectTimeline:', name, 'features:', tl._featureLayers.length);
+              sample.forEach(function(fl, i){
+                try {
+                  var inner = (fl.layer && typeof fl.layer.getLayers === 'function') ? fl.layer.getLayers() : [];
+                  var innerTypes = inner.map(function(l){ return l && l.constructor && l.constructor.name; });
+                  var geoOnMap = (typeof map.hasLayer === 'function') ? map.hasLayer(fl.layer) : 'map.hasLayer?no';
+                  var innerOnMap = inner.map(function(l){ return (typeof map.hasLayer === 'function') ? map.hasLayer(l) : 'map.hasLayer?no'; });
+                  console.log('  feature', i, 'name=' + (fl.feature && fl.feature.properties && fl.feature.properties.name), 'interval=', fl.interval, 'geoLayersCount=', inner.length, 'geoLayerTypes=', innerTypes, 'geoOnMap=', geoOnMap, 'innerOnMap=', innerOnMap);
+                } catch(e){ console.log('inspectTimeline sample error', e); }
+              });
+            }
+            inspectTimeline(timeline_towns, 'towns');
+            inspectTimeline(timeline_nations, 'nations');
+            inspectTimeline(timeline_states, 'states');
+            inspectTimeline(timeline_roads, 'roads');
+          } catch(e) { console.log('timeline inspect error', e); }
+        } catch (e) {
+          console.log('ensureTimelinesOnMap error', e);
+        }
+      }
+      var timeline_towns_count = 0;
+      var timeline_nations_count = 0;
+      var timeline_states_count = 0;
+      var timeline_roads_count = 0;
+
+      // Helper: parse a year value from various possible inputs (number, string like '1200' or 'c.1200 CE')
+      function parseYear(value) {
+        if (value === null || value === undefined) return null;
+        if (typeof value === 'number' && Number.isFinite(value)) return Math.floor(value);
+        if (typeof value === 'string') {
+          // allow 1-4 digit years (e.g. 0, 45, 1200) and optional BCE/CE tokens
+          // match first group of 1-4 digits, optionally prefixed by 'c.' or similar
+          const m = value.match(/(-?\d{1,4})/);
+          if (m) return Number(m[1]);
+          // fallback: strip non-digit chars and parse
+          const n = parseInt(value.replace(/[^0-9-]/g, ''), 10);
+          return Number.isFinite(n) ? n : null;
+        }
+        return null;
+      }
+
+      // Convert a year integer to a millisecond timestamp at start of year
+      // Uses setFullYear to avoid JS treating years 0-99 as 1900-1999
+      function yearToMillis(year) {
+        if (!Number.isFinite(Number(year))) return null;
+        var y = Number(year);
+        var d = new Date(0);
+        d.setUTCFullYear(y, 0, 1); // set year/month/day in UTC
+        d.setUTCHours(0,0,0,0);
+        return d.getTime();
+      }
+
+      // Helper: read a property with common name variants
+      function readYearProp(obj, base) {
+        if (!obj) return null;
+        const variants = [base, base.toLowerCase(), base.toUpperCase(), base.replace(/([A-Z])/g,'_$1').toLowerCase(), base.replace(/([A-Z])/g,'_$1')];
+        for (let i = 0; i < variants.length; i++) {
+          const key = variants[i];
+          if (obj.hasOwnProperty(key) && obj[key] !== '') return obj[key];
+        }
+        // also try keys that include hyphens or spaces
+        const alt1 = base.replace(/([A-Z])/g,'-$1').toLowerCase();
+        if (obj.hasOwnProperty(alt1) && obj[alt1] !== '') return obj[alt1];
+        const alt2 = base.replace(/([A-Z])/g,' $1').toLowerCase();
+        if (obj.hasOwnProperty(alt2) && obj[alt2] !== '') return obj[alt2];
+        // try stripped variants of keys (remove non-alphanumeric) to match messy headers
+        const cleanedBase = base.toLowerCase().replace(/[^a-z0-9]/g, '');
+        for (let k of Object.keys(obj)) {
+          const cleaned = k.toLowerCase().replace(/[^a-z0-9]/g, '');
+          if (cleaned === cleanedBase && obj[k] !== '') return obj[k];
+        }
+        return null;
+      }
+
+      // Fallback: search object keys for likely year fields (e.g. 'start', 'start_year', 'start year', 'from')
+      function findYearField(obj, which) {
+        if (!obj) return null;
+        const keyPatterns = (which === 'end')
+          ? ['end', 'to', 'until', 'finish', 'stop', 'endYear', 'end_year']
+          : ['start', 'from', 'begin', 'startYear', 'start_year'];
+        const keys = Object.keys(obj);
+        for (let k of keys) {
+          const kl = k.toLowerCase().replace(/[_\- ]+/g, '');
+          for (let p of keyPatterns) {
+            const pl = p.toLowerCase().replace(/[_\- ]+/g, '');
+            if (kl.indexOf(pl) !== -1) {
+              const v = obj[k];
+              const y = parseYear(v);
+              if (Number.isFinite(y)) return v;
+            }
+          }
+        }
+        // last-resort: scan every key for any 1-4 digit token and return the first match
+        for (let k of keys) {
+          const v = obj[k];
+          const y = parseYear(v);
+          if (Number.isFinite(y)) return v;
+        }
+        return null;
+      }
+      // Track global min/max years across all datasets
+      var timelineMinYear = Infinity;
+      var timelineMaxYear = -Infinity;
+  // current timeline time in milliseconds (updated by slider)
+  var timelineCurrentTime = null;
+  // optional year requested via URL fragment (e.g. #?year=1200)
+  var requestedYear = null;
+
+  // Global helper: set the timeline to a given year (integer). Optionally call cb() after updating.
+  function setTimelineYear(year, cb) {
+    if (!Number.isFinite(Number(year))) return;
+    var y = Math.floor(Number(year));
+    // clamp to known bounds
+    if (Number.isFinite(timelineMinYear) && Number.isFinite(timelineMaxYear)) {
+      if (y < timelineMinYear) y = timelineMinYear;
+      if (y > timelineMaxYear) y = timelineMaxYear;
+    }
+    var t = yearToMillis(y);
+    timelineCurrentTime = t;
+    try {
+      if (timeline_towns && timeline_towns.setTime) timeline_towns.setTime(t);
+      if (timeline_nations && timeline_nations.setTime) timeline_nations.setTime(t);
+      if (timeline_states && timeline_states.setTime) timeline_states.setTime(t);
+      if (timeline_roads && timeline_roads.setTime) timeline_roads.setTime(t);
+    } catch (e) { console.log('setTimelineYear setTime error', e); }
+    // update UI
+    try {
+      var r = document.getElementById('timelineRange');
+      var l = document.getElementById('timelineLabel');
+      if (r) r.value = String(y);
+      if (l) l.innerText = String(y);
+    } catch (e) { console.log('setTimelineYear UI error', e); }
+    // push to URL
+    try { updateHashFromMap(); } catch (e) { console.log('setTimelineYear updateHash error', e); }
+    if (typeof cb === 'function') {
+      try { cb(); } catch (e) { console.log('setTimelineYear callback error', e); }
+    }
+  }
+
+  // Global helper: open a popup for a latlng by searching static layers then timeline feature layers
+  function openPopupForLatLng(latlng) {
+    var opened = false;
+    try {
+      // try static town markers
+      lg_towns.eachLayer(function(layer) {
+        if (opened) return;
+        if (layer.getLatLng && layer.getLatLng().lat === latlng.lat && layer.getLatLng().lng === latlng.lng) {
+          try { layer.openPopup(); opened = true; } catch(e){}
+        }
+      });
+      // try timeline towns
+      if (!opened && timeline_towns && timeline_towns._featureLayers) {
+        timeline_towns._featureLayers.forEach(function(fl) {
+          if (opened) return;
+          try {
+            var inner = (fl.layer && fl.layer.getLayers) ? fl.layer.getLayers() : [];
+            inner.forEach(function(il) {
+              if (opened) return;
+              if (il.getLatLng && il.getLatLng().lat === latlng.lat && il.getLatLng().lng === latlng.lng) {
+                try { il.openPopup(); opened = true; } catch(e){}
+              }
+            });
+          } catch(e) {}
+        });
+      }
+    } catch (e) { console.log('openPopupForLatLng error', e); }
+    return opened;
+  }
 
       // Create the overlays dictionary
       var overlays = {
@@ -111,6 +417,48 @@
         "States": lg_states,
         "Roads": lg_roads
       }
+
+      // When the user toggles overlays, ensure timeline counterparts are added/removed
+      var overlayTownsEnabled = true; // reflects whether 'Overworld Locations' overlay is checked
+      map.on('overlayadd', function(e){
+        try {
+          if (e.name === 'Overworld Locations' || e.layer === lg_towns) {
+            overlayTownsEnabled = true;
+            if (timeline_towns) { timeline_towns.addTo(map); if (timelineCurrentTime) timeline_towns.setTime(timelineCurrentTime); }
+            else if (pendingTimelineFeatures.towns) { ensureTimelinesOnMap(); }
+          }
+          if (e.name === 'Nations' || e.layer === lg_nations) {
+            if (timeline_nations) { timeline_nations.addTo(map); if (timelineCurrentTime) timeline_nations.setTime(timelineCurrentTime); }
+            else if (pendingTimelineFeatures.nations) { ensureTimelinesOnMap(); }
+          }
+          if (e.name === 'States' || e.layer === lg_states) {
+            if (timeline_states) { timeline_states.addTo(map); if (timelineCurrentTime) timeline_states.setTime(timelineCurrentTime); }
+            else if (pendingTimelineFeatures.states) { ensureTimelinesOnMap(); }
+          }
+          if (e.name === 'Roads' || e.layer === lg_roads) {
+            if (timeline_roads) { timeline_roads.addTo(map); if (timelineCurrentTime) timeline_roads.setTime(timelineCurrentTime); }
+            else if (pendingTimelineFeatures.roads) { ensureTimelinesOnMap(); }
+          }
+        } catch (err) { console.log('overlayadd handler error', err); }
+      });
+
+      map.on('overlayremove', function(e){
+        try {
+          if (e.name === 'Overworld Locations' || e.layer === lg_towns) {
+            overlayTownsEnabled = false;
+            if (timeline_towns && timeline_towns.remove) timeline_towns.remove();
+          }
+          if (e.name === 'Nations' || e.layer === lg_nations) {
+            if (timeline_nations && timeline_nations.remove) timeline_nations.remove();
+          }
+          if (e.name === 'States' || e.layer === lg_states) {
+            if (timeline_states && timeline_states.remove) timeline_states.remove();
+          }
+          if (e.name === 'Roads' || e.layer === lg_roads) {
+            if (timeline_roads && timeline_roads.remove) timeline_roads.remove();
+          }
+        } catch (err) { console.log('overlayremove handler error', err); }
+      });
 
       // Create the icons and determine their properties
       var tower = L.icon({
@@ -201,178 +549,741 @@
         swamp: swamp
       };
 
-      // Function to pull the data from the google sheet towns page and create the markers from there.
+      // Standard popup sizing used across the app (fixed width approx half previous)
+      var popupOptions = { minWidth: 260, maxWidth: 260, maxHeight: 320 };
+
+  // Function to pull the data from the google sheet towns page and create the markers from there.
       async function getTowns() {
-        let url = 'https://script.google.com/macros/s/AKfycbxRcKI1B8p10rAVNQ_ziWSHAd2Fs4nxn4qVUwl9g7TQbFC8NfI6Y375ML0xM_yog2ZT7g/exec';
+        let url = 'https://script.google.com/macros/s/AKfycbzSbU-10nUV-odUN1kUZLquAa5olKwfa9vR5791-DJeSbz3lpEkKzJtCdtdIxC7RWPmqg/exec';
         try {
           let response = await fetch(url);
           const data = await response.json();
-          
-          // Town Locations Loop
+
+          console.log('getTowns: loaded', data && data.length, 'items');
+          if (data && data.length > 0) {
+            console.log('example town object:', data[0]);
+            try {
+              console.log('town keys:', Object.keys(data[0]));
+              console.log('town startYear candidates -> readYearProp:', readYearProp(data[0],'startYear'), 'findYearField(start):', findYearField(data[0],'start'), 'parseYear(readYearProp):', parseYear(readYearProp(data[0],'startYear')));
+            } catch (e) { console.log('town diag error', e); }
+          }
+
+          // Build timeline features only for items with parsable years
+          const timelineFeatures = [];
+
           for (let i = 0; i < data.length; i ++) {
             const item = data[i];
             const lat = parseFloat(item.lat);
             const lng = parseFloat(item.lon);
-            const iconName = item.icon;
-            const icon = iconMap[iconName];
 
-            const marker = L.marker([lat, lng], {icon: icon, title: item.name});
+            // Read and parse years robustly (accept different property variants)
+            let rawStart = readYearProp(item, 'startYear');
+            let rawEnd = readYearProp(item, 'endYear');
+            if (rawStart == null) rawStart = findYearField(item, 'start');
+            if (rawEnd == null) rawEnd = findYearField(item, 'end');
+            const startYear = parseYear(rawStart);
+            const endYear = parseYear(rawEnd != null ? rawEnd : rawStart);
 
-            // Add a popup to the marker with additional information
-            marker.bindPopup('<img src="' + item.url + '" width="300" height="200"><br><h1 style="color:' + item.color + ';font-size:20px;">' + item.name + '</h1><p>' + item.description + '<p>');
-            
-            lg_towns.addLayer(marker)
+            if (Number.isFinite(startYear)) timelineMinYear = Math.min(timelineMinYear, startYear);
+            if (Number.isFinite(endYear)) timelineMaxYear = Math.max(timelineMaxYear, endYear);
+
+            if (Number.isFinite(startYear) || Number.isFinite(endYear)) {
+              // timeline-managed feature (do not add static marker so visibility is controlled by timeline)
+              timelineFeatures.push({
+                type: 'Feature',
+                geometry: { type: 'Point', coordinates: [lng, lat] },
+                properties: {
+                  name: item.name,
+                  description: item.description,
+                  url: item.url,
+                  color: item.color,
+                  icon: item.icon,
+                  startYear: startYear,
+                  endYear: endYear
+                }
+              });
+              // add an invisible search marker so Control.Search can find this town later
+              try {
+                var sMarker = L.marker([lat, lng], { title: item.name || '', interactive: false, opacity: 0 });
+                // store properties including timeline years so search selection can jump timeline
+                sMarker.feature = { properties: { name: item.name, description: item.description, url: item.url, startYear: startYear, endYear: endYear } };
+                searchLayer.addLayer(sMarker);
+                
+              } catch (e) { console.log('search marker create error', e); }
+            } else {
+              // No timeline dates — create a static marker
+              const marker = L.marker([lat, lng], {icon: iconMap[item.icon], title: item.name});
+              try {
+                marker.bindPopup(makeEntityPopupHtml(item), popupOptions);
+              } catch (e) {
+                marker.bindPopup('<h3>' + (item.name||'') + '</h3>', popupOptions);
+              }
+              lg_towns.addLayer(marker);
+              // also add an invisible search marker (so static & timeline items both searchable)
+              try { var sMarker2 = L.marker([lat, lng], { title: item.name || '', interactive: false, opacity: 0 }); sMarker2.feature = {properties:{name:item.name}}; searchLayer.addLayer(sMarker2); } catch(e){}
+              
+            }
+          }
+
+          if (timelineFeatures.length > 0) {
+            if (typeof L !== 'undefined' && typeof L.timeline === 'function') {
+              timeline_towns = L.timeline({type: 'FeatureCollection', features: timelineFeatures}, {
+              pointToLayer: function(feature, latlng) {
+                const icon = iconMap[feature.properties.icon] || iconMap['town'];
+                return L.marker(latlng, {icon: icon, title: feature.properties.name});
+              },
+              onEachFeature: function(feature, layer) {
+                try {
+                  var popupContent = makeEntityPopupHtml(feature.properties);
+                  layer.bindPopup(popupContent, popupOptions);
+                } catch(e) { if (feature.properties) layer.bindPopup('<h3>' + (feature.properties.name||'') + '</h3>', popupOptions); }
+              },
+              getInterval: function(feature) {
+                const s = Number(feature.properties.startYear);
+                const e = Number(feature.properties.endYear);
+                const start = Number.isFinite(s) ? yearToMillis(s) : null;
+                const end = Number.isFinite(e) ? yearToMillis(e) + (365*24*60*60*1000 - 1) : (start || null);
+                return start && end ? [start, end] : null;
+              }
+            });
+              // Diagnostic: log a sample of created feature layers (intervals + layer types)
+              try {
+                console.log('DEBUG timeline_towns _featureLayers sample:', timeline_towns._featureLayers.slice(0,5).map(function(fl){ return {interval: fl.interval, layerType: (fl.layer && fl.layer.eachLayer)?'GeoJSON':'Unknown', featureProps: fl.feature.properties}; }));
+              } catch(e){ console.log('DEBUG towns diag error', e); }
+              timeline_towns_count = timelineFeatures.length;
+              if (map.getZoom() >= 4) timeline_towns.addTo(map);
+            } else {
+              // plugin missing; save pending features for creation after load
+              pendingTimelineFeatures.towns = timelineFeatures;
+              timeline_towns_count = timelineFeatures.length;
+              console.log('timeline plugin not present yet — deferring towns timeline creation');
+            }
+          } else {
+            timeline_towns_count = 0;
+            console.log('getTowns: no timeline features (no parsable startYear/endYear)');
           }
         } catch (error) {
-          console.log("Could not get town data")
+          console.log("Could not get town data", error)
         }
       }
 
       // Function to pull the data from the google sheet nations page and create the polygons from there.
       async function getNations() {
-        let url = 'https://script.google.com/macros/s/AKfycbwhVpzQsYbrYo_CocpOTA1yuH3goK-KEQ0NZVyw45OYl9ZAdpueKJtFMRB_SnJSEwE/exec';
+        let url = 'https://script.google.com/macros/s/AKfycbyZ953D4nRdaU0JtsVRpyYb3dcP6aom81x9XxwYNZkUUQjxYQrVKHrB-X0WN6lSBz9i/exec';
         try {
           let response = await fetch(url);
           const data = await response.json();
-          
-          // Nations Loop
-          for (let i = 0; i < data.length; i++) {
-            const item = data[i];
-            const latlon = item.coords
-            // Split the input string by comma
+
+          console.log('getNations: loaded', data && data.length, 'items');
+          if (data && data.length > 0) {
+            console.log('example nation object:', data[0]);
+            try {
+              console.log('nation keys:', Object.keys(data[0]));
+              console.log('nation startYear candidates -> readYearProp:', readYearProp(data[0],'startYear'), 'findYearField(start):', findYearField(data[0],'start'), 'parseYear(readYearProp):', parseYear(readYearProp(data[0],'startYear')));
+            } catch (e) { console.log('nation diag error', e); }
+          }
+
+          const timelineFeatures = [];
+
+          for (let idx = 0; idx < data.length; idx++) {
+            const item = data[idx];
+            const latlon = item.coords;
             const values = latlon.split(',');
-            
-            // Create an empty list to store pairs
-            const pairs = [];
-            
-            // Iterate over the values array in steps of 2
+
+            const rings = [];
+            // Build polygon ring using [lng, lat]
             for (let i = 0; i < values.length; i += 2) {
-              // Extract the latitude and longitude values
               const latitude = parseFloat(values[i]);
               const longitude = parseFloat(values[i + 1]);
-
-              // Create a pair list and add it to the larger list
-              const pair = [latitude, longitude];
-              pairs.push(pair);
+              rings.push([longitude, latitude]);
             }
 
-            const nation_lines = L.polygon(pairs, {color: item.color})
-            var nation_name = L.imageOverlay(item.url,[[parseFloat(item.imageLocLat1),parseFloat(item.imageLocLon1)],[parseFloat(item.imageLocLat2),parseFloat(item.imageLocLon2)]])
+            let rawStart = readYearProp(item,'startYear');
+            let rawEnd = readYearProp(item,'endYear');
+            if (rawStart == null) rawStart = findYearField(item, 'start');
+            if (rawEnd == null) rawEnd = findYearField(item, 'end');
+            const startYear = parseYear(rawStart);
+            const endYear = parseYear(rawEnd != null ? rawEnd : rawStart);
+            if (Number.isFinite(startYear)) timelineMinYear = Math.min(timelineMinYear, startYear);
+            if (Number.isFinite(endYear)) timelineMaxYear = Math.max(timelineMaxYear, endYear);
 
-            lg_nations.addLayer(nation_lines)
-            lg_nations.addLayer(nation_name)
+            // If both start and end are present, include in timeline features, otherwise create static polygon
+            if (Number.isFinite(startYear) || Number.isFinite(endYear)) {
+              const feature = {
+                type: 'Feature',
+                geometry: {
+                  type: 'Polygon',
+                  coordinates: [rings]
+                },
+                properties: {
+                  name: item.name || '',
+                  color: item.color,
+                  url: item.url,
+                  startYear: startYear,
+                  endYear: endYear,
+                  // imageLoc removed — no image overlay behavior
+                }
+              };
+              timelineFeatures.push(feature);
+              
+            } else {
+              // create static polygon (Leaflet expects [lat, lng])
+              const latlngs = rings.map(function(p){ return [p[1], p[0]]; });
+              const poly = L.polygon(latlngs, {color: item.color});
+              lg_nations.addLayer(poly);
+              // Bind a rich popup built from sheet fields (description, thumbnail, link)
+        try { poly.bindPopup(makeEntityPopupHtml(item), popupOptions); } catch(e){}
+              // no image overlays for static nations; rely on polygon popups only
+            }
+          }
+
+          if (timelineFeatures.length > 0) {
+            if (typeof L !== 'undefined' && typeof L.timeline === 'function') {
+              timeline_nations = L.timeline({type: 'FeatureCollection', features: timelineFeatures}, {
+              style: function(feature) {
+                return {color: feature.properties.color || '#3388ff', weight: 2, opacity: 0.6};
+              },
+              onEachFeature: function(feature, layer) {
+                try {
+                  var popupContent = makeEntityPopupHtml(feature.properties);
+                  layer.bindPopup(popupContent, popupOptions);
+                } catch(e) { /* fallback: simple name */ try { layer.bindPopup('<h3>' + (feature.properties && feature.properties.name||'') + '</h3>', popupOptions); } catch(e){} }
+              },
+              // no timeline image overlays for nations; popups only
+              getInterval: function(feature) {
+                const s = Number(feature.properties.startYear);
+                const e = Number(feature.properties.endYear);
+                const start = Number.isFinite(s) ? yearToMillis(s) : null;
+                const end = Number.isFinite(e) ? yearToMillis(e) + (365*24*60*60*1000 - 1) : (start || null);
+                return start && end ? [start, end] : null;
+              }
+            });
+              try {
+                console.log('DEBUG timeline_nations _featureLayers sample:', timeline_nations._featureLayers.slice(0,5).map(function(fl){ return {interval: fl.interval, layerType: (fl.layer && fl.layer.eachLayer)?'GeoJSON':'Unknown', featureProps: fl.feature.properties}; }));
+              } catch(e){ console.log('DEBUG nations diag error', e); }
+              timeline_nations_count = timelineFeatures.length;
+            } else {
+              pendingTimelineFeatures.nations = timelineFeatures;
+              timeline_nations_count = timelineFeatures.length;
+              console.log('timeline plugin not present yet — deferring nations timeline creation');
+            }
           }
         } catch (error) {
-          console.log("Could not get Nation data")
+          console.log("Could not get Nation data", error)
         }
       }
 
       // Function to pull the data from the google sheet states page and create the polygons from there.
       async function getStates() {
-        let url = 'https://script.google.com/macros/s/AKfycbxo4bftcAP06iPennjVpudBwzCy85RMa7FUPlI-iT6a0NOjKELX0jkns63J7s5qUNCk_w/exec';
+        let url = 'https://script.google.com/macros/s/AKfycbwoQ0gMCi1cpP90U-r-tVwSS-TOSB0Djfdlh2geMswxJiTm7S2EFchMAR1vxO2FWijrSQ/exec';
         try {
           let response = await fetch(url);
           const data = await response.json();
 
-          // States Loop
-          for (let i = 0; i < data.length; i++) {
-            const item = data[i];
-            const latlon = item.coords
-            // Split the input string by comma
+          console.log('getStates: loaded', data && data.length, 'items');
+            if (data && data.length > 0) {
+              console.log('example state object:', data[0]);
+              try {
+                console.log('state keys:', Object.keys(data[0]));
+                console.log('state startYear candidates -> readYearProp:', readYearProp(data[0],'startYear'), 'findYearField(start):', findYearField(data[0],'start'), 'parseYear(readYearProp):', parseYear(readYearProp(data[0],'startYear')));
+              } catch (e) { console.log('state diag error', e); }
+            }
+
+          const timelineFeatures = [];
+
+          for (let idx = 0; idx < data.length; idx++) {
+            const item = data[idx];
+            const latlon = item.coords;
             const values = latlon.split(',');
 
-            // Create an empty list to store pairs
-            const pairs = [];
-            
-            // Iterate over the values array in steps of 2
+            const rings = [];
             for (let i = 0; i < values.length; i += 2) {
-              // Extract the latitude and longitude values
               const latitude = parseFloat(values[i]);
               const longitude = parseFloat(values[i + 1]);
-
-              // Create a pair list and add it to the larger list
-              const pair = [latitude, longitude];
-              pairs.push(pair);
+              rings.push([longitude, latitude]);
             }
-            
-            const state_lines = L.polygon(pairs, {color: item.color})
 
-            var state_name = L.imageOverlay(item.url,[[parseFloat(item.imageLocLat1),parseFloat(item.imageLocLon1)],[parseFloat(item.imageLocLat2),parseFloat(item.imageLocLon2)]])
+            let rawStart = readYearProp(item,'startYear');
+            let rawEnd = readYearProp(item,'endYear');
+            if (rawStart == null) rawStart = findYearField(item, 'start');
+            if (rawEnd == null) rawEnd = findYearField(item, 'end');
+            const startYear = parseYear(rawStart);
+            const endYear = parseYear(rawEnd != null ? rawEnd : rawStart);
+            if (Number.isFinite(startYear)) timelineMinYear = Math.min(timelineMinYear, startYear);
+            if (Number.isFinite(endYear)) timelineMaxYear = Math.max(timelineMaxYear, endYear);
 
-            lg_states.addLayer(state_lines)
-            lg_states.addLayer(state_name)
+            if (Number.isFinite(startYear) || Number.isFinite(endYear)) {
+              const feature = {
+                type: 'Feature',
+                geometry: {
+                  type: 'Polygon',
+                  coordinates: [rings]
+                },
+                properties: {
+                  name: item.name || '',
+                  color: item.color,
+                  url: item.url,
+                  startYear: startYear,
+                  endYear: endYear,
+                  // imageLoc removed — no image overlay behavior
+                }
+              };
+              timelineFeatures.push(feature);
+              
+            } else {
+              const latlngs = rings.map(function(p){ return [p[1], p[0]]; });
+              const poly = L.polygon(latlngs, {color: item.color});
+              lg_states.addLayer(poly);
+              // bind rich popup for static state polygons
+              try { poly.bindPopup(makeEntityPopupHtml(item), popupOptions); } catch(e){}
+              // no image overlays for static states; rely on polygon popups only
+            }
           }
+
+          if (timelineFeatures.length > 0) {
+            if (typeof L !== 'undefined' && typeof L.timeline === 'function') {
+              timeline_states = L.timeline({type: 'FeatureCollection', features: timelineFeatures}, {
+              style: function(feature) {
+                return {color: feature.properties.color || '#3388ff', weight: 2, opacity: 0.6};
+              },
+              onEachFeature: function(feature, layer) {
+                try {
+                  var popupContent = makeEntityPopupHtml(feature.properties);
+                  layer.bindPopup(popupContent, popupOptions);
+                } catch(e) { layer.bindPopup('<h3>' + (feature.properties && feature.properties.name||'') + '</h3>', popupOptions); }
+              },
+              getInterval: function(feature) {
+                const s = Number(feature.properties.startYear);
+                const e = Number(feature.properties.endYear);
+                const start = Number.isFinite(s) ? yearToMillis(s) : null;
+                const end = Number.isFinite(e) ? yearToMillis(e) + (365*24*60*60*1000 - 1) : (start || null);
+                return start && end ? [start, end] : null;
+              }
+            });
+              try {
+                console.log('DEBUG timeline_states _featureLayers sample:', timeline_states._featureLayers.slice(0,5).map(function(fl){ return {interval: fl.interval, layerType: (fl.layer && fl.layer.eachLayer)?'GeoJSON':'Unknown', featureProps: fl.feature.properties}; }));
+              } catch(e){ console.log('DEBUG states diag error', e); }
+              timeline_states_count = timelineFeatures.length;
+            } else {
+              pendingTimelineFeatures.states = timelineFeatures;
+              timeline_states_count = timelineFeatures.length;
+              console.log('timeline plugin not present yet — deferring states timeline creation');
+            }
+          }
+
         } catch (error) {
-          console.log("Could not get state data")
+          console.log("Could not get state data", error)
         }
       }
 
       // Function to pull the data from the google sheet roads page and create the polylines from there.
       async function getRoads() {
-        let url = 'https://script.google.com/macros/s/AKfycbwv55n7gb3OYWgRQxBKAIAzERKiWLartUvY2svlNqCbghr4MjN5OL0uQDHAaJST7PFnMg/exec';
+        let url = 'https://script.google.com/macros/s/AKfycbzkUU1f0NlWKuCRou6Rlfi5okoKGiHxvrFFviLVrc3zNMd_WSwMSr5JbK-xrQgToRPTbQ/exec';
         try {
           let response = await fetch(url);
           const data = await response.json();
-          
-          // Roads Loop
-          for (let i = 0; i < data.length; i++) {
-            const item = data[i];
-            const latlon = item.coords
-            // Split the input string by comma
+
+          console.log('getRoads: loaded', data && data.length, 'items');
+            if (data && data.length > 0) {
+              console.log('example road object:', data[0]);
+              try {
+                console.log('road keys:', Object.keys(data[0]));
+                console.log('road startYear candidates -> readYearProp:', readYearProp(data[0],'startYear'), 'findYearField(start):', findYearField(data[0],'start'), 'parseYear(readYearProp):', parseYear(readYearProp(data[0],'startYear')));
+              } catch (e) { console.log('road diag error', e); }
+            }
+
+          const timelineFeatures = [];
+
+          for (let idx = 0; idx < data.length; idx++) {
+            const item = data[idx];
+            const latlon = item.coords;
             const values = latlon.split(',');
-            
-            // Create an empty list to store pairs
-            const pairs = [];
-            
-            // Iterate over the values array in steps of 2
+
+            const line = [];
             for (let i = 0; i < values.length; i += 2) {
-              // Extract the latitude and longitude values
               const latitude = parseFloat(values[i]);
               const longitude = parseFloat(values[i + 1]);
-
-              // Create a pair list and add it to the larger list
-              const pair = [latitude, longitude];
-              pairs.push(pair);
+              line.push([longitude, latitude]);
             }
-            
-            const road = L.polyline(pairs, {color: item.color, weight: item.line_weight});
 
-            lg_roads.addLayer(road);
+            let rawStart = readYearProp(item,'startYear');
+            let rawEnd = readYearProp(item,'endYear');
+            if (rawStart == null) rawStart = findYearField(item, 'start');
+            if (rawEnd == null) rawEnd = findYearField(item, 'end');
+            const startYear = parseYear(rawStart);
+            const endYear = parseYear(rawEnd != null ? rawEnd : rawStart);
+
+            if (Number.isFinite(startYear) || Number.isFinite(endYear)) {
+              const feature = {
+                type: 'Feature',
+                geometry: {
+                  type: 'LineString',
+                  coordinates: line
+                },
+                properties: {
+                  name: item.name || '',
+                  color: item.color,
+                  line_weight: item.line_weight || 2,
+                  startYear: startYear,
+                  endYear: endYear
+                }
+              };
+              timelineFeatures.push(feature);
+              if (Number.isFinite(startYear)) timelineMinYear = Math.min(timelineMinYear, startYear);
+              if (Number.isFinite(endYear)) timelineMaxYear = Math.max(timelineMaxYear, endYear);
+            } else {
+              // create static polyline
+              const latlngs = line.map(function(p){ return [p[1], p[0]]; });
+              const road = L.polyline(latlngs, {color: item.color, weight: item.line_weight});
+              lg_roads.addLayer(road);
+            }
+          }
+
+          if (timelineFeatures.length > 0) {
+            if (typeof L !== 'undefined' && typeof L.timeline === 'function') {
+              timeline_roads = L.timeline({type: 'FeatureCollection', features: timelineFeatures}, {
+              style: function(feature) {
+                return {color: feature.properties.color || '#3388ff', weight: Number(feature.properties.line_weight) || 2};
+              },
+              onEachFeature: function(feature, layer) {
+                try {
+                  var popupContent = makeEntityPopupHtml(feature.properties);
+                  layer.bindPopup(popupContent, popupOptions);
+                } catch(e) { layer.bindPopup('<h3>' + (feature.properties && feature.properties.name||'') + '</h3>', popupOptions); }
+              },
+              getInterval: function(feature) {
+                const s = Number(feature.properties.startYear);
+                const e = Number(feature.properties.endYear);
+                const start = Number.isFinite(s) ? yearToMillis(s) : null;
+                const end = Number.isFinite(e) ? yearToMillis(e) + (365*24*60*60*1000 - 1) : (start || null);
+                return start && end ? [start, end] : null;
+              }
+            });
+              try {
+                console.log('DEBUG timeline_roads _featureLayers sample:', timeline_roads._featureLayers.slice(0,5).map(function(fl){ return {interval: fl.interval, layerType: (fl.layer && fl.layer.eachLayer)?'GeoJSON':'Unknown', featureProps: fl.feature.properties}; }));
+              } catch(e){ console.log('DEBUG roads diag error', e); }
+              // only add to map if you want roads to animate by default
+              timeline_roads.addTo(map);
+              timeline_roads_count = timelineFeatures.length;
+            } else {
+              pendingTimelineFeatures.roads = timelineFeatures;
+              timeline_roads_count = timelineFeatures.length;
+              console.log('timeline plugin not present yet — deferring roads timeline creation');
+            }
           }
         } catch (error) {
-          console.log("Could not get Road data")
+          console.log("Could not get Road data", error)
         }
       }
 
       // Run the above function
-      getTowns();
-      getNations();
-      getStates();
-      getRoads();
+          Promise.all([getTowns(), getNations(), getStates(), getRoads()]).then(function() {
+        // Create layer controls now that timelines may exist
+        // Replace overlays with timeline layers where available
+        // For layer control we use the static layerGroups (lg_*) — timeline layers may not be Leaflet Layer instances
+        var overlays = {
+          "Overworld Locations": lg_towns,
+          "Nations": lg_nations,
+          "States": lg_states,
+          "Roads": lg_roads
+        }
 
-      // Create a function that removes the towns when the zoom is to high and adds them back when the zoom level is low enough. Stops the map looking crowded when it is zoomed out.
+        if (window.layercontrols) {
+          // If created earlier remove and recreate
+          try { map.removeControl(window.layercontrols); } catch (e) {}
+        }
+        window.layercontrols = L.control.layers(baselays, overlays, sortLayers=false, hideSingleBase=true).addTo(map);
+
+        // Add a timeline slider control if available
+        // If the external timeline slider control plugin is not available, create a built-in control at the bottom
+        console.log('Timeline counts:', {towns: timeline_towns_count, nations: timeline_nations_count, states: timeline_states_count, roads: timeline_roads_count});
+        console.log('Timeline year range:', {min: timelineMinYear, max: timelineMaxYear});
+
+        if (typeof L.timelineSliderControl !== 'undefined' && hasTimelineData) {
+          var timelineControl = L.timelineSliderControl({
+            formatOutput: function(date) { return new Date(date).getFullYear(); }
+          });
+          timelineControl.addTo(map);
+          // Add timelines that exist
+          if (timeline_towns) timelineControl.addTimelines(timeline_towns);
+          if (timeline_nations) timelineControl.addTimelines(timeline_nations);
+          if (timeline_states) timelineControl.addTimelines(timeline_states);
+          if (timeline_roads) timelineControl.addTimelines(timeline_roads);
+        } 
+        // always create a bottom UI so user can see slider (disabled state if no data)
+        (function createBottomUI() {
+          var container = document.getElementById('timeline-bottom-container');
+          if (!container) {
+            container = document.createElement('div');
+            container.id = 'timeline-bottom-container';
+            container.style.position = 'fixed';
+            container.style.left = '50%';
+            container.style.transform = 'translateX(-50%)';
+            container.style.bottom = '12px';
+            container.style.zIndex = 9999;
+            container.style.background = 'rgba(255,255,255,0.9)';
+            container.style.padding = '8px 12px';
+            container.style.borderRadius = '6px';
+            container.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
+            container.style.display = 'flex';
+            container.style.alignItems = 'center';
+            container.style.gap = '8px';
+            document.body.appendChild(container);
+          }
+
+          var hasTimelineData = (timeline_towns_count + timeline_nations_count + timeline_states_count + timeline_roads_count) > 0 && Number.isFinite(timelineMinYear) && Number.isFinite(timelineMaxYear) && timelineMinYear <= timelineMaxYear;
+
+          if (hasTimelineData) {
+            // prefer requestedYear if present, otherwise default to timelineMinYear
+            var initialRangeValue = Number.isFinite(requestedYear) ? requestedYear : timelineMinYear;
+            container.innerHTML = '<button id="timelinePlay">▶</button><input id="timelineRange" type="range" min="' + timelineMinYear + '" max="' + timelineMaxYear + '" value="' + initialRangeValue + '" step="1" style="width:420px"> <span id="timelineLabel">' + initialRangeValue + '</span>';
+          } else {
+            container.innerHTML = '<button id="timelinePlay" disabled>▶</button><input id="timelineRange" type="range" disabled style="width:420px"> <span id="timelineLabel">No timeline data</span>';
+          }
+
+          var range = document.getElementById('timelineRange');
+          var label = document.getElementById('timelineLabel');
+          var playBtn = document.getElementById('timelinePlay');
+          var playing = false;
+          var playInterval = null;
+
+          // Helper that updates the timeline to a given year (integer).
+          // It will clamp to timelineMinYear/timelineMaxYear when possible and update the slider, label, timeline layers, and URL.
+          function setTimelineYear(year) {
+            if (!Number.isFinite(Number(year))) return;
+            var y = Math.floor(Number(year));
+            // clamp to available range if known
+            if (Number.isFinite(timelineMinYear) && Number.isFinite(timelineMaxYear)) {
+              if (y < timelineMinYear) y = timelineMinYear;
+              if (y > timelineMaxYear) y = timelineMaxYear;
+            }
+            var t = yearToMillis(y);
+            timelineCurrentTime = t;
+            try {
+              if (timeline_towns && timeline_towns.setTime) timeline_towns.setTime(t);
+              if (timeline_nations && timeline_nations.setTime) timeline_nations.setTime(t);
+              if (timeline_states && timeline_states.setTime) timeline_states.setTime(t);
+              if (timeline_roads && timeline_roads.setTime) timeline_roads.setTime(t);
+            } catch (e) { console.log('setTimelineYear setTime error', e); }
+            // update UI
+            try {
+              var r = document.getElementById('timelineRange');
+              var l = document.getElementById('timelineLabel');
+              if (r) r.value = String(y);
+              if (l) l.innerText = String(y);
+            } catch (e) { console.log('setTimelineYear UI error', e); }
+            // write into the URL fragment
+            try { updateHashFromMap(); } catch (e) { console.log('setTimelineYear updateHash error', e); }
+          }
+
+          function setYear(year) {
+            if (!label) return;
+            // delegate to global helper which updates UI, timelines and URL
+            try { setTimelineYear(year); } catch (e) { console.log('setYear delegate error', e); }
+          }
+
+          if (hasTimelineData) {
+            playBtn.addEventListener('click', function() {
+              if (!playing) {
+                playing = true; playBtn.innerText = '⏸';
+                var cur = Number(range.value);
+                playInterval = setInterval(function() {
+                  cur++;
+                  if (cur > timelineMaxYear) { cur = timelineMinYear; }
+                  range.value = cur; setYear(cur);
+                }, 800);
+              } else {
+                playing = false; playBtn.innerText = '▶';
+                clearInterval(playInterval);
+              }
+            });
+
+            range.addEventListener('input', function(e) {
+              setYear(e.target.value);
+            });
+
+            // initialize to requestedYear (if present) or min year
+            setYear(Number.isFinite(requestedYear) ? requestedYear : timelineMinYear);
+            }
+          })();
+          // Ensure any timeline layers created above are actually added to the map and initialized
+          try { ensureTimelinesOnMap(); } catch(e) { console.log('ensureTimelinesOnMap call error', e); }
+        }).catch(function(e){ console.log('Error initializing timelines', e); });
+
+  // Create a function that removes the towns when the zoom is to high and adds them back when the zoom level is low enough. Stops the map looking crowded when it is zoomed out.
       map.on('zoomend', function(e) {
         var geo = map.getCenter();
-        if (map.getZoom()>=4)
-        {
+        if (map.getZoom()>=4) {
           lg_towns.addTo(map);
-        }else {
-        lg_towns.remove();
+          if (timeline_towns) timeline_towns.addTo(map);
+        } else {
+          lg_towns.remove();
+          if (timeline_towns && timeline_towns.remove) timeline_towns.remove();
         }
       });
 
       // Add Layer Control bar to the side using the baselays and overlays determined above
-      var layercontrols = L.control.layers(baselays, overlays, sortLayers=false, hideSingleBase=true).addTo(map);
+      // Only create the control if it hasn't been created already by the initialization above
+      if (!window.layercontrols) {
+        window.layercontrols = L.control.layers(baselays, overlays, {sortLayers: false, hideSingleBase: true}).addTo(map);
+      }
 
       // Search Function
       var controlSearch = new L.Control.Search({
         position:'topright',
-        layer: lg_towns,
+        layer: searchLayer,
         initial: false,
         zoom: 7,
         marker: false
       })
       map.addControl(controlSearch);
+      // Attach listeners directly to control to ensure we see events regardless of map wiring
+      try {
+        controlSearch.on && controlSearch.on('search:locationfound', function(ev){ map.fire('search:locationfound', ev); });
+        controlSearch.on && controlSearch.on('search:collapsed', function(ev){ map.fire('search:collapsed', ev); });
+      } catch (e) { console.log('controlSearch listener attach error', e); }
+
+      // When a search result is selected, Control.Search fires 'search:locationfound' (or use 'search:collapsed').
+      map.on('search:locationfound', function(e) {
+        try {
+          
+          var latlng = e.latlng || (e.layer && e.layer.getLatLng && e.layer.getLatLng());
+          if (!latlng) return;
+          // pan/zoom to result
+          map.setView(latlng, Math.max(map.getZoom(), 7));
+          // find the matching search marker to get stored properties (use larger tolerance)
+          var found = findNearestSearchMarker(latlng, 2000);
+          // fallback: if not found by proximity, try matching by name/text
+          if (!found) {
+            try {
+              var searchName = (e.text || (e.layer && e.layer.options && e.layer.options.title) || null);
+              if (searchName) {
+                searchLayer.eachLayer(function(m) {
+                  if (found) return;
+                  try {
+                    var title = (m.options && m.options.title) || (m.feature && m.feature.properties && m.feature.properties.name) || '';
+                    if (title === searchName) { found = { marker: m, distance: 0 }; }
+                  } catch (ee) {}
+                });
+              }
+            } catch (ee) { console.log('search fallback match error', ee); }
+          }
+          if (found && found.marker && found.marker.feature && found.marker.feature.properties) {
+            var props = found.marker.feature.properties;
+            
+            // if timeline data exists, set timeline to its start year (or current start)
+            var sy = props.startYear || props.start || null;
+            var ey = props.endYear || props.end || null;
+            var y = null;
+            // prefer startYear if present, otherwise endYear
+            if (Number.isFinite(Number(sy))) y = Number(sy);
+            if (!y && Number.isFinite(Number(ey))) y = Number(ey);
+            if (y && typeof yearToMillis === 'function') {
+              // use the reusable helper which clamps and updates UI+URL
+              try { setTimelineYear(y); } catch (e) { console.log('search setTimelineYear error', e); }
+            }
+            // set place in hash for deep link
+            var thePlaceName = props.name || props.title || props.place || '';
+            setPlaceInHash(thePlaceName);
+            // If we have a timeline year, use setTimelineYear with a callback to open popup after the timeline has been set.
+            if (y && typeof setTimelineYear === 'function') {
+              try {
+                setTimelineYear(y, function() {
+                  try { openPopupForLatLng(latlng); } catch (e) { console.log('openPopupForLatLng callback error', e); }
+                });
+              } catch (e) { console.log('search setTimelineYear callback error', e); }
+            } else {
+              // no timeline year: open popup immediately
+              try { openPopupForLatLng(latlng); } catch (e) { console.log('openPopup immediate error', e); }
+            }
+          }
+        } catch (e) { console.log('search:locationfound handler error', e); }
+      });
+
+      // URL place handling: add ?place=Name to the fragment after the existing hash (which stores z/lat/lng)
+      var placeActive = false;
+      var placeCenter = null; // L.LatLng of the place when set
+      var placeName = null;
+      var PLACE_CLEAR_DISTANCE_METERS = 2000; // if user moves more than this, clear place param
+      var PLACE_SET_DISTANCE_METERS = 250; // within this distance of a search marker we'll set place
+
+      function setPlaceInHash(name) {
+        try {
+          placeActive = true;
+          placeName = name;
+          placeCenter = map.getCenter();
+          updateHashFromMap();
+        } catch (e) { console.log('setPlaceInHash error', e); }
+      }
+
+      function clearPlaceInHash() {
+        try {
+          placeActive = false;
+          placeCenter = null;
+          placeName = null;
+          updateHashFromMap();
+        } catch (e) { console.log('clearPlaceInHash error', e); }
+      }
+
+      function findNearestSearchMarker(latlng, maxMeters) {
+        var best = null;
+        var bestDist = Infinity;
+        searchLayer.eachLayer(function(m) {
+          if (!m.getLatLng) return;
+          var d = map.distance(latlng, m.getLatLng());
+          if (d < bestDist) { bestDist = d; best = m; }
+        });
+        if (best && bestDist <= maxMeters) return {marker: best, distance: bestDist};
+        return null;
+      }
+
+      // On moveend, if we are close to a known search marker and no placeActive, set place; if placeActive but moved far, clear it
+      map.on('moveend', function() {
+        try {
+          var center = map.getCenter();
+          if (placeActive && placeCenter) {
+            var dist = map.distance(center, placeCenter);
+            if (dist > PLACE_CLEAR_DISTANCE_METERS) {
+              clearPlaceInHash();
+            }
+            return;
+          }
+          // not active: find nearby search marker
+          var found = findNearestSearchMarker(center, PLACE_SET_DISTANCE_METERS);
+          if (found && found.marker && found.marker.feature && found.marker.feature.properties && found.marker.feature.properties.name) {
+            setPlaceInHash(found.marker.feature.properties.name);
+          }
+        } catch (e) { console.log('moveend place handler error', e); }
+      });
+
+      // Respond to external changes to the fragment (e.g. user pastes a link with ?year=...)
+      window.addEventListener('hashchange', function() {
+        try {
+          var params = parseHashParams();
+          if (params.has('year')) {
+            var y = Number(params.get('year'));
+            if (Number.isFinite(y)) {
+              // if it's different from our current timeline year, update UI and timelines
+              var currentYear = null;
+              try { currentYear = timelineCurrentTime ? new Date(Number(timelineCurrentTime)).getUTCFullYear() : null; } catch (e) { currentYear = null; }
+              if (currentYear !== y) {
+                var t = yearToMillis(y);
+                timelineCurrentTime = t;
+                if (timeline_towns && timeline_towns.setTime) timeline_towns.setTime(t);
+                if (timeline_nations && timeline_nations.setTime) timeline_nations.setTime(t);
+                if (timeline_states && timeline_states.setTime) timeline_states.setTime(t);
+                if (timeline_roads && timeline_roads.setTime) timeline_roads.setTime(t);
+                try {
+                  var rangeEl2 = document.getElementById('timelineRange');
+                  var labelEl2 = document.getElementById('timelineLabel');
+                  if (rangeEl2) rangeEl2.value = String(y);
+                  if (labelEl2) labelEl2.innerText = String(y);
+                } catch (e) {}
+              }
+            }
+          }
+        } catch (e) { console.log('hashchange handler error', e); }
+      });
       
       // Draw Toolbar
       map.pm.addControls({  
@@ -421,7 +1332,28 @@
 
         // Create the popup
         var popupContent = makePopupContent(feature);
-        layer.bindPopup(popupContent);
+        layer.bindPopup(popupContent, popupOptions);
+      }
+
+      // Build popup HTML for nations/states from properties (graceful when optional fields are missing)
+      function makeEntityPopupHtml(props) {
+        props = props || {};
+        var parts = [];
+        // Name first (centered)
+        parts.push('<h3 style="margin:0 0 6px 0;text-align:center;">' + (props.name || '') + '</h3>');
+        // Then image/thumbnail (if present), centered
+        var thumb = props.thumbnail || props.thumb || props.url;
+        if (thumb) {
+          parts.push('<div style="margin-bottom:6px;text-align:center;"><img src="' + thumb + '" style="width:100%;max-width:240px;display:inline-block;object-fit:cover;"/></div>');
+        }
+        // Then description (justified)
+        if (props.description) {
+          parts.push('<div class="popup-desc" style="margin-top:6px;text-align:justify;">' + props.description + '</div>');
+        }
+        if (props.url && props.url !== thumb) {
+          parts.push('<div style="margin-top:6px;text-align:center;"><a href="' + props.url + '" target="_blank">More info</a></div>');
+        }
+        return parts.join('');
       }
 
       map.on('pm:create', function(e) {
@@ -431,7 +1363,6 @@
           setPopup(e.layer);
         });
       });
-
     </script>
   </body>
 </html>
