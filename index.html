@@ -191,7 +191,7 @@
               if (pendingTimelineFeatures.towns && !timeline_towns) {
                 timeline_towns = L.timeline({type:'FeatureCollection', features: pendingTimelineFeatures.towns}, {
                   pointToLayer: function(feature, latlng){ const icon = iconMap[feature.properties.icon] || iconMap['town']; return L.marker(latlng, {icon: icon, title: feature.properties.name}); },
-                  onEachFeature: function(feature, layer){ try { var popupContent = makeEntityPopupHtml(feature.properties); layer.bindPopup(popupContent, {'minWidth':'260','maxWidth':'260','maxHeight':'320'}); } catch(e) { if (feature.properties) layer.bindPopup('<h3>' + (feature.properties.name||'') + '</h3>'); } },
+                  onEachFeature: function(feature, layer){ try { var popupContent = makeEntityPopupHtml(feature.properties); layer.bindPopup(popupContent, popupOptions); } catch(e) { if (feature.properties) layer.bindPopup('<h3>' + (feature.properties.name||'') + '</h3>', popupOptions); } },
                   getInterval: function(feature){ const s = Number(feature.properties.startYear); const e = Number(feature.properties.endYear); const start = Number.isFinite(s)?yearToMillis(s):null; const end = Number.isFinite(e)?(yearToMillis(e) + (365*24*60*60*1000 - 1)):(start||null); return start&&end?[start,end]:null; }
                 });
               }
@@ -348,6 +348,10 @@
   var timelineCurrentTime = null;
   // optional year requested via URL fragment (e.g. #?year=1200)
   var requestedYear = null;
+
+  // Optional debug flag — set to true in the console to enable diagnostic logging without editing this file.
+  window.MAP_DEBUG = window.MAP_DEBUG || false;
+  function debugLog() { if (window.MAP_DEBUG) { try { console.log.apply(console, arguments); } catch (e) {} } }
 
   // Global helper: set the timeline to a given year (integer). Optionally call cb() after updating.
   function setTimelineYear(year, cb) {
@@ -549,8 +553,45 @@
         swamp: swamp
       };
 
-      // Standard popup sizing used across the app (fixed width approx half previous)
-      var popupOptions = { minWidth: 260, maxWidth: 260, maxHeight: 320 };
+      // Responsive popup sizing used across the app. computePopupOptions() returns sizes tailored to viewport.
+      function computePopupOptions() {
+        try {
+          var w = window.innerWidth || document.documentElement.clientWidth || 800;
+          var h = window.innerHeight || document.documentElement.clientHeight || 600;
+          // Use viewport-relative sizing so popup fits better on phones and tablets.
+          // For very small screens, allow the popup to be up to 92vw wide and 70vh tall.
+          if (w <= 480) {
+            // Reduce widths by ~20% compared to previous sizing so mobile popups are narrower
+            return { minWidth: Math.max(112, Math.floor(w * 0.48)), maxWidth: Math.floor(w * 0.688), maxHeight: Math.floor(h * 0.65) };
+          }
+          // Small tablets / large phones (20% narrower)
+          if (w <= 768) {
+            return { minWidth: Math.max(144, Math.floor(w * 0.44)), maxWidth: Math.floor(w * 0.64), maxHeight: Math.floor(h * 0.68) };
+          }
+          // Desktop: keep earlier conservative sizes
+          return { minWidth: 208, maxWidth: 416, maxHeight: Math.floor(h * 0.6) };
+        } catch (e) { return { minWidth: 260, maxWidth: 420, maxHeight: 320 }; }
+      }
+      var popupOptions = computePopupOptions();
+
+      // Responsive UI updater: adjusts popupOptions and bottom timeline container width/input when viewport changes
+      function updateResponsiveUI() {
+        try {
+          popupOptions = computePopupOptions();
+          var container = document.getElementById('timeline-bottom-container');
+          if (container) {
+            var w = window.innerWidth || document.documentElement.clientWidth || 800;
+            // container width limited to a percentage of viewport on mobile, or a max fixed width on desktop
+            if (w <= 480) container.style.width = Math.floor(w * 0.92) + 'px';
+            else if (w <= 768) container.style.width = Math.floor(w * 0.8) + 'px';
+            else container.style.width = '520px';
+            // ensure the input fills container width
+            var rangeEl = document.getElementById('timelineRange');
+            if (rangeEl) rangeEl.style.width = '100%';
+          }
+        } catch (e) { console.log('updateResponsiveUI error', e); }
+      }
+      window.addEventListener('resize', updateResponsiveUI);
 
   // Function to pull the data from the google sheet towns page and create the markers from there.
       async function getTowns() {
@@ -1036,9 +1077,9 @@
           if (hasTimelineData) {
             // prefer requestedYear if present, otherwise default to timelineMinYear
             var initialRangeValue = Number.isFinite(requestedYear) ? requestedYear : timelineMinYear;
-            container.innerHTML = '<button id="timelinePlay">▶</button><input id="timelineRange" type="range" min="' + timelineMinYear + '" max="' + timelineMaxYear + '" value="' + initialRangeValue + '" step="1" style="width:420px"> <span id="timelineLabel">' + initialRangeValue + '</span>';
+            container.innerHTML = '<button id="timelinePlay">▶</button><input id="timelineRange" type="range" min="' + timelineMinYear + '" max="' + timelineMaxYear + '" value="' + initialRangeValue + '" step="1"> <span id="timelineLabel">' + initialRangeValue + '</span>';
           } else {
-            container.innerHTML = '<button id="timelinePlay" disabled>▶</button><input id="timelineRange" type="range" disabled style="width:420px"> <span id="timelineLabel">No timeline data</span>';
+            container.innerHTML = '<button id="timelinePlay" disabled>▶</button><input id="timelineRange" type="range" disabled> <span id="timelineLabel">No timeline data</span>';
           }
 
           var range = document.getElementById('timelineRange');
@@ -1046,6 +1087,9 @@
           var playBtn = document.getElementById('timelinePlay');
           var playing = false;
           var playInterval = null;
+
+          // Ensure responsive sizing is applied immediately
+          try { updateResponsiveUI(); if (range) range.style.width = '100%'; } catch (e) {}
 
           // Helper that updates the timeline to a given year (integer).
           // It will clamp to timelineMinYear/timelineMaxYear when possible and update the slider, label, timeline layers, and URL.
@@ -1101,6 +1145,65 @@
             range.addEventListener('input', function(e) {
               setYear(e.target.value);
             });
+
+            // Make the timeline label editable by clicking the number: replace with a numeric input
+            try {
+              if (label) {
+                label.style.cursor = 'pointer';
+                label.title = 'Click to type a year';
+                label.addEventListener('click', function(ev) {
+                  ev.stopPropagation();
+                  if (!hasTimelineData) return;
+                  var parent = label.parentNode;
+                  // create input
+                  var input = document.createElement('input');
+                  input.type = 'number';
+                  input.id = 'timelineYearInput';
+                  input.value = label.innerText || String(range.value || timelineMinYear || '');
+                  if (Number.isFinite(timelineMinYear)) input.min = String(timelineMinYear);
+                  if (Number.isFinite(timelineMaxYear)) input.max = String(timelineMaxYear);
+                  input.style.width = '84px';
+                  input.style.padding = '2px 6px';
+                  input.style.fontSize = '0.95em';
+                  input.style.borderRadius = '4px';
+                  input.style.border = '1px solid rgba(0,0,0,0.2)';
+                  // replace label with input
+                  try { parent.replaceChild(input, label); } catch (e) { return; }
+                  input.focus(); input.select();
+
+                  function restoreLabel(newVal) {
+                    try {
+                      if (typeof newVal !== 'undefined' && newVal !== null) label.innerText = String(newVal);
+                      parent.replaceChild(label, input);
+                    } catch (e) { console.log('restoreLabel error', e); }
+                  }
+
+                  function applyValue() {
+                    var v = Number(input.value);
+                    if (!Number.isFinite(v)) { restoreLabel(timelineCurrentTime ? new Date(Number(timelineCurrentTime)).getUTCFullYear() : label.innerText); return; }
+                    v = Math.floor(v);
+                    if (Number.isFinite(timelineMinYear) && Number.isFinite(timelineMaxYear)) {
+                      if (v < timelineMinYear) v = timelineMinYear;
+                      if (v > timelineMaxYear) v = timelineMaxYear;
+                    }
+                    try {
+                      // use global helper to update UI, timelines and URL
+                      setTimelineYear(v);
+                    } catch (e) { console.log('applyValue setTimelineYear error', e); }
+                    restoreLabel(v);
+                  }
+
+                  function cancelEdit() { restoreLabel(timelineCurrentTime ? new Date(Number(timelineCurrentTime)).getUTCFullYear() : label.innerText); }
+
+                  input.addEventListener('keydown', function(ev) {
+                    if (ev.key === 'Enter') { ev.preventDefault(); applyValue(); }
+                    else if (ev.key === 'Escape') { ev.preventDefault(); cancelEdit(); }
+                  });
+                  // clicking outside or blurring cancels (or applies? we choose cancel to avoid accidental jumps)
+                  input.addEventListener('blur', function() { cancelEdit(); });
+                });
+              }
+            } catch (ee) { console.log('label editable attach error', ee); }
 
             // initialize to requestedYear (if present) or min year
             setYear(Number.isFinite(requestedYear) ? requestedYear : timelineMinYear);
@@ -1344,7 +1447,10 @@
         // Then image/thumbnail (if present), centered
         var thumb = props.thumbnail || props.thumb || props.url;
         if (thumb) {
-          parts.push('<div style="margin-bottom:6px;text-align:center;"><img src="' + thumb + '" style="width:100%;max-width:240px;display:inline-block;object-fit:cover;"/></div>');
+          // Make thumbnails scale to popup width and limit height relative to viewport
+          parts.push('<div style="margin-bottom:6px;text-align:center;">' +
+            '<img src="' + thumb + '" style="width:100%;max-width:100%;height:auto;max-height:30vh;display:inline-block;object-fit:cover;border-radius:4px;"/>' +
+            '</div>');
         }
         // Then description (justified)
         if (props.description) {
@@ -1353,7 +1459,10 @@
         if (props.url && props.url !== thumb) {
           parts.push('<div style="margin-top:6px;text-align:center;"><a href="' + props.url + '" target="_blank">More info</a></div>');
         }
-        return parts.join('');
+        // Wrap in a scrollable container sized based on computed popupOptions.
+        // Use a fallback of 70vh if popupOptions.maxHeight is unexpectedly small.
+        var maxH = popupOptions && popupOptions.maxHeight ? popupOptions.maxHeight : Math.floor((window.innerHeight||600) * 0.7);
+        return '<div style="max-height:' + (maxH) + 'px;overflow:auto;padding:6px;box-sizing:border-box;">' + parts.join('') + '</div>';
       }
 
       map.on('pm:create', function(e) {
